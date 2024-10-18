@@ -37,4 +37,10 @@ public class ScoreManager : MonoBehaviour
         scoreText.text = score.ToString() + " points";
         
     }
+
+    public void SubtractPoint()
+    {
+        score -= 1;
+        scoreText.text = score.ToString() + " points";
+    }
 }
