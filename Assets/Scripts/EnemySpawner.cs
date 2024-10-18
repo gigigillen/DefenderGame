@@ -17,15 +17,6 @@ public class EnemySpawner : MonoBehaviour
         StartCoroutine(SpawnEnemy());  // Start the spawning coroutine
     }
 
-    //// Update is called once per frame
-    //void FixedUpdate()
-    //{   
-    //    // Reset the Y position of the stronghold
-    //    Vector3 targetPosition = stronghold.transform.position;
-    //    targetPosition.y = enemyPrefab.transform.position.y; // Set Y to the enemy's Y position or a fixed value
-
-    //    enemyPrefab.transform.position = Vector3.MoveTowards(enemyPrefab.transform.position, targetPosition, speed);
-    //}
 
     private IEnumerator SpawnEnemy()
     {
@@ -35,4 +26,5 @@ public class EnemySpawner : MonoBehaviour
             yield return new WaitForSeconds(spawnInterval);  // Wait for the specified interval
         }
     }
+
 }
