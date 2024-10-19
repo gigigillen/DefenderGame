@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 1277719701486423283}
   - component: {fileID: 2894917557582069365}
   - component: {fileID: -7321681575783090527}
-  - component: {fileID: 3582070471915795123}
   - component: {fileID: -3249353563204627468}
+  - component: {fileID: 8826661420058647587}
   m_Layer: 0
   m_Name: Apprentice
   m_TagString: Apprentice
@@ -135,18 +135,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3582070471915795123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 204899795603797225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84bd1ca68e9764227a9059695449835b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-3249353563204627468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,6 +162,19 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: 29304670-fdcd-411f-97c9-9401f48e3f9d
+  m_DefaultActionMap: Apprentice
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &8826661420058647587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204899795603797225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84bd1ca68e9764227a9059695449835b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillTree: {fileID: 0}

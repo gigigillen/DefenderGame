@@ -14,6 +14,8 @@ public class SpawnApprentice : MonoBehaviour {
     private const int maxApprentices = 5; // max apprentices is immutable
     public TextMeshProUGUI apprenticeText;
 
+    [SerializeField] private Transform apprentices;
+
     // Start is called before the first frame update
     void Start() {
 
@@ -40,6 +42,7 @@ public class SpawnApprentice : MonoBehaviour {
 
                 // Instantiate the apprentice prefab at the hit point
                 GameObject newApprentice = Instantiate(apprentice, spawnPosition, Quaternion.identity);
+                newApprentice.transform.SetParent(apprentices);
                 newApprentice.name = "Apprentice " + (apprenticeCount + 1);
                 apprenticeCount++;
 

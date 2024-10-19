@@ -648,10 +648,10 @@ PrefabInstance:
     - target: {fileID: 5407048962690553643, guid: 6ef8e910d5ef740d7921d576355e85eb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 854793234}
+      objectReference: {fileID: 854793236}
     - target: {fileID: 5407048962690553643, guid: 6ef8e910d5ef740d7921d576355e85eb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: UltSkillClick
       objectReference: {fileID: 0}
     - target: {fileID: 8525448358852883449, guid: 6ef8e910d5ef740d7921d576355e85eb, type: 3}
       propertyPath: m_Color.b
@@ -797,6 +797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   apprentice: {fileID: 204899795603797225, guid: fbf502158940de84ea9587a47a0e1ecc, type: 3}
   apprenticeText: {fileID: 287873763}
+  apprentices: {fileID: 1092055988}
 --- !u!114 &685057641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -865,7 +866,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 200, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 100, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &854793236
 MonoBehaviour:
@@ -993,15 +994,30 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1082918379}
-  - component: {fileID: 1082918378}
+  - component: {fileID: 1082918380}
   m_Layer: 0
-  m_Name: Testing
+  m_Name: GameController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1082918378
+--- !u!4 &1082918379
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1082918377}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10.911785, y: 19.526707, z: 5.5547333}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1082918380
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1014,16 +1030,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiSkillTree: {fileID: 854793236}
---- !u!4 &1082918379
+--- !u!1 &1092055986
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1092055988}
+  m_Layer: 0
+  m_Name: Apprentices
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1092055988
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1082918377}
+  m_GameObject: {fileID: 1092055986}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.911785, y: 19.526707, z: 5.5547333}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1233,10 +1265,10 @@ PrefabInstance:
     - target: {fileID: 5407048962690553643, guid: 6ef8e910d5ef740d7921d576355e85eb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 854793234}
+      objectReference: {fileID: 854793236}
     - target: {fileID: 5407048962690553643, guid: 6ef8e910d5ef740d7921d576355e85eb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: 
+      value: MidSkillClick
       objectReference: {fileID: 0}
     - target: {fileID: 8525448358852883449, guid: 6ef8e910d5ef740d7921d576355e85eb, type: 3}
       propertyPath: m_Color.b
@@ -2361,6 +2393,7 @@ SceneRoots:
   - {fileID: 685057639}
   - {fileID: 1994804622}
   - {fileID: 9098053480981069882}
+  - {fileID: 1092055988}
   - {fileID: 861873645}
   - {fileID: 217721317}
   - {fileID: 1773805909}

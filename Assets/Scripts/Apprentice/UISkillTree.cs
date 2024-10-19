@@ -44,4 +44,8 @@ public class UISkillTree : MonoBehaviour {
 
         this.apprenticeSkills = apprenticeSkills;
     }
+
+    public void SetVisible(bool isVisible) {
+        gameObject.SetActive(isVisible);
+    }
 }
