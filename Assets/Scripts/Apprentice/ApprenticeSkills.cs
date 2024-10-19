@@ -25,4 +25,18 @@ public class ApprenticeSkills {
         return unlockedSkillTypeList.Contains(skillType);
     }
 
+    public string GetUnlockedSkills() {
+        if (unlockedSkillTypeList.Count == 0) {
+            return "No skills unlocked";
+        }
+
+        string skillList = "Unlocked Skills: ";
+        foreach (SkillType skill in unlockedSkillTypeList) {
+            skillList += skill.ToString() + ", ";
+        }
+
+        skillList = skillList.TrimEnd(',', ' ');
+        return skillList;
+    }
+
 }

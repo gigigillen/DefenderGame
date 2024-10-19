@@ -43,7 +43,6 @@ public class ApprenticeController : MonoBehaviour {
 
         Testing testing = FindAnyObjectByType<Testing>();
         testing.SelectApprentice(this);
-        Debug.Log("Selected apprentice: " + gameObject.name);
     }
       
 

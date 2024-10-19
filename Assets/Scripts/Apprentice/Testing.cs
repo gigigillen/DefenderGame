@@ -10,14 +10,13 @@ public class Testing : MonoBehaviour {
 
     private void Start() {
 
-        if (uiSkillTree == null) {
-            Debug.LogError("UI Skill tree is not assigned!");
-        }
     }
 
     public void SelectApprentice(ApprenticeController apprentice) {
 
         selectedApprentice = apprentice;
         uiSkillTree.SetApprenticeSkills(apprentice.GetApprenticeSkills());
+        Debug.Log("Selected Apprentice: " + apprentice.gameObject.name);
+        Debug.Log("Skills: " + apprentice.GetApprenticeSkills().GetUnlockedSkills());
     }
 }
