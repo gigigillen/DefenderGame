@@ -31,11 +31,17 @@ public class SpawnApprentice : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
-                Vector3 spawnPosition = new Vector3(hit.point.x, 0.5f, hit.point.z);
+                Vector3 spawnLocation = hit.point;
+                Debug.Log($"Clicked at: {spawnLocation}");
 
-                // Instantiate the apprentice prefab at the hit point
-                Instantiate(apprentice, spawnPosition, Quaternion.identity);
-                Debug.Log("INSTANTIATE");
+                if (spawnLocation.x >= -9f && spawnLocation.x <= 9f && spawnLocation.z >= -9f && spawnLocation.z <=9f)
+                {
+                    Vector3 spawnPosition = new Vector3(hit.point.x, 0.5f, hit.point.z);
+
+                    // Instantiate the apprentice prefab at the hit point
+                    Instantiate(apprentice, spawnPosition, Quaternion.identity);
+                    Debug.Log("INSTANTIATE");
+                }
             }
         }
     }
