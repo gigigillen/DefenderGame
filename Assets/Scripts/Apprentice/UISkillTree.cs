@@ -18,6 +18,28 @@ public class UISkillTree : MonoBehaviour {
         }
     }
 
+    public void MidSkillClick() {
+
+        if (apprenticeSkills != null) {
+            apprenticeSkills.UnlockSkill(ApprenticeSkills.SkillType.Mid);
+            Debug.Log("Mid skill unlocked");
+        }
+        else {
+            Debug.Log("No apprentice selected");
+        }
+    }
+
+    public void UltSkillClick() {
+
+        if (apprenticeSkills != null) {
+            apprenticeSkills.UnlockSkill(ApprenticeSkills.SkillType.Ultimate);
+            Debug.Log("Ultimate skill unlocked");
+        }
+        else {
+            Debug.Log("No apprentice selected");
+        }
+    }
+
     public void SetApprenticeSkills(ApprenticeSkills apprenticeSkills) {
 
         this.apprenticeSkills = apprenticeSkills;

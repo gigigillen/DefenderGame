@@ -6,6 +6,8 @@ public class ApprenticeSkills {
 
     public enum SkillType {
         Basic,
+        Mid,
+        Ultimate,
     }
 
     private List<SkillType> unlockedSkillTypeList;
@@ -16,8 +18,9 @@ public class ApprenticeSkills {
     }
 
     public void UnlockSkill(SkillType skillType) {
-
-        unlockedSkillTypeList.Add(skillType);
+        if (!IsSkillUnlocked(skillType)) {
+            unlockedSkillTypeList.Add(skillType);
+        }
     }
 
     public bool IsSkillUnlocked(SkillType skillType) {

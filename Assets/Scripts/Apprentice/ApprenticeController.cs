@@ -56,11 +56,13 @@ public class ApprenticeController : MonoBehaviour {
         return apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Basic);
     }
 
-    //public bool CanUseMidSkill() {
-    //    return apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Mid);
-    //}
+    public bool CanUseMidSkill() {
 
-    //public bool CanUseUltimateSkill() {
-    //    return apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Ultimate);
-    //}
+        return apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Mid);
+    }
+
+    public bool CanUseUltimateSkill() {
+
+        return apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Ultimate);
+    }
 }
