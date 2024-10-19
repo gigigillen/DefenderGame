@@ -32,22 +32,26 @@ public class SpawnApprentice : MonoBehaviour {
     void OnSpawn() { 
     
         if (apprenticeCount < maxApprentices && Mouse.current.leftButton.wasPressedThisFrame) { 
-        
             Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit)) { 
-            
                 Vector3 spawnPosition = new Vector3(hit.point.x, 0.5f, hit.point.z);
 
                 // Instantiate the apprentice prefab at the hit point
-                Instantiate(apprentice, spawnPosition, Quaternion.identity);
+                GameObject newApprentice = Instantiate(apprentice, spawnPosition, Quaternion.identity);
+                newApprentice.name = "Apprentice " + (apprenticeCount + 1);
                 apprenticeCount++;
+
+                ApprenticeController apprenticeController = newApprentice.GetComponent<ApprenticeController>();
+
+                Debug.Log("New apprentice spawned with skills system");
             }
         }
     }
 
     private void SetApprenticeText() {
+
         apprenticeText.text = "Apprentices: " + apprenticeCount.ToString() + "/" + maxApprentices;
     }
 }
