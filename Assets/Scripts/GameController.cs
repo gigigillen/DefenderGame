@@ -44,15 +44,22 @@ public class GameController : MonoBehaviour {
 
     public void SelectApprentice(ApprenticeController apprentice) {
 
+        if (selectedApprentice != null) {
+            DeselectApprentice();
+        }
+
         selectedApprentice = apprentice;
         uiSkillTree.SetApprenticeSkills(apprentice.GetApprenticeSkills());
         uiSkillTree.SetVisible(true);
+        apprentice.GetComponent<Renderer>().material.color = Color.yellow;
+
         Debug.Log("Selected Apprentice: " + apprentice.gameObject.name);
         Debug.Log("Skills: " + apprentice.GetApprenticeSkills().GetUnlockedSkills());
     }
 
     public void DeselectApprentice() {
 
+        selectedApprentice.GetComponent<Renderer>().material.color = Color.green;
         selectedApprentice = null;
         uiSkillTree.SetVisible(false);
     }
