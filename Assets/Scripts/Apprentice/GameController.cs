@@ -8,11 +8,11 @@ public class GameController : MonoBehaviour {
 
     [SerializeField] private UISkillTree uiSkillTree;
 
-    public List<GameObject> activeEnemies = new List<GameObject>();
-
     private ApprenticeController selectedApprentice;
 
     private Camera cam;
+
+    [SerializeField] private LayerMask attackAreaMask;
 
     private void Start() {
 
@@ -30,7 +30,7 @@ public class GameController : MonoBehaviour {
             Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit)) {
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~attackAreaMask)) {
                 ApprenticeController clickedApprentice = hit.collider.GetComponent<ApprenticeController>();
                 if (clickedApprentice != null) {
                     SelectApprentice(clickedApprentice);
