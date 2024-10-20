@@ -26,12 +26,12 @@ public class EnemyBehavior : MonoBehaviour
         enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, targetPosition, speed);
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Apprentice"))
-        {
-            ScoreManager.instance.AddPoint();
-            Destroy(gameObject);
-        }
-    }
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Apprentice"))
+    //    {
+    //        ScoreManager.instance.AddPoint();
+    //        Destroy(gameObject);
+    //    }
+    //}
 }

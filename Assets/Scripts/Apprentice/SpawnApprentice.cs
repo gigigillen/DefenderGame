@@ -8,6 +8,7 @@ using TMPro;
 public class SpawnApprentice : MonoBehaviour { 
 
     public GameObject apprentice; // The prefab to instantiate
+    public GameObject attackArea;
     private Camera cam;
 
     private int apprenticeCount;
@@ -43,8 +44,12 @@ public class SpawnApprentice : MonoBehaviour {
                 // Instantiate the apprentice prefab at the hit point
                 GameObject newApprentice = Instantiate(apprentice, spawnPosition, Quaternion.identity);
                 newApprentice.transform.SetParent(apprentices);
+
                 newApprentice.name = "Apprentice " + (apprenticeCount + 1);
                 apprenticeCount++;
+
+                GameObject newAttackArea = Instantiate(attackArea, newApprentice.transform.position, Quaternion.identity);
+                newAttackArea.transform.SetParent(newApprentice.transform);
 
                 ApprenticeController apprenticeController = newApprentice.GetComponent<ApprenticeController>();
 

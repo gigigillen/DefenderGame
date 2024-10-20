@@ -5,6 +5,7 @@ using UnityEngine;
 public class ApprenticeController : MonoBehaviour {
 
     private ApprenticeSkills apprenticeSkills;
+    private ApprenticeAttack apprenticeAttack;
 
     private GameObject nearestEnemy;
     private float nearestDist;
@@ -14,6 +15,7 @@ public class ApprenticeController : MonoBehaviour {
     private void Awake() {
 
         apprenticeSkills = new ApprenticeSkills();
+        apprenticeAttack = GetComponent<ApprenticeAttack>();
         gameObject.tag = "Apprentice";
     }
 
@@ -73,21 +75,18 @@ public class ApprenticeController : MonoBehaviour {
                 }
             }
         }
-        Debug.Log("nearest enemy: " + nearestEnemy.name);
     }
 
     private void MoveTowardsEnemy() {
 
         Vector3 targetPos = nearestEnemy.transform.position;
-        targetPos.y = transform.position.y; //set to ensure y value stays consistent
+        targetPos.y = transform.position.y; // ensure y value stays consistent
 
         if (nearestDist > 1.0f) {
             transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
         }
         else {
-            //attack!
+            apprenticeAttack.Attack();
         }
-
-        
     }
 }

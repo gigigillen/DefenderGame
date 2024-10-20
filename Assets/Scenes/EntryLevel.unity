@@ -375,7 +375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3240977648046654704, guid: e1d8d767738b259439fe85c31002bf46, type: 3}
-  spawnInterval: 1
+  spawnInterval: 100
 --- !u!1 &287873761
 GameObject:
   m_ObjectHideFlags: 0
@@ -796,6 +796,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   apprentice: {fileID: 204899795603797225, guid: fbf502158940de84ea9587a47a0e1ecc, type: 3}
+  attackArea: {fileID: 9122113501208484761, guid: e876a0adea6ce40459efcbc8474afa70, type: 3}
   apprenticeText: {fileID: 287873763}
   apprentices: {fileID: 1092055988}
 --- !u!114 &685057641
