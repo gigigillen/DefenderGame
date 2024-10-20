@@ -8,6 +8,8 @@ public class GameController : MonoBehaviour {
 
     [SerializeField] private UISkillTree uiSkillTree;
 
+    public List<GameObject> activeEnemies = new List<GameObject>();
+
     private ApprenticeController selectedApprentice;
 
     private Camera cam;

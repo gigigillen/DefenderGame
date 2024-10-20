@@ -6,6 +6,11 @@ public class ApprenticeController : MonoBehaviour {
 
     private ApprenticeSkills apprenticeSkills;
 
+    private GameObject nearestEnemy;
+    private float nearestDist;
+
+    public float speed = 2f;
+
     private void Awake() {
 
         apprenticeSkills = new ApprenticeSkills();
@@ -19,6 +24,12 @@ public class ApprenticeController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+
+        FindNearestEnemy();
+
+        if (nearestEnemy != null) {
+            MoveTowardsEnemy();
+        }
 
     }
       
@@ -40,5 +51,43 @@ public class ApprenticeController : MonoBehaviour {
     public bool CanUseUltimateSkill() {
 
         return apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Ultimate);
+    }
+
+    private void FindNearestEnemy() {
+
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        nearestDist = float.MaxValue;
+
+        foreach (GameObject enemy in enemies) {
+            if (enemy.activeSelf) {
+                float dist = Vector3.Distance(transform.position, enemy.transform.position);
+
+                if (dist < nearestDist) {
+                    if (nearestEnemy != null) {
+                        nearestEnemy.GetComponent<Renderer>().material.color = Color.red;
+                    }
+
+                    nearestDist = dist;
+                    nearestEnemy = enemy;
+                    nearestEnemy.GetComponent<Renderer>().material.color = Color.magenta;
+                }
+            }
+        }
+        Debug.Log("nearest enemy: " + nearestEnemy.name);
+    }
+
+    private void MoveTowardsEnemy() {
+
+        Vector3 targetPos = nearestEnemy.transform.position;
+        targetPos.y = transform.position.y; //set to ensure y value stays consistent
+
+        if (nearestDist > 1.0f) {
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+        }
+        else {
+            //attack!
+        }
+
+        
     }
 }
