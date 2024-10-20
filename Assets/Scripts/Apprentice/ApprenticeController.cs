@@ -9,7 +9,7 @@ public class ApprenticeController : MonoBehaviour {
     private GameObject nearestEnemy;
     private float nearestDist;
 
-    public float speed = 2f;
+    public float speed;
 
     private void Awake() {
 

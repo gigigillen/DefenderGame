@@ -375,7 +375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3240977648046654704, guid: e1d8d767738b259439fe85c31002bf46, type: 3}
-  spawnInterval: 5
+  spawnInterval: 1
 --- !u!1 &287873761
 GameObject:
   m_ObjectHideFlags: 0
@@ -1030,6 +1030,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiSkillTree: {fileID: 854793236}
+  activeEnemies: []
 --- !u!1 &1092055986
 GameObject:
   m_ObjectHideFlags: 0
