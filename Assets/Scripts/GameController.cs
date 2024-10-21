@@ -42,7 +42,10 @@ public class GameController : MonoBehaviour {
                     SelectApprentice(clickedApprentice);
                 }
                 else {
-                    DeselectApprentice();
+                    if (selectedApprentice != null)
+                    {
+                        DeselectApprentice();
+                    }
                 }
             }
         }
@@ -52,6 +55,10 @@ public class GameController : MonoBehaviour {
     {
         gameOverUI.SetActive(true);
         Time.timeScale = 0f;
+        if (selectedApprentice != null)
+        {
+            DeselectApprentice();
+        }
     }
 
     public void PlayAgain()

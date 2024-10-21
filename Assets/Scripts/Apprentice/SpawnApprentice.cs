@@ -52,20 +52,24 @@ public class SpawnApprentice : MonoBehaviour {
                 if (gameController.selectedApprentice == null)
                 {
                     Vector3 spawnPosition = new Vector3(hit.point.x, 0.5f, hit.point.z);
+                    Debug.Log(spawnPosition);
 
-                    // Instantiate the apprentice prefab at the hit point
-                    GameObject newApprentice = Instantiate(apprentice, spawnPosition, Quaternion.identity);
-                    newApprentice.transform.SetParent(apprentices);
+                    if (spawnPosition.x >= -9f && spawnPosition.x <= 9f && spawnPosition.z >= -9f && spawnPosition.z <= 9f && spawnPosition.y == 0.5)
+                    {
+                        // Instantiate the apprentice prefab at the hit point
+                        GameObject newApprentice = Instantiate(apprentice, spawnPosition, Quaternion.identity);
+                        newApprentice.transform.SetParent(apprentices);
 
-                    newApprentice.name = "Apprentice " + (apprenticeCount + 1);
-                    apprenticeCount++;
+                        newApprentice.name = "Apprentice " + (apprenticeCount + 1);
+                        apprenticeCount++;
 
-                    GameObject newAttackArea = Instantiate(attackArea, newApprentice.transform.position, Quaternion.identity);
-                    newAttackArea.transform.SetParent(newApprentice.transform);
+                        GameObject newAttackArea = Instantiate(attackArea, newApprentice.transform.position, Quaternion.identity);
+                        newAttackArea.transform.SetParent(newApprentice.transform);
 
-                    ApprenticeController apprenticeController = newApprentice.GetComponent<ApprenticeController>();
+                        ApprenticeController apprenticeController = newApprentice.GetComponent<ApprenticeController>();
 
-                    Debug.Log("New apprentice spawned with skills system");
+                        Debug.Log("New apprentice spawned with skills system");
+                    }
                 }
             }
         }
