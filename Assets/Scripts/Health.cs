@@ -41,6 +41,7 @@ public class Health : MonoBehaviour {
         yield return new WaitForSeconds(0.5f);
 
         Debug.Log("i am dead:(");
+        HealthBarController.instance.GainHealth(10f);
         Destroy(gameObject);
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ApprenticeSkills { 
 
+    // in prototype, only the Basic skill works. Mid and Ultimate are placeholders
     public enum SkillType {
         Basic,
         Mid,

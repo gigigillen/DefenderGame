@@ -24,14 +24,13 @@ public class EnemyBehavior : MonoBehaviour
         targetPosition.y = enemy.transform.position.y; // Set Y to the enemy's Y position or a fixed value
 
         enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, targetPosition, speed);
-    }
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag("Apprentice"))
-    //    {
-    //        ScoreManager.instance.AddPoint();
-    //        Destroy(gameObject);
-    //    }
-    //}
+        if (Vector3.Distance(transform.position, stronghold.transform.position) < 2.5)
+        {
+            HealthBarController.instance.TakeDamage(10f);
+            Destroy(gameObject);
+        }
+
+
+    }
 }

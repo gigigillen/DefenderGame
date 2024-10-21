@@ -16,6 +16,7 @@ public class SpawnApprentice : MonoBehaviour {
     public TextMeshProUGUI apprenticeText;
 
     [SerializeField] private Transform apprentices;
+    private GameController gameController;
 
     // Start is called before the first frame update
     void Start() {
@@ -24,6 +25,7 @@ public class SpawnApprentice : MonoBehaviour {
         apprenticeCount = 0;
         apprenticeText.text = "";
         SetApprenticeText();
+        gameController = FindObjectOfType<GameController>();
     }
 
     // Update is called once per frame
@@ -38,22 +40,25 @@ public class SpawnApprentice : MonoBehaviour {
             Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit)) { 
-                Vector3 spawnPosition = new Vector3(hit.point.x, 0.5f, hit.point.z);
+            if (Physics.Raycast(ray, out hit)) {
+                if (gameController.selectedApprentice == null)
+                {
+                    Vector3 spawnPosition = new Vector3(hit.point.x, 0.5f, hit.point.z);
 
-                // Instantiate the apprentice prefab at the hit point
-                GameObject newApprentice = Instantiate(apprentice, spawnPosition, Quaternion.identity);
-                newApprentice.transform.SetParent(apprentices);
+                    // Instantiate the apprentice prefab at the hit point
+                    GameObject newApprentice = Instantiate(apprentice, spawnPosition, Quaternion.identity);
+                    newApprentice.transform.SetParent(apprentices);
 
-                newApprentice.name = "Apprentice " + (apprenticeCount + 1);
-                apprenticeCount++;
+                    newApprentice.name = "Apprentice " + (apprenticeCount + 1);
+                    apprenticeCount++;
 
-                GameObject newAttackArea = Instantiate(attackArea, newApprentice.transform.position, Quaternion.identity);
-                newAttackArea.transform.SetParent(newApprentice.transform);
+                    GameObject newAttackArea = Instantiate(attackArea, newApprentice.transform.position, Quaternion.identity);
+                    newAttackArea.transform.SetParent(newApprentice.transform);
 
-                ApprenticeController apprenticeController = newApprentice.GetComponent<ApprenticeController>();
+                    ApprenticeController apprenticeController = newApprentice.GetComponent<ApprenticeController>();
 
-                Debug.Log("New apprentice spawned with skills system");
+                    Debug.Log("New apprentice spawned with skills system");
+                }
             }
         }
     }

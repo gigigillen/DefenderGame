@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+
 
 public class GameController : MonoBehaviour {
 
+    public static GameController instance;
+
     [SerializeField] private UISkillTree uiSkillTree;
 
-    private ApprenticeController selectedApprentice;
+    public ApprenticeController selectedApprentice;
 
     private Camera cam;
 
     [SerializeField] private LayerMask attackAreaMask;
+
+    [SerializeField] private GameObject gameOverUI;
 
     private void Start() {
 
@@ -40,6 +46,19 @@ public class GameController : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public void GameOver()
+    {
+        gameOverUI.SetActive(true);
+        Time.timeScale = 0f;
+    }
+
+    public void PlayAgain()
+    {
+        gameOverUI.SetActive(false);
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void SelectApprentice(ApprenticeController apprentice) {

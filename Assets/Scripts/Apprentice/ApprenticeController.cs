@@ -26,13 +26,15 @@ public class ApprenticeController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if (apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Basic))
+        {
+            FindNearestEnemy();
 
-        FindNearestEnemy();
-
-        if (nearestEnemy != null) {
-            MoveTowardsEnemy();
+            if (nearestEnemy != null)
+            {
+                MoveTowardsEnemy();
+            }
         }
-
     }
       
     public ApprenticeSkills GetApprenticeSkills() {
@@ -87,6 +89,7 @@ public class ApprenticeController : MonoBehaviour {
         }
         else {
             apprenticeAttack.Attack();
+ //           Destroy(gameObject);
         }
     }
 }
