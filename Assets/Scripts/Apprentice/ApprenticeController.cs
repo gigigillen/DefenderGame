@@ -6,7 +6,6 @@ public class ApprenticeController : MonoBehaviour {
 
     private ApprenticeSkills apprenticeSkills;
     private ApprenticeAttack apprenticeAttack;
-    private SpawnApprentice spawnApprentice;
 
     private GameObject nearestEnemy;
     private float nearestDist;
@@ -17,7 +16,6 @@ public class ApprenticeController : MonoBehaviour {
 
         apprenticeSkills = new ApprenticeSkills();
         apprenticeAttack = GetComponent<ApprenticeAttack>();
-        spawnApprentice = FindAnyObjectByType<SpawnApprentice>();
         gameObject.tag = "Apprentice";
     }
 
@@ -91,7 +89,6 @@ public class ApprenticeController : MonoBehaviour {
         }
         else {
             apprenticeAttack.Attack();
- //           Destroy(gameObject);
         }
     }
 }

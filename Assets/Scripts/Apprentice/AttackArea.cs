@@ -26,6 +26,7 @@ public class AttackArea : MonoBehaviour
             if (targetedEnemyHealth.health <= 0)
             {
                 // Destroy the apprentice after defeating the enemy
+                // set the skill tree so it isnt visible
                 Destroy(transform.parent.gameObject);
                 spawnApprentice.killApprentice();
 

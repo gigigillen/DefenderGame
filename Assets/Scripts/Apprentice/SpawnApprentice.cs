@@ -18,6 +18,8 @@ public class SpawnApprentice : MonoBehaviour {
     [SerializeField] private Transform apprentices;
     private GameController gameController;
 
+    [SerializeField] private UISkillTree uiSkillTree;
+
     // Start is called before the first frame update
     void Start() {
 
@@ -36,6 +38,8 @@ public class SpawnApprentice : MonoBehaviour {
 
     public void killApprentice() {
         apprenticeCount--;
+        uiSkillTree.SetVisible(false);
+
     }
 
     void OnSpawn() { 
