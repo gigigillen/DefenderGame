@@ -29,7 +29,6 @@ public class ApprenticeController : MonoBehaviour {
         if (apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Basic))
         {
             FindNearestEnemy();
-
             if (nearestEnemy != null)
             {
                 MoveTowardsEnemy();
@@ -59,21 +58,28 @@ public class ApprenticeController : MonoBehaviour {
 
     private void FindNearestEnemy() {
 
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        string[] tags = { "Enemy", "Wizard" };
         nearestDist = float.MaxValue;
 
-        foreach (GameObject enemy in enemies) {
-            if (enemy.activeSelf) {
-                float dist = Vector3.Distance(transform.position, enemy.transform.position);
+        foreach (string tag in tags) {
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag(tag);
+            foreach (GameObject enemy in enemies)
+            {
+                if (enemy.activeSelf)
+                {
+                    float dist = Vector3.Distance(transform.position, enemy.transform.position);
 
-                if (dist < nearestDist) {
-                    if (nearestEnemy != null) {
-                        nearestEnemy.GetComponent<Renderer>().material.color = Color.red;
+                    if (dist < nearestDist)
+                    {
+                        if (nearestEnemy != null)
+                        {
+                            nearestEnemy.GetComponent<Renderer>().material.color = Color.red;
+                        }
+
+                        nearestDist = dist;
+                        nearestEnemy = enemy;
+                        nearestEnemy.GetComponent<Renderer>().material.color = Color.magenta;
                     }
-
-                    nearestDist = dist;
-                    nearestEnemy = enemy;
-                    nearestEnemy.GetComponent<Renderer>().material.color = Color.magenta;
                 }
             }
         }

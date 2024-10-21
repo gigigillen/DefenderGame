@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17757845, g: 0.22232172, b: 0.304517, a: 1}
+  m_IndirectSpecularColor: {r: 0.17757845, g: 0.2223217, b: 0.3045171, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -393,7 +393,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &217721317
 Transform:
   m_ObjectHideFlags: 0
@@ -423,6 +423,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3240977648046654704, guid: e1d8d767738b259439fe85c31002bf46, type: 3}
   spawnInterval: 5
+  enemies: {fileID: 217721317}
 --- !u!1 &287873761
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,7 +613,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &498701923
 Transform:
   m_ObjectHideFlags: 0
@@ -642,6 +643,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3240977648046654704, guid: e1d8d767738b259439fe85c31002bf46, type: 3}
   spawnInterval: 10
+  enemies: {fileID: 498701923}
 --- !u!1001 &529261649
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1245,7 +1247,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &758056823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1260,6 +1262,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3240977648046654704, guid: e1d8d767738b259439fe85c31002bf46, type: 3}
   spawnInterval: 10
+  enemies: {fileID: 758056824}
 --- !u!4 &758056824
 Transform:
   m_ObjectHideFlags: 0
@@ -1340,9 +1343,10 @@ GameObject:
   - component: {fileID: 861873643}
   - component: {fileID: 861873642}
   - component: {fileID: 861873646}
+  - component: {fileID: 861873647}
   m_Layer: 0
   m_Name: Wizard
-  m_TagString: Enemy
+  m_TagString: Wizard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1362,7 +1366,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1448,6 +1452,18 @@ MonoBehaviour:
   enemy: {fileID: 861873641}
   stronghold: {fileID: 755085040}
   speed: 0.01
+--- !u!114 &861873647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 861873641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac7fa9c40e5f4e02a16401b319f912b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &910183464
 GameObject:
   m_ObjectHideFlags: 0
@@ -3175,7 +3191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1982793393
 Transform:
   m_ObjectHideFlags: 0
@@ -3205,6 +3221,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3240977648046654704, guid: e1d8d767738b259439fe85c31002bf46, type: 3}
   spawnInterval: 60
+  enemies: {fileID: 1982793393}
 --- !u!1 &1994804621
 GameObject:
   m_ObjectHideFlags: 0
@@ -3454,7 +3471,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2082548306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3469,6 +3486,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3240977648046654704, guid: e1d8d767738b259439fe85c31002bf46, type: 3}
   spawnInterval: 30
+  enemies: {fileID: 2082548307}
 --- !u!4 &2082548307
 Transform:
   m_ObjectHideFlags: 0

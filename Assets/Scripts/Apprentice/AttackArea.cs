@@ -16,6 +16,7 @@ public class AttackArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
+        Debug.Log("Collided");
         if (collider.GetComponent<Health>() != null && targetedEnemyHealth == null)
         {
             targetedEnemyHealth = collider.GetComponent<Health>();
@@ -23,13 +24,13 @@ public class AttackArea : MonoBehaviour
             Debug.Log("Dealt " + damage + " damage to enemy");
 
             // Check if the enemy is defeated
-            if (targetedEnemyHealth.health <= 0)
+            int enemyHealth = targetedEnemyHealth.getHealth();
+            if (enemyHealth <= 0)
             {
                 // Destroy the apprentice after defeating the enemy
                 // set the skill tree so it isnt visible
                 Destroy(transform.parent.gameObject);
                 spawnApprentice.killApprentice();
-
             }
         }
     }

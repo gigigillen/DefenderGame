@@ -10,10 +10,14 @@ public class EnemySpawner : MonoBehaviour
 
     public float spawnInterval = 10f; // Time in seconds between spawns
 
+    [SerializeField] private Transform enemies;
+    private int enemyCount;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        enemyCount = 0;
         StartCoroutine(SpawnEnemy());  // Start the spawning coroutine
     }
 
@@ -22,7 +26,11 @@ public class EnemySpawner : MonoBehaviour
     {
         while (true)
         {
-            Instantiate(enemyPrefab, transform.position, Quaternion.identity); // Spawn the enemy
+            GameObject newEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity); // Spawn the enemy
+            newEnemy.transform.SetParent(enemies);
+
+            newEnemy.name = "Enemy " + (enemyCount + 1);
+            enemyCount++;
             yield return new WaitForSeconds(spawnInterval);  // Wait for the specified interval
         }
     }
