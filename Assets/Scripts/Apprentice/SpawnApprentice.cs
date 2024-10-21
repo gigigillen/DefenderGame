@@ -34,6 +34,10 @@ public class SpawnApprentice : MonoBehaviour {
         SetApprenticeText();
     }
 
+    public void killApprentice() {
+        apprenticeCount--;
+    }
+
     void OnSpawn() { 
     
         if (apprenticeCount < maxApprentices && Mouse.current.leftButton.wasPressedThisFrame) { 

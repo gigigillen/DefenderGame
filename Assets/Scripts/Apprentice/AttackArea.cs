@@ -7,6 +7,12 @@ public class AttackArea : MonoBehaviour
 
     private int damage = 1;
     private Health targetedEnemyHealth;
+    private SpawnApprentice spawnApprentice;
+
+    private void Awake() {
+        spawnApprentice = FindAnyObjectByType<SpawnApprentice>();
+    }
+
 
     private void OnTriggerEnter(Collider collider)
     {
@@ -20,7 +26,9 @@ public class AttackArea : MonoBehaviour
             if (targetedEnemyHealth.health <= 0)
             {
                 // Destroy the apprentice after defeating the enemy
-                Destroy(transform.parent.gameObject); // Assuming this script is attached to the attack area, which is a child of the apprentice
+                Destroy(transform.parent.gameObject);
+                spawnApprentice.killApprentice();
+
             }
         }
     }
@@ -30,7 +38,7 @@ public class AttackArea : MonoBehaviour
         // Clear the targeted enemy when it leaves the attack area
         if (collider.GetComponent<Health>() == targetedEnemyHealth)
         {
-            targetedEnemyHealth = null; // Reset the targeted enemy
+            targetedEnemyHealth = null; 
         }
     }
 }

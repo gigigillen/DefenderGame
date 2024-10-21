@@ -11,7 +11,7 @@ public class ApprenticeAttack : MonoBehaviour {
 
     // for prototype, 1 dmg kills an enemy so time interval between attacks not required
     // for further implementation later
-    private float timeToAttack = 0.1f;
+    private float timeToAttack = 0.01f;
     private float timer = 0f;
 
     // Start is called before the first frame update

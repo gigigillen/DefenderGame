@@ -38,7 +38,7 @@ public class Health : MonoBehaviour {
 
     private IEnumerator HandleDeath() {
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0f);
 
         Debug.Log("i am dead:(");
         HealthBarController.instance.GainHealth(10f);
