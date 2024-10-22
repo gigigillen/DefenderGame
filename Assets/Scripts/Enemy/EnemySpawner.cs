@@ -8,20 +8,21 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemyPrefab;
     //public GameObject stronghold;
 
-    public float spawnInterval = 10f; // Time in seconds between spawns
+    public float spawnInterval = 10f; 
 
     [SerializeField] private Transform enemies;
     private int enemyCount;
 
 
-    // Start is called before the first frame update
     void Start()
     {
         enemyCount = 0;
-        StartCoroutine(SpawnEnemy());  // Start the spawning coroutine
+
+        //spawns enemies
+        StartCoroutine(SpawnEnemy());
     }
 
-
+    //routinely spawns enemies
     private IEnumerator SpawnEnemy()
     {
         while (true)
