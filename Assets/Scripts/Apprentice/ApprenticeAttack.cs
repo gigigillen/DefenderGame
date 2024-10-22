@@ -9,23 +9,22 @@ public class ApprenticeAttack : MonoBehaviour {
 
     private bool attacking = false;
 
-    // for prototype, 1 dmg kills an enemy so time interval between attacks not required
-    // for further implementation later
-    private float timeToAttack = 0.01f;
+    // for prototype, attack area of apprentice is active for 0.05s
+    private float timeToAttack = 0.05f;
     private float timer = 0f;
 
-    // Start is called before the first frame update
     void Start() {
 
+        // get attack area GameObject, which is a child object of the apprentice
         attackArea = transform.GetChild(0).gameObject;
 
-        // get the unlocked apprentice skills of the specific apprentice
+        // retrieve apprentice skills
         apprenticeSkills = GetComponentInParent<ApprenticeController>().GetApprenticeSkills();
     }
 
-    // Update is called once per frame
-    // handle attack timing - timer counts to duration of timeToAttack then resets attackArea
-    void Update() {
+    // handles attack timing
+    // attack area deactivated after timeToAttack seconds
+    void FixedUpdate() {
 
         if (attacking) {
             timer += Time.deltaTime;
@@ -38,10 +37,9 @@ public class ApprenticeAttack : MonoBehaviour {
         }
     }
 
+    // an attack is initiated if the basic skill is unlocked
     public void Attack() {
 
-        // for prototype, apprentice can only be trained with one skill - Basic attack
-        // until this skill is trained, the apprentice will not attack
         if (apprenticeSkills != null && apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Basic))
         {
             attacking = true;

@@ -14,18 +14,19 @@ public class ApprenticeController : MonoBehaviour {
 
     private void Awake() {
 
+        // apprentice skills initialised, and attack component retrieved
         apprenticeSkills = new ApprenticeSkills();
         apprenticeAttack = GetComponent<ApprenticeAttack>();
         gameObject.tag = "Apprentice";
     }
 
-    // Start is called before the first frame update
     void Start() {
 
     }
 
-    // Update is called once per frame
     void Update() {
+
+        // if basic skill unlocked, find and move towards nearest enemy
         if (apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Basic))
         {
             FindNearestEnemy();
@@ -35,7 +36,7 @@ public class ApprenticeController : MonoBehaviour {
             }
         }
     }
-      
+    
     public ApprenticeSkills GetApprenticeSkills() {
 
         return apprenticeSkills;
@@ -46,6 +47,7 @@ public class ApprenticeController : MonoBehaviour {
         return apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Basic);
     }
 
+    // CanUseMidSkill and CanUseUltimateSkill are placeholders for later implementation
     public bool CanUseMidSkill() {
 
         return apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Mid);
@@ -58,6 +60,7 @@ public class ApprenticeController : MonoBehaviour {
 
     private void FindNearestEnemy() {
 
+        // enemies can have either tag "Enemy" or "Wizard", both are searched for
         string[] tags = { "Enemy", "Wizard" };
         nearestDist = float.MaxValue;
 
@@ -73,9 +76,11 @@ public class ApprenticeController : MonoBehaviour {
                     {
                         if (nearestEnemy != null)
                         {
+                            // reset colour of previous nearest enemy back to red
                             nearestEnemy.GetComponent<Renderer>().material.color = Color.red;
                         }
 
+                        // set new nearest enemy, change its colour to magenta
                         nearestDist = dist;
                         nearestEnemy = enemy;
                         nearestEnemy.GetComponent<Renderer>().material.color = Color.magenta;
@@ -88,12 +93,15 @@ public class ApprenticeController : MonoBehaviour {
     private void MoveTowardsEnemy() {
 
         Vector3 targetPos = nearestEnemy.transform.position;
-        targetPos.y = transform.position.y; // ensure y value stays consistent
+        // keep y position consistent
+        targetPos.y = transform.position.y;
 
+        // only move towards the enemy if not within attack range
         if (nearestDist > 1.0f) {
             transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
         }
         else {
+            // launch attack when in range
             apprenticeAttack.Attack();
         }
     }

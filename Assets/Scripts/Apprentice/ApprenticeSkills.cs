@@ -15,10 +15,13 @@ public class ApprenticeSkills {
 
     public ApprenticeSkills() {
 
+        // initialise list of unlocked skills in constructor
         unlockedSkillTypeList = new List<SkillType>();
     }
 
     public void UnlockSkill(SkillType skillType) {
+
+        // only add the skill if not unlocked already
         if (!IsSkillUnlocked(skillType)) {
             unlockedSkillTypeList.Add(skillType);
         }
@@ -29,6 +32,7 @@ public class ApprenticeSkills {
         return unlockedSkillTypeList.Contains(skillType);
     }
 
+    // returns a string of unclocked skills, currently used for debugging
     public string GetUnlockedSkills() {
         if (unlockedSkillTypeList.Count == 0) {
             return "No skills unlocked";

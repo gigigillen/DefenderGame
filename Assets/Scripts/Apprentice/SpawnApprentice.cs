@@ -7,8 +7,8 @@ using TMPro;
 
 public class SpawnApprentice : MonoBehaviour { 
 
-    public GameObject apprentice; // The prefab to instantiate
-    public GameObject attackArea;
+    public GameObject apprentice; // the apprentice prefab to instantiate
+    public GameObject attackArea; // the attack area prefab
     private Camera cam;
 
     private int apprenticeCount;
@@ -20,7 +20,6 @@ public class SpawnApprentice : MonoBehaviour {
 
     [SerializeField] private UISkillTree uiSkillTree;
 
-    // Start is called before the first frame update
     void Start() {
 
         cam = Camera.main;
@@ -30,20 +29,23 @@ public class SpawnApprentice : MonoBehaviour {
         gameController = FindAnyObjectByType<GameController>();
     }
 
-    // Update is called once per frame
     void FixedUpdate() {
 
+        // update apprentice count in UI
         SetApprenticeText();
     }
 
+    // decrease apprentice count and hide skill tree on death
     public void killApprentice() {
+
         apprenticeCount--;
         uiSkillTree.SetVisible(false);
 
     }
 
     void OnSpawn() { 
-    
+
+        // spawn an apprentice only if within maxApprentices 
         if (apprenticeCount < maxApprentices && Mouse.current.leftButton.wasPressedThisFrame) { 
             Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hit;
@@ -53,15 +55,17 @@ public class SpawnApprentice : MonoBehaviour {
                 {
                     Vector3 spawnPosition = new Vector3(hit.point.x, 0.5f, hit.point.z);
 
+                    // check first if the attempted spawn position is within bounds of the floor
                     if (spawnPosition.x >= -9f && spawnPosition.x <= 9f && spawnPosition.z >= -9f && spawnPosition.z <= 9f && spawnPosition.y == 0.5)
                     {
-                        // Instantiate the apprentice prefab at the hit point
+                        // instantiate the apprentice prefab
                         GameObject newApprentice = Instantiate(apprentice, spawnPosition, Quaternion.identity);
                         newApprentice.transform.SetParent(apprentices);
 
                         newApprentice.name = "Apprentice " + (apprenticeCount + 1);
                         apprenticeCount++;
 
+                        // instantiate the apprentice's attack area and set it as its child
                         GameObject newAttackArea = Instantiate(attackArea, newApprentice.transform.position, Quaternion.identity);
                         newAttackArea.transform.SetParent(newApprentice.transform);
 
@@ -74,6 +78,8 @@ public class SpawnApprentice : MonoBehaviour {
         }
     }
 
+
+    // update apprentice count in UI
     private void SetApprenticeText() {
 
         apprenticeText.text = "Apprentices: " + apprenticeCount.ToString() + "/" + maxApprentices;

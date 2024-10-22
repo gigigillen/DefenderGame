@@ -19,7 +19,6 @@ public class Health : MonoBehaviour {
         {
             health = 10;
         }
-        Debug.Log(health);
     }
 
     // Update is called once per frame
