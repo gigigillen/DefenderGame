@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 
 public class GameController : MonoBehaviour {
-
+    // makes GameController a siingeton by calling itself
     public static GameController instance;
 
     [SerializeField] private UISkillTree uiSkillTree;
@@ -20,14 +20,15 @@ public class GameController : MonoBehaviour {
 
     [SerializeField] private GameObject gameOverUI;
 
+    // starts the camera and sets the skilltree to invisible at beginning
     private void Start() {
-
         cam = Camera.main;
         uiSkillTree.SetVisible(false);
     }
 
+    // what the game checks every frame
     private void Update() {
-
+        // checks if the left button was clicked
         if (Mouse.current.leftButton.wasPressedThisFrame) {
             if (EventSystem.current.IsPointerOverGameObject()) {
                 return;
@@ -36,7 +37,9 @@ public class GameController : MonoBehaviour {
             Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hit;
 
+            //checks if the mouse clicked andywhere on the game screen
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~attackAreaMask)) {
+                //checks if an apprentice was clicked and uses method SelectedApprentice
                 ApprenticeController clickedApprentice = hit.collider.GetComponent<ApprenticeController>();
                 if (clickedApprentice != null) {
                     SelectApprentice(clickedApprentice);
@@ -51,16 +54,19 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    // pauses all the game physics and puts a game over scene
     public void GameOver()
     {
         gameOverUI.SetActive(true);
         Time.timeScale = 0f;
+        // makes sure there is no skill tree on screen for gameover screen
         if (selectedApprentice != null)
         {
             DeselectApprentice();
         }
     }
 
+    // rebuilds the game index again and resets the physics of the game
     public void PlayAgain()
     {
         gameOverUI.SetActive(false);
@@ -68,12 +74,14 @@ public class GameController : MonoBehaviour {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    // selects an apprentice and puts up its skilltree ui
     public void SelectApprentice(ApprenticeController apprentice) {
-
+        //checks if a skilltree ui is already open and closes it if so
         if (selectedApprentice != null) {
             DeselectApprentice();
         }
 
+        // finds which apprentice and fetches their skilltree from their method
         selectedApprentice = apprentice;
         uiSkillTree.SetApprenticeSkills(apprentice.GetApprenticeSkills());
         uiSkillTree.SetVisible(true);
@@ -83,8 +91,8 @@ public class GameController : MonoBehaviour {
         Debug.Log("Skills: " + apprentice.GetApprenticeSkills().GetUnlockedSkills());
     }
 
+    //deselects apprentice skilltree
     public void DeselectApprentice() {
-
         selectedApprentice.GetComponent<Renderer>().material.color = Color.green;
         selectedApprentice = null;
         uiSkillTree.SetVisible(false);
