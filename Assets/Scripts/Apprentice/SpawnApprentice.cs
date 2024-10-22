@@ -27,7 +27,7 @@ public class SpawnApprentice : MonoBehaviour {
         apprenticeCount = 0;
         apprenticeText.text = "";
         SetApprenticeText();
-        gameController = FindObjectOfType<GameController>();
+        gameController = FindAnyObjectByType<GameController>();
     }
 
     // Update is called once per frame

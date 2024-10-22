@@ -30,7 +30,7 @@ public class HealthBarController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameController = FindObjectOfType<GameController>();
+        gameController = FindAnyObjectByType<GameController>();
         currentHealth = maxHealth * 0.65f; // Set to 65% of max health
         UpdateHealthBar();
 
