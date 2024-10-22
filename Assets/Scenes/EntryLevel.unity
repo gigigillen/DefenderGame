@@ -422,7 +422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3240977648046654704, guid: e1d8d767738b259439fe85c31002bf46, type: 3}
-  spawnInterval: 5
+  spawnInterval: 10
   enemies: {fileID: 217721317}
 --- !u!1 &287873761
 GameObject:
@@ -642,7 +642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3240977648046654704, guid: e1d8d767738b259439fe85c31002bf46, type: 3}
-  spawnInterval: 10
+  spawnInterval: 20
   enemies: {fileID: 498701923}
 --- !u!1001 &529261649
 PrefabInstance:
@@ -1261,7 +1261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3240977648046654704, guid: e1d8d767738b259439fe85c31002bf46, type: 3}
-  spawnInterval: 10
+  spawnInterval: 20
   enemies: {fileID: 758056824}
 --- !u!4 &758056824
 Transform:
