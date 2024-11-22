@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ApprenticeController : MonoBehaviour {
 
+    public ApprenticeType apprenticeType;
+
     private ApprenticeSkills apprenticeSkills;
     private ApprenticeAttack apprenticeAttack;
 
@@ -27,11 +29,9 @@ public class ApprenticeController : MonoBehaviour {
     void Update() {
 
         // if basic skill unlocked, find and move towards nearest enemy
-        if (apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Basic))
-        {
+        if (apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Basic)) {
             FindNearestEnemy();
-            if (nearestEnemy != null)
-            {
+            if (nearestEnemy != null) {
                 MoveTowardsEnemy();
             }
         }

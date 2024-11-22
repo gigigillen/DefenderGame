@@ -7,15 +7,16 @@ TagManager:
   - Apprentice
   - Enemy
   - Wizard
+  - Floor
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Towers
   - Water
   - UI
   - AttackArea
-  - 
+  - Floor
   - 
   - 
   - 
