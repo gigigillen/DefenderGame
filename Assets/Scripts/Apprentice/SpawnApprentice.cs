@@ -85,19 +85,15 @@ public class SpawnApprentice : MonoBehaviour {
 
             canPlace = IsWithinBounds(position) && !IsOverlappingObjects(position) ;
 
-            if (canPlace && hit.collider.CompareTag("Floor")) {
-                currentPlacingApprentice.GetComponent<Renderer>().material.color = Color.green;
-            }
-            else {
-                currentPlacingApprentice.GetComponent<Renderer>().material.color = Color.red;
+            Renderer[] renderers = currentPlacingApprentice.GetComponentsInChildren<Renderer>();
+            Color newColor = canPlace && hit.collider.CompareTag("Floor") ?
+                Color.green :
+                Color.red;
+
+            foreach (Renderer renderer in renderers) {
+                renderer.material.color = newColor;
             }
         }
-    }
-
-    private bool IsOverlappingObjects(Vector3 position) {
-        float checkRadius = 0.5f;
-        Collider[] hitColliders = Physics.OverlapSphere(position, checkRadius, placementBlockingLayers);
-        return hitColliders.Length > 0;
     }
 
 
@@ -222,5 +218,12 @@ public class SpawnApprentice : MonoBehaviour {
     private bool IsWithinBounds(Vector3 position) {
         return position.x >= -9f && position.x <= 9f &&
                position.z >= -9f && position.z <= 9f;
+    }
+
+
+    private bool IsOverlappingObjects(Vector3 position) {
+        float checkRadius = 0.5f;
+        Collider[] hitColliders = Physics.OverlapSphere(position, checkRadius, placementBlockingLayers);
+        return hitColliders.Length > 0;
     }
 }
