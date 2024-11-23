@@ -1,4 +1,7 @@
 public enum ApprenticeType {
     Basic,
-    Earth
+    Earth,
+    Wind,
+    Fire,
+    Water
 }

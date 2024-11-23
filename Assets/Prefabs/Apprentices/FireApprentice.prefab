@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4113119986652958548}
   - component: {fileID: 3302719156799773562}
   m_Layer: 3
-  m_Name: EarthApprentice
+  m_Name: FireApprentice
   m_TagString: Apprentice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -247,7 +247,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 831b946ecae90254f85f8befcadf0235, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: b59f31195b14b4aeca129e53523e751f, type: 2}
+      objectReference: {fileID: 2100000, guid: ed29d3972f425451b86f3d8ae8330bea, type: 2}
     - target: {fileID: 919132149155446097, guid: 831b946ecae90254f85f8befcadf0235, type: 3}
       propertyPath: m_Name
       value: TowerHead
@@ -329,7 +329,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 774134bbf3128064d9e7f00743855a18, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: b59f31195b14b4aeca129e53523e751f, type: 2}
+      objectReference: {fileID: 2100000, guid: ed29d3972f425451b86f3d8ae8330bea, type: 2}
     - target: {fileID: 919132149155446097, guid: 774134bbf3128064d9e7f00743855a18, type: 3}
       propertyPath: m_Name
       value: TowerStand

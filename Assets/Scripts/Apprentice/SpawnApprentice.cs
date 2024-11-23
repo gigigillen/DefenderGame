@@ -29,6 +29,8 @@ public class SpawnApprentice : MonoBehaviour {
     private bool canPlace = false;
     private GameController gameController;
 
+    private GameObject apprenticePrefab;
+
 
     private void Awake() {
 
@@ -116,6 +118,8 @@ public class SpawnApprentice : MonoBehaviour {
             currentPlacingApprentice = null;
         }
 
+        this.apprenticePrefab = apprenticePrefab;
+
         ApprenticeController apprenticeController = apprenticePrefab.GetComponent<ApprenticeController>();
         if (apprenticeController != null) {
             type = apprenticeController.apprenticeType;
@@ -170,7 +174,7 @@ public class SpawnApprentice : MonoBehaviour {
 
     private void PlaceApprentice(Vector3 position) {
 
-        GameObject finalApprentice = Instantiate(GetApprenticePrefab(type), position, Quaternion.identity);
+        GameObject finalApprentice = Instantiate(apprenticePrefab, position, Quaternion.identity);
         Debug.Log("placed final apprentice!");
         finalApprentice.transform.SetParent(apprentices);
         apprenticeCount++;
