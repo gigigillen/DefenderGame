@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -3249353563204627468}
   - component: {fileID: 8826661420058647587}
   - component: {fileID: 4113119986652958548}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: EarthApprentice
   m_TagString: Apprentice
   m_Icon: {fileID: 0}
@@ -210,6 +210,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TowerHead
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 831b946ecae90254f85f8befcadf0235, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -287,6 +291,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 774134bbf3128064d9e7f00743855a18, type: 3}
       propertyPath: m_Name
       value: TowerStand
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 774134bbf3128064d9e7f00743855a18, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

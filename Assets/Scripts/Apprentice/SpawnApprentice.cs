@@ -7,36 +7,43 @@ using TMPro;
 
 public class SpawnApprentice : MonoBehaviour {
 
-    public InputActionAsset inputActions;
+    [SerializeField] private InputActionAsset inputActions;
     private InputActionMap spawningActionMap;
     private InputActionMap selectingActionMap;
+    private InputAction spawnAction;
 
-    public GameObject basicApprenticePrefab; // the apprentice prefab to instantiate
-    public GameObject earthApprenticePrefab;
+    [SerializeField] private GameObject basicApprenticePrefab; // the apprentice prefab to instantiate
+    [SerializeField] private GameObject earthApprenticePrefab;
+    [SerializeField] private LayerMask placementBlockingLayers;
+    [SerializeField] private GameObject attackArea; // the attack area prefab
+    [SerializeField] private Transform apprentices;
+    [SerializeField] private UISkillTree uiSkillTree;
+    [SerializeField] private TextMeshProUGUI apprenticeText;
+
     public ApprenticeType type = ApprenticeType.Basic; // default type basic
 
-    public GameObject attackArea; // the attack area prefab
-
-    private GameObject CurrentPlacingApprentice;
-
+    private GameObject currentPlacingApprentice;
     private Camera cam;
-
     private int apprenticeCount;
     private const int maxApprentices = 5; // max apprentices is immutable
-    public TextMeshProUGUI apprenticeText;
-
-    [SerializeField] private Transform apprentices;
+    private bool canPlace = false;
     private GameController gameController;
 
-    [SerializeField] private UISkillTree uiSkillTree;
-
-    private bool canPlace = false;
 
     private void Awake() {
 
         spawningActionMap = inputActions.FindActionMap("Spawning");
         selectingActionMap = inputActions.FindActionMap("Selecting");
+        spawnAction = spawningActionMap.FindAction("PlaceApprentice");
+
+        spawnAction.performed += OnSpawnPerformed;
     }
+
+
+    private void OnDestroy() {
+        spawnAction.performed -= OnSpawnPerformed;
+    }
+
 
     void Start() {
 
@@ -50,16 +57,16 @@ public class SpawnApprentice : MonoBehaviour {
         spawningActionMap.Disable();
     }
 
+
     private void FixedUpdate() {
 
         // update apprentice count in UI
         SetApprenticeText();
 
-        if (CurrentPlacingApprentice != null) {
+        if (currentPlacingApprentice != null) {
             HandlePlacement();
         }
     }
-
 
 
     void HandlePlacement() {
@@ -71,24 +78,36 @@ public class SpawnApprentice : MonoBehaviour {
 
         if (Physics.Raycast(ray, out hit, 100f, layerMask)) {
             Vector3 position = hit.point;
-
             position.y = 0.5f;
-            CurrentPlacingApprentice.transform.position = position;
-            CurrentPlacingApprentice.transform.rotation = Quaternion.identity;
 
-            canPlace = IsWithinBounds(position);
+            currentPlacingApprentice.transform.position = position;
+            currentPlacingApprentice.transform.rotation = Quaternion.identity;
 
-            if (Mouse.current.leftButton.wasPressedThisFrame && canPlace && hit.collider.CompareTag("Floor")) {
+            canPlace = IsWithinBounds(position) && !IsOverlappingObjects(position) ;
 
-                PlaceApprentice(position);
+            if (canPlace && hit.collider.CompareTag("Floor")) {
+                currentPlacingApprentice.GetComponent<Renderer>().material.color = Color.green;
+            }
+            else {
+                currentPlacingApprentice.GetComponent<Renderer>().material.color = Color.red;
             }
         }
     }
 
-    private bool IsWithinBounds(Vector3 position) {
-        return position.x >= -9f && position.x <= 9f &&
-               position.z >= -9f && position.z <= 9f;
+    private bool IsOverlappingObjects(Vector3 position) {
+        float checkRadius = 0.5f;
+        Collider[] hitColliders = Physics.OverlapSphere(position, checkRadius, placementBlockingLayers);
+        return hitColliders.Length > 0;
     }
+
+
+    private void OnSpawnPerformed(InputAction.CallbackContext context) {
+
+        if (currentPlacingApprentice != null && canPlace) {
+            PlaceApprentice(currentPlacingApprentice.transform.position);
+        }
+    }
+
 
     public void SetApprenticeTypeToPlace(GameObject apprenticePrefab) {
         if (apprenticeCount >= maxApprentices) {
@@ -96,14 +115,14 @@ public class SpawnApprentice : MonoBehaviour {
             return;
         }
 
+        if (currentPlacingApprentice != null) {
+            Destroy(currentPlacingApprentice);
+            currentPlacingApprentice = null;
+        }
+
         ApprenticeController apprenticeController = apprenticePrefab.GetComponent<ApprenticeController>();
         if (apprenticeController != null) {
             type = apprenticeController.apprenticeType;
-        }
-
-        if (CurrentPlacingApprentice != null) {
-            Destroy(CurrentPlacingApprentice);
-            CurrentPlacingApprentice = null;
         }
 
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -116,59 +135,32 @@ public class SpawnApprentice : MonoBehaviour {
         }
 
         if (apprenticePrefab != null) {
-            CurrentPlacingApprentice = Instantiate(apprenticePrefab, spawnPos, Quaternion.identity);
+            currentPlacingApprentice = Instantiate(apprenticePrefab, spawnPos, Quaternion.identity);
             Debug.Log("placed preview apprentice!");
-            SetupPreviewApprentice(CurrentPlacingApprentice);
+            SetupPreviewApprentice(currentPlacingApprentice);
 
             selectingActionMap.Disable();
             spawningActionMap.Enable();
+
+            Debug.Log("spawning enabled, selecting disabled");
         }
 
     }
 
-    void OnSpawn() {
-
-
-        //// spawn an apprentice only if within maxApprentices 
-        //if (apprenticeCount < maxApprentices && Mouse.current.leftButton.wasPressedThisFrame) { 
-        //    Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
-        //    RaycastHit hit;
-
-        //    if (Physics.Raycast(ray, out hit)) {
-        //        if (gameController.selectedApprentice == null)
-        //        {
-        //            Vector3 spawnPosition = new Vector3(hit.point.x, 0.5f, hit.point.z);
-
-        //            // check first if the attempted spawn position is within bounds of the floor
-        //            if (spawnPosition.x >= -9f && spawnPosition.x <= 9f && spawnPosition.z >= -9f && spawnPosition.z <= 9f && spawnPosition.y == 0.5)
-        //            {
-
-        //                // instantiate the apprentice prefab
-        //                GameObject newApprentice = Instantiate(CurrentPlacingTower, spawnPosition, Quaternion.identity);
-        //                newApprentice.transform.SetParent(apprentices);
-
-        //                newApprentice.name = "Apprentice " + (apprenticeCount + 1);
-        //                apprenticeCount++;
-
-        //                // instantiate the apprentice's attack area and set it as its child
-        //                GameObject newAttackArea = Instantiate(attackArea, newApprentice.transform.position, Quaternion.identity);
-        //                newAttackArea.transform.SetParent(newApprentice.transform);
-
-        //                ApprenticeController apprenticeController = newApprentice.GetComponent<ApprenticeController>();
-
-        //                Debug.Log("New apprentice spawned with skills system");
-        //            }
-        //        }
-        //    }
-        //}
-    }
 
     private void SetupPreviewApprentice(GameObject apprentice) {
+
+        apprentice.layer = LayerMask.NameToLayer("ApprenticePreview");
         Rigidbody rb = apprentice.GetComponent<Rigidbody>();
         if (rb!=null) {
             rb.isKinematic = true;
             rb.useGravity = false;
             rb.constraints = RigidbodyConstraints.FreezeAll;
+        }
+
+        Collider col = apprentice.GetComponent<Collider>();
+        if (col!=null) {
+            col.isTrigger = true;
         }
 
         MonoBehaviour[] scripts = apprentice.GetComponents<MonoBehaviour>();
@@ -178,6 +170,7 @@ public class SpawnApprentice : MonoBehaviour {
             }
         }
     }
+
 
     private void PlaceApprentice(Vector3 position) {
 
@@ -190,25 +183,14 @@ public class SpawnApprentice : MonoBehaviour {
         GameObject newAttackArea = Instantiate(attackArea, finalApprentice.transform.position, Quaternion.identity);
         newAttackArea.transform.SetParent(finalApprentice.transform);
 
-        Destroy(CurrentPlacingApprentice);
-        CurrentPlacingApprentice = null;
+        Destroy(currentPlacingApprentice);
+        currentPlacingApprentice = null;
 
         spawningActionMap.Disable();
         selectingActionMap.Enable();
 
         Debug.Log($"{type} apprentice placed at {position}.");
     }
-
-    //public void SetApprenticeToPlace(GameObject apprenticePrefab) {
-
-    //    ApprenticeController apprenticeController = apprenticePrefab.GetComponent<ApprenticeController>();
-
-    //    if (apprenticeController != null) {
-    //        type = apprenticeController.apprenticeType;
-    //    }
-
-    //    CurrentPlacingApprentice = Instantiate(apprenticePrefab, Vector3.zero, Quaternion.identity);
-    //}
 
 
     private GameObject GetApprenticePrefab(ApprenticeType apprenticeType) {
@@ -234,5 +216,11 @@ public class SpawnApprentice : MonoBehaviour {
     private void SetApprenticeText() {
 
         apprenticeText.text = $"Apprentices: {apprenticeCount}/{maxApprentices}";
+    }
+
+
+    private bool IsWithinBounds(Vector3 position) {
+        return position.x >= -9f && position.x <= 9f &&
+               position.z >= -9f && position.z <= 9f;
     }
 }

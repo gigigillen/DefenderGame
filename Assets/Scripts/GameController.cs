@@ -20,38 +20,53 @@ public class GameController : MonoBehaviour {
 
     [SerializeField] private GameObject gameOverUI;
 
+    [SerializeField] private InputActionAsset inputActions;
+    private InputActionMap selectingActionMap;
+    private InputAction selectAction;
+
+    private void Awake() {
+        selectingActionMap = inputActions.FindActionMap("Selecting");
+        selectAction = selectingActionMap.FindAction("SelectApprentice");
+
+        selectAction.performed += OnSelect;
+    }
+
+    private void OnDestroy() {
+        selectAction.performed -= OnSelect;
+    }
+
+
     // starts the camera and sets the skilltree to invisible at beginning
     private void Start() {
         cam = Camera.main;
         uiSkillTree.SetVisible(false);
+
+        selectingActionMap.Enable();
+    }
+
+    private void OnSelect(InputAction.CallbackContext context) {
+
+        Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
+        RaycastHit hit;
+
+        int apprenticeLayer = LayerMask.GetMask("Apprentices");
+
+        //checks if the mouse clicked andywhere on the game screen
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, apprenticeLayer)) {
+            //checks if an apprentice was clicked and uses method SelectedApprentice
+            ApprenticeController clickedApprentice = hit.collider.GetComponent<ApprenticeController>();
+            if (clickedApprentice != null) {
+                SelectApprentice(clickedApprentice);
+            }
+            else if (selectedApprentice != null) {
+                DeselectApprentice();
+            }
+        }
     }
 
     // what the game checks every frame
     private void Update() {
-        // checks if the left button was clicked
-        if (Mouse.current.leftButton.wasPressedThisFrame) {
-            if (EventSystem.current.IsPointerOverGameObject()) {
-                return;
-            }
 
-            Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
-            RaycastHit hit;
-
-            //checks if the mouse clicked andywhere on the game screen
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~attackAreaMask)) {
-                //checks if an apprentice was clicked and uses method SelectedApprentice
-                ApprenticeController clickedApprentice = hit.collider.GetComponent<ApprenticeController>();
-                if (clickedApprentice != null) {
-                    SelectApprentice(clickedApprentice);
-                }
-                else {
-                    if (selectedApprentice != null)
-                    {
-                        DeselectApprentice();
-                    }
-                }
-            }
-        }
     }
 
     // pauses all the game physics and puts a game over scene
