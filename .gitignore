@@ -69,6 +69,8 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-# Personal Scenes
-/[Aa]ssets/[Ss]cenes/MyScene.unity
-/[Aa]ssets/[Ss]cenes/MyScene.unity.meta
+# Personal scene
+Assets/Scenes/annieScene.unity
+Assets/Scenes/annieScene.unity.meta
+
+

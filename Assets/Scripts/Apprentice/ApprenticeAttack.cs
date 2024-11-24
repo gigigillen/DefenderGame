@@ -16,7 +16,10 @@ public class ApprenticeAttack : MonoBehaviour {
     void Start() {
 
         // get attack area GameObject, which is a child object of the apprentice
-        attackArea = transform.GetChild(0).gameObject;
+        if (transform.childCount>0) {
+
+            attackArea = transform.GetChild(0).gameObject;
+        }
 
         // retrieve apprentice skills
         apprenticeSkills = GetComponentInParent<ApprenticeController>().GetApprenticeSkills();
