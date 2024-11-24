@@ -46,7 +46,7 @@ public class SpawnApprentice : MonoBehaviour {
     void OnSpawn() { 
 
         // spawn an apprentice only if within maxApprentices 
-        if (apprenticeCount < maxApprentices && Mouse.current.leftButton.wasPressedThisFrame) { 
+        if (apprenticeCount < maxApprentices && Mouse.current.leftButton.wasPressedThisFrame && !gameController.isMenuOpen) { 
             Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hit;
 
