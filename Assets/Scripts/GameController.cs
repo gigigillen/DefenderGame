@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour {
 
     [SerializeField] private UISkillTree uiSkillTree;
 
+    [SerializeField] private GameObject uiToolBar;
+
     public ApprenticeController selectedApprentice;
 
     private Camera cam;
@@ -126,6 +128,7 @@ public class GameController : MonoBehaviour {
             DeselectApprentice();
         }
         menuUI.SetActive(true);
+        uiToolBar.SetActive(false);
         openMenuButton.SetActive(false);
         Time.timeScale = 0f;
         isMenuOpen = true;
@@ -137,6 +140,7 @@ public class GameController : MonoBehaviour {
             DeselectApprentice();
         }
         menuUI.SetActive(false);
+        uiToolBar.SetActive(true);
         openMenuButton.SetActive(true);
         Time.timeScale = 1f;
         isMenuOpen = false;
