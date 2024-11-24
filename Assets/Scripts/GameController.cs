@@ -24,6 +24,12 @@ public class GameController : MonoBehaviour {
     private InputActionMap selectingActionMap;
     private InputAction selectAction;
 
+    [SerializeField] private GameObject menuUI;
+
+    [SerializeField] private GameObject openMenuButton;
+
+    public bool isMenuOpen = false;
+
     private void Awake() {
         selectingActionMap = inputActions.FindActionMap("Selecting");
         selectAction = selectingActionMap.FindAction("SelectApprentice");
@@ -92,7 +98,7 @@ public class GameController : MonoBehaviour {
     // selects an apprentice and puts up its skilltree ui
     public void SelectApprentice(ApprenticeController apprentice) {
         //checks if a skilltree ui is already open and closes it if so
-        if (selectedApprentice != null) {
+        if (selectedApprentice != null && (isMenuOpen = true)) {
             DeselectApprentice();
         }
 
@@ -111,5 +117,28 @@ public class GameController : MonoBehaviour {
         selectedApprentice.GetComponent<Renderer>().material.color = Color.green;
         selectedApprentice = null;
         uiSkillTree.SetVisible(false);
+    }
+
+    public void MenuOpen()
+    {
+        if (selectedApprentice != null)
+        {
+            DeselectApprentice();
+        }
+        menuUI.SetActive(true);
+        openMenuButton.SetActive(false);
+        Time.timeScale = 0f;
+        isMenuOpen = true;
+    }
+
+    public void MenuClose() {
+        if (selectedApprentice != null)
+        {
+            DeselectApprentice();
+        }
+        menuUI.SetActive(false);
+        openMenuButton.SetActive(true);
+        Time.timeScale = 1f;
+        isMenuOpen = false;
     }
 }
