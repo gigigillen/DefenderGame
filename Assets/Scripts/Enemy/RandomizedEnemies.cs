@@ -6,7 +6,7 @@ public class RandomizedEnemies : MonoBehaviour
 {
     public GameObject[] enemyPrefabs;  // Array to hold the different enemy prefabs
 
-    public float spawnInterval = 5f;  // Default spawn interval
+    public float spawnInterval = 7f;  // Default spawn interval
 
     [SerializeField] private Transform enemies;  // Parent object for spawned enemies
     private int enemyCount;  // Track the number of enemies spawned
@@ -16,11 +16,11 @@ public class RandomizedEnemies : MonoBehaviour
         enemyCount = 0;
 
         // Start the enemy spawning coroutine
-        StartCoroutine(SpawnEnemies());
+        StartCoroutine(SpawnEnemies(spawnInterval));
     }
 
     // This coroutine spawns enemies, randomly selecting from the available enemy prefabs
-    private IEnumerator SpawnEnemies()
+    private IEnumerator SpawnEnemies(float spawnInt)
     {
         while (true)
         {
@@ -36,7 +36,7 @@ public class RandomizedEnemies : MonoBehaviour
             enemyCount++;  // Increment the enemy count
 
             // Wait for the specified interval before spawning the next enemy
-            yield return new WaitForSeconds(spawnInterval);
+            yield return new WaitForSeconds(spawnInt);
         }
     }
 }
