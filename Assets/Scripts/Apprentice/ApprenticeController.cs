@@ -5,38 +5,86 @@ using UnityEngine;
 public class ApprenticeController : MonoBehaviour {
 
     public ApprenticeType apprenticeType;
+    public float speed = 5f;
+    public float attackRange = 5f;
+    public float attackCooldown = 2f;
+    public float currentCooldown = 0f;
 
     private ApprenticeSkills apprenticeSkills;
     private ApprenticeAttack apprenticeAttack;
+    private ProjectilePool projectilePool;
+    private bool isStatic;
+
+    public LayerMask EnemiesLayer;
 
     private GameObject nearestEnemy;
     private float nearestDist;
+    public Transform ApprenticePivot;
 
-    public float speed;
 
     private void Awake() {
 
         // apprentice skills initialised, and attack component retrieved
         apprenticeSkills = new ApprenticeSkills();
-        apprenticeAttack = GetComponent<ApprenticeAttack>();
+        isStatic = apprenticeType != ApprenticeType.Basic;
+        if(!isStatic) {
+            apprenticeAttack = GetComponent<ApprenticeAttack>();
+        }
+        projectilePool = ProjectilePool.FindAnyObjectByType<ProjectilePool>();
         gameObject.tag = "Apprentice";
     }
 
-    void Start() {
-
-    }
 
     void Update() {
 
         // if basic skill unlocked, find and move towards nearest enemy
         if (apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Basic)) {
+            if (currentCooldown>0) {
+                currentCooldown -= Time.deltaTime;
+            }
+
             FindNearestEnemy();
             if (nearestEnemy != null) {
-                MoveTowardsEnemy();
+                HandleAttack();
             }
         }
     }
-    
+
+
+    private void HandleAttack() {
+        if(!isStatic) {
+            MeleeAttack();
+        }
+        else if (nearestDist<=attackRange && currentCooldown<=0) {
+            transform.LookAt(nearestEnemy.transform);
+            RangedAttack();
+            currentCooldown = attackCooldown;
+        }
+    }
+
+    private void MeleeAttack() {
+        Vector3 targetPos = nearestEnemy.transform.position;
+        // keep y position consistent
+        targetPos.y = transform.position.y;
+
+        // only move towards the enemy if not within attack range
+        if (nearestDist > 1.0f) {
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+        }
+        else {
+            // launch attack when in range
+            apprenticeAttack.Attack();
+        }
+}
+
+    private void RangedAttack() {
+
+        GameObject projectile = projectilePool.GetProjectile();
+        projectile.transform.position = transform.position + transform.forward;
+        projectile.GetComponent<Projectile>().Initialize(nearestEnemy.transform, projectilePool);
+    }
+
+
     public ApprenticeSkills GetApprenticeSkills() {
 
         return apprenticeSkills;
@@ -87,22 +135,6 @@ public class ApprenticeController : MonoBehaviour {
                     }
                 }
             }
-        }
-    }
-
-    private void MoveTowardsEnemy() {
-
-        Vector3 targetPos = nearestEnemy.transform.position;
-        // keep y position consistent
-        targetPos.y = transform.position.y;
-
-        // only move towards the enemy if not within attack range
-        if (nearestDist > 1.0f) {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
-        }
-        else {
-            // launch attack when in range
-            apprenticeAttack.Attack();
         }
     }
 }

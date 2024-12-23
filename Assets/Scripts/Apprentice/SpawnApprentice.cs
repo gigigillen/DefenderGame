@@ -11,6 +11,7 @@ public class SpawnApprentice : MonoBehaviour {
     private InputActionMap spawningActionMap;
     private InputActionMap selectingActionMap;
     private InputAction spawnAction;
+    private InputAction cancelPlacementAction;
 
     [SerializeField] private GameObject basicApprenticePrefab; // the apprentice prefab to instantiate
     [SerializeField] private GameObject earthApprenticePrefab;
@@ -37,8 +38,10 @@ public class SpawnApprentice : MonoBehaviour {
         spawningActionMap = inputActions.FindActionMap("Spawning");
         selectingActionMap = inputActions.FindActionMap("Selecting");
         spawnAction = spawningActionMap.FindAction("PlaceApprentice");
+        cancelPlacementAction = spawningActionMap.FindAction("CancelPlacement");
 
         spawnAction.performed += OnSpawnPerformed;
+        cancelPlacementAction.performed += OnCancelPlacement;
     }
 
 
@@ -103,6 +106,19 @@ public class SpawnApprentice : MonoBehaviour {
 
         if (currentPlacingApprentice != null && canPlace) {
             PlaceApprentice(currentPlacingApprentice.transform.position);
+        }
+    }
+
+    private void OnCancelPlacement(InputAction.CallbackContext context) {
+
+        if (currentPlacingApprentice != null) {
+
+            Debug.Log("cancelling placement");
+            spawningActionMap.Disable();
+            selectingActionMap.Enable();
+
+            Destroy(currentPlacingApprentice);
+            currentPlacingApprentice = null;
         }
     }
 
@@ -178,6 +194,7 @@ public class SpawnApprentice : MonoBehaviour {
         Debug.Log("placed final apprentice!");
         finalApprentice.transform.SetParent(apprentices);
         apprenticeCount++;
+        //GameController.ApprenticesInGame.Add(finalApprentice.GetComponent<ApprenticeController>());
         finalApprentice.name = $"{type} Apprentice {apprenticeCount}";
 
         GameObject newAttackArea = Instantiate(attackArea, finalApprentice.transform.position, Quaternion.identity);

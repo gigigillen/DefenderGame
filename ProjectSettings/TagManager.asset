@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Wizard
   - Floor
+  - Projectile
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - Stronghold
   - Enemies
   - ApprenticePreview
-  - 
+  - Projectiles
   - 
   - 
   - 

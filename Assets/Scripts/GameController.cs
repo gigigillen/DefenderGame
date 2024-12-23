@@ -7,30 +7,24 @@ using UnityEngine.SceneManagement;
 
 
 public class GameController : MonoBehaviour {
-    // makes GameController a siingeton by calling itself
+    // makes GameController a singleton by calling itself
     public static GameController instance;
 
-    [SerializeField] private UISkillTree uiSkillTree;
-
-    [SerializeField] private GameObject uiToolBar;
-
     public ApprenticeController selectedApprentice;
+    public bool isMenuOpen = false;
+
+    [SerializeField] private UISkillTree uiSkillTree;
+    [SerializeField] private GameObject uiToolBar;
+    [SerializeField] private LayerMask attackAreaMask;
+    [SerializeField] private GameObject gameOverUI;
+    [SerializeField] private InputActionAsset inputActions;
+    [SerializeField] private GameObject menuUI;
+    [SerializeField] private GameObject openMenuButton;
 
     private Camera cam;
-
-    [SerializeField] private LayerMask attackAreaMask;
-
-    [SerializeField] private GameObject gameOverUI;
-
-    [SerializeField] private InputActionAsset inputActions;
     private InputActionMap selectingActionMap;
     private InputAction selectAction;
 
-    [SerializeField] private GameObject menuUI;
-
-    [SerializeField] private GameObject openMenuButton;
-
-    public bool isMenuOpen = false;
 
     private void Awake() {
         selectingActionMap = inputActions.FindActionMap("Selecting");
@@ -52,6 +46,10 @@ public class GameController : MonoBehaviour {
         selectingActionMap.Enable();
     }
 
+    // what the game checks every frame
+    private void Update() {
+    }
+
     private void OnSelect(InputAction.CallbackContext context) {
 
         Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
@@ -70,11 +68,6 @@ public class GameController : MonoBehaviour {
                 DeselectApprentice();
             }
         }
-    }
-
-    // what the game checks every frame
-    private void Update() {
-
     }
 
     // pauses all the game physics and puts a game over scene

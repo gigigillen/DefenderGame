@@ -860,6 +860,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CancelPlacement",
+                    "type": "Button",
+                    "id": "11097506-6057-403b-b87a-b3b1acf00bd3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -871,6 +880,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "PlaceApprentice",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3b6cd175-63d6-414c-a0e6-bbb6cdb2856b",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CancelPlacement",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

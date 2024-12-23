@@ -12,7 +12,7 @@ public class Health : MonoBehaviour {
     void Start() {
         if (CompareTag("Enemy"))
         {
-            health = 1;
+            health = 5;
         }
         // if it is a special enemy (ie wizard) it gets assigned more health
         else if (CompareTag("Wizard"))
