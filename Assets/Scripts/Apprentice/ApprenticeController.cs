@@ -16,6 +16,7 @@ public class ApprenticeController : MonoBehaviour {
     private float nearestDist;
     public Transform ApprenticePivot;
 
+    private bool hasInitialShot = false;
 
     private void Awake() {
 
@@ -51,10 +52,13 @@ public class ApprenticeController : MonoBehaviour {
         if(!typeData.isStatic) {
             MeleeAttack();
         }
-        else if (nearestDist<=typeData.attackRange && currentCooldown<=0) {
+        else if (nearestDist<=typeData.attackRange) {
             transform.LookAt(nearestEnemy.transform);
-            RangedAttack();
-            currentCooldown = typeData.cooldown;
+            if(!hasInitialShot || currentCooldown<=0) {
+                RangedAttack();
+                hasInitialShot = true;
+                currentCooldown = typeData.cooldown;
+            }
         }
     }
 

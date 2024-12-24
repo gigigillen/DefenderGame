@@ -3,38 +3,57 @@ using System.Collections;
 
 public class EarthProjectile : ProjectileController {
 
+    [Header("Projectile Physics")]
+    [SerializeField] private float gravity = 9.81f;
+    [SerializeField] private float arcHeight = 3f;
+
+
+    [Header("Impact Effects")]
+    [SerializeField] private int damagePerPulse = 3;
+    [SerializeField] private int numberOfPulses = 3;
+    [SerializeField] private float pulseInterval = 1f;
+    [SerializeField] private float stunDuration = 3f;
+    [SerializeField] private float aoeRadius = 3f;
+    //[SerializeField] private GameObject crashEffectPrefab; // Optional VFX
+
+
     private Vector3 initialVelocity;
-    private float gravity = 9.81f;
-    private float arcHeight = 3f;
+    private bool hasCrashed;
+    private static readonly string[] ValidTargetTags = { "Enemy", "Wizard" };
 
-    private int damagePerPulse = 3;
-    private int numberOfPulses = 3;
-    private float pulseInterval = 1f;
-    private float stunDuration = 3f;
-    private float aoeRadius = 3f;
-    //public GameObject crashEffectPrefab; // Optional VFX
-
-    private bool hasCrashed = false;
 
     private void Awake() {
+
         projectileType = ApprenticeType.Earth;
-        speed = 2f;
+        speed = 4f;
     }
 
     public override void Initialize(Transform target, ProjectilePool pool, ApprenticeController owner) {
+
         base.Initialize(target, pool, owner);
+        hasCrashed = false;
         CalculateArcTrajectory();
     }
 
     private void CalculateArcTrajectory() {
+
         Vector3 targetPos = target != null ? target.position : lastTargetPosition;
-        float distance = Vector3.Distance(transform.position, targetPos);
-        float timeToTarget = distance / speed;
+
+        Vector3 horizontalDiff = new Vector3(
+            targetPos.x-transform.position.x,
+            0f,
+            targetPos.z-transform.position.z
+            );
+        float horizontalDistance = horizontalDiff.magnitude;
+        horizontalDistance = Mathf.Max(horizontalDistance, 1f);
+
+        float timeToTarget = horizontalDistance / speed*2f;
+        float adjustedArcHeight = Mathf.Min(arcHeight, horizontalDistance * 0.1f);
 
         initialVelocity = new Vector3(
-            (targetPos.x - transform.position.x) / timeToTarget,
-            (arcHeight + 0.5f * gravity * timeToTarget * timeToTarget) / timeToTarget,
-            (targetPos.z - transform.position.z) / timeToTarget
+            horizontalDiff.x / timeToTarget,
+            (adjustedArcHeight+0.5f * gravity * timeToTarget * timeToTarget) / timeToTarget,
+            horizontalDiff.z / timeToTarget
         );
     }
 

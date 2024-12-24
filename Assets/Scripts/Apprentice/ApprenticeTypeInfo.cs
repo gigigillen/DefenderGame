@@ -4,7 +4,7 @@ using UnityEngine;
 public class ApprenticeTypeData : ScriptableObject {
     public ApprenticeType type;
     public float cooldown = 2f;
-    public float attackRange = 5f;
+    public float attackRange = 10f;
     public float speed = 5f;
     public bool isStatic = true;
 }
