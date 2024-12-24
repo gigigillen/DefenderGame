@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: -7321681575783090527}
   - component: {fileID: -3249353563204627468}
   - component: {fileID: 8826661420058647587}
-  - component: {fileID: 4113119986652958548}
   - component: {fileID: 3302719156799773562}
   m_Layer: 3
   m_Name: FireApprentice
@@ -129,20 +128,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84bd1ca68e9764227a9059695449835b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  apprenticeType: 1
-  speed: 0
---- !u!114 &4113119986652958548
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 204899795603797225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bb4d3d8b01734038b6bb388a19d49ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  typeData: {fileID: 11400000, guid: c2292b9f6c9824da19a5da7d846d8b57, type: 2}
+  apprenticeType: 3
+  ApprenticePivot: {fileID: 0}
 --- !u!23 &3302719156799773562
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class ApprenticeController : MonoBehaviour {
 
+    [SerializeField] private ApprenticeTypeData typeData;
     public ApprenticeType apprenticeType;
-    public float speed = 5f;
-    public float attackRange = 5f;
-    public float attackCooldown = 2f;
-    public float currentCooldown = 0f;
+    private float currentCooldown;
 
     private ApprenticeSkills apprenticeSkills;
     private ApprenticeAttack apprenticeAttack;
     private ProjectilePool projectilePool;
-    private bool isStatic;
-
-    public LayerMask EnemiesLayer;
 
     private GameObject nearestEnemy;
     private float nearestDist;
@@ -26,11 +21,12 @@ public class ApprenticeController : MonoBehaviour {
 
         // apprentice skills initialised, and attack component retrieved
         apprenticeSkills = new ApprenticeSkills();
-        isStatic = apprenticeType != ApprenticeType.Basic;
-        if(!isStatic) {
+        typeData.isStatic = (typeData.type != ApprenticeType.Basic);
+        if (!typeData.isStatic) {
             apprenticeAttack = GetComponent<ApprenticeAttack>();
         }
         projectilePool = ProjectilePool.FindAnyObjectByType<ProjectilePool>();
+        currentCooldown = 0f;
         gameObject.tag = "Apprentice";
     }
 
@@ -52,13 +48,13 @@ public class ApprenticeController : MonoBehaviour {
 
 
     private void HandleAttack() {
-        if(!isStatic) {
+        if(!typeData.isStatic) {
             MeleeAttack();
         }
-        else if (nearestDist<=attackRange && currentCooldown<=0) {
+        else if (nearestDist<=typeData.attackRange && currentCooldown<=0) {
             transform.LookAt(nearestEnemy.transform);
             RangedAttack();
-            currentCooldown = attackCooldown;
+            currentCooldown = typeData.cooldown;
         }
     }
 
@@ -69,7 +65,7 @@ public class ApprenticeController : MonoBehaviour {
 
         // only move towards the enemy if not within attack range
         if (nearestDist > 1.0f) {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, typeData.speed * Time.deltaTime);
         }
         else {
             // launch attack when in range
@@ -79,9 +75,9 @@ public class ApprenticeController : MonoBehaviour {
 
     private void RangedAttack() {
 
-        GameObject projectile = projectilePool.GetProjectile();
+        GameObject projectile = projectilePool.GetProjectile(apprenticeType);
         projectile.transform.position = transform.position + transform.forward;
-        projectile.GetComponent<Projectile>().Initialize(nearestEnemy.transform, projectilePool);
+        projectile.GetComponent<ProjectileController>().Initialize(nearestEnemy.transform, projectilePool, this);
     }
 
 

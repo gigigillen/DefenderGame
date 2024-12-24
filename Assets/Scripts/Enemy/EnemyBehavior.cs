@@ -8,6 +8,9 @@ public class EnemyBehavior : MonoBehaviour
     public GameObject enemy;
     public GameObject stronghold;
 
+    private bool isStunned = false;
+    private float stunTimeLeft = 0f;
+
     // enemy speed
     public float speed;
 
@@ -17,9 +20,23 @@ public class EnemyBehavior : MonoBehaviour
 
     }
 
+    public void Stun(float duration) {
+        stunTimeLeft = Mathf.Max(stunTimeLeft, duration);
+        isStunned = false;
+    }
+
     // enemies uniform attack to the stronghold
     void FixedUpdate()
     {
+
+        if (isStunned) {
+            stunTimeLeft -= Time.deltaTime;
+            if (stunTimeLeft <= 0) {
+                isStunned = false;
+            }
+            return;
+        }
+
         // where the enemies should be charging towards
         Vector3 targetPosition = stronghold.transform.position;
         // ensures the enemies attack on a fixed y position
@@ -32,7 +49,6 @@ public class EnemyBehavior : MonoBehaviour
             HealthBarController.instance.TakeDamage(10f);
             Destroy(gameObject);
         }
-
 
     }
 }

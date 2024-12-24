@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 1303410662559633576}
   - component: {fileID: 332016611126939559}
   - component: {fileID: -940404169303760259}
-  - component: {fileID: 2441079526524459007}
+  - component: {fileID: 3176321798920247326}
   m_Layer: 0
-  m_Name: Projectile
+  m_Name: FireProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: bccc767d08a0f49a99b846e71ae9d33f, type: 2}
+  - {fileID: 2100000, guid: ed29d3972f425451b86f3d8ae8330bea, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -134,7 +134,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2441079526524459007
+--- !u!114 &3176321798920247326
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,8 +143,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 8871293011686952898}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4e7e90d1622d488680b1bbe93981d49, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b474168fdcc840f38ef36b4ecaeb437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  projectileType: 0
+  projectileType: 3

@@ -12,7 +12,7 @@ public class Health : MonoBehaviour {
     void Start() {
         if (CompareTag("Enemy"))
         {
-            health = 5;
+            health = 10;
         }
         // if it is a special enemy (ie wizard) it gets assigned more health
         else if (CompareTag("Wizard"))
@@ -42,6 +42,7 @@ public class Health : MonoBehaviour {
         // works out damage taken
         if (health > 0) {
             this.health -= amount;
+            Debug.Log("TAKEN DMG. DMG NOW" + health);
             // if 0 or less kills off game object
             if (health <= 0) {
                 StartCoroutine(HandleDeath());
