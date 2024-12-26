@@ -64,6 +64,7 @@ crashlytics-build.properties
 
 # Packed Addressables
 /[Aa]ssets/TerrainSampleAssets
+/[Aa]ssets/TerrainSampleAssets.meta
 
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
@@ -76,4 +77,6 @@ Assets/Scenes/annie.unity
 Assets/Scenes/annie.unity.meta
 
 Assets/BasicTowerAssets
+Assets/BasicTowerAssets.meta
 Assets/LowPolyRocks
+Assets/LowPolyRocks.meta

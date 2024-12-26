@@ -246,7 +246,6 @@ public class SpawnApprentice : MonoBehaviour {
     private bool IsOverlappingObjects(Vector3 position) {
         float checkRadius = 0.5f;
         Collider[] hitColliders = Physics.OverlapSphere(position, checkRadius, placementBlockingLayers);
-        Debug.Log("placement blocking layers" + placementBlockingLayers);
         return hitColliders.Length > 0;
     }
 }
