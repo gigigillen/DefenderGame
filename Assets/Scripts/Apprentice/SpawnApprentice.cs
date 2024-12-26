@@ -13,8 +13,9 @@ public class SpawnApprentice : MonoBehaviour {
     private InputAction spawnAction;
     private InputAction cancelPlacementAction;
 
-    [SerializeField] private GameObject basicApprenticePrefab; // the apprentice prefab to instantiate
-    [SerializeField] private GameObject earthApprenticePrefab;
+
+    [SerializeField] private ApprenticeTypeData basicTypeData;
+    [SerializeField] private ApprenticeTypeData earthTypeData;
     [SerializeField] private LayerMask placementBlockingLayers;
     [SerializeField] private GameObject attackArea; // the attack area prefab
     [SerializeField] private Transform apprentices;
@@ -213,8 +214,8 @@ public class SpawnApprentice : MonoBehaviour {
     private GameObject GetApprenticePrefab(ApprenticeType apprenticeType) {
 
         switch (apprenticeType) {
-            case ApprenticeType.Basic: return basicApprenticePrefab;
-            case ApprenticeType.Earth: return earthApprenticePrefab;
+            case ApprenticeType.Basic: return basicTypeData.apprenticePrefab;
+            case ApprenticeType.Earth: return earthTypeData.apprenticePrefab;
             default: return null;
         }
     }
@@ -245,6 +246,7 @@ public class SpawnApprentice : MonoBehaviour {
     private bool IsOverlappingObjects(Vector3 position) {
         float checkRadius = 0.5f;
         Collider[] hitColliders = Physics.OverlapSphere(position, checkRadius, placementBlockingLayers);
+        Debug.Log("placement blocking layers" + placementBlockingLayers);
         return hitColliders.Length > 0;
     }
 }
