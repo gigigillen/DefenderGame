@@ -21,6 +21,11 @@ public class ProjectileController : MonoBehaviour {
         Vector3 destination = target != null ? target.position : lastTargetPosition;
         transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
 
+        Vector3 direction = destination - transform.position;
+        if (direction != Vector3.zero) {
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
+
         if (Vector3.Distance(transform.position, destination) < 0.1f) {
             OnReachTarget();
         }

@@ -19,13 +19,12 @@ public class EarthProjectile : ProjectileController {
 
     private Vector3 initialVelocity;
     private bool hasCrashed;
-    private static readonly string[] ValidTargetTags = { "Enemy", "Wizard" };
 
 
     private void Awake() {
 
         projectileType = ApprenticeType.Earth;
-        speed = 4f;
+        speed = 6f;
     }
 
     public override void Initialize(Transform target, ProjectilePool pool, ApprenticeController owner) {
