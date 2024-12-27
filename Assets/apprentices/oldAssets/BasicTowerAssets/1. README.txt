@@ -1,3 +1,0 @@
-Copy all the files along with their meta files, and paste them into your assets window in Unity.
-
-- Rytech

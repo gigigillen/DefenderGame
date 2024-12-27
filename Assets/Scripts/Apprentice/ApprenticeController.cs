@@ -14,7 +14,6 @@ public class ApprenticeController : MonoBehaviour {
 
     private GameObject nearestEnemy;
     private float nearestDist;
-    public Transform ApprenticePivot;
 
     private bool hasInitialShot = false;
 
@@ -53,7 +52,11 @@ public class ApprenticeController : MonoBehaviour {
             MeleeAttack();
         }
         else if (nearestDist<=typeData.attackRange) {
-            transform.LookAt(nearestEnemy.transform);
+
+            Vector3 directionToEnemy = nearestEnemy.transform.position - transform.position;
+            directionToEnemy.y = 0f;
+            transform.rotation = Quaternion.LookRotation(directionToEnemy);
+
             if(!hasInitialShot || currentCooldown<=0) {
                 RangedAttack();
                 hasInitialShot = true;

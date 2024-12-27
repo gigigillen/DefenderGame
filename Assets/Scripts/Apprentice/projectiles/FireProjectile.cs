@@ -8,7 +8,6 @@ public class FireProjectile : ProjectileController {
     //public GameObject crashEffectPrefab; // Optional VFX
 
     private void Awake() {
-        Debug.Log("FIRE SHOOTER RUNNING");
         projectileType = ApprenticeType.Fire;
         speed = 3f;
     }

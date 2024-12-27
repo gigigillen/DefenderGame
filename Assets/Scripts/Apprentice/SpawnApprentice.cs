@@ -176,13 +176,13 @@ public class SpawnApprentice : MonoBehaviour {
         }
 
         Collider col = apprentice.GetComponent<Collider>();
-        if (col!=null) {
+        if (col != null) {
             col.isTrigger = true;
         }
 
         MonoBehaviour[] scripts = apprentice.GetComponents<MonoBehaviour>();
         foreach (MonoBehaviour script in scripts) {
-            if (script!=this) {
+            if (script != this) {
                 script.enabled = false;
             }
         }
@@ -208,16 +208,6 @@ public class SpawnApprentice : MonoBehaviour {
         selectingActionMap.Enable();
 
         Debug.Log($"{type} apprentice placed at {position}.");
-    }
-
-
-    private GameObject GetApprenticePrefab(ApprenticeType apprenticeType) {
-
-        switch (apprenticeType) {
-            case ApprenticeType.Basic: return basicTypeData.apprenticePrefab;
-            case ApprenticeType.Earth: return earthTypeData.apprenticePrefab;
-            default: return null;
-        }
     }
 
 

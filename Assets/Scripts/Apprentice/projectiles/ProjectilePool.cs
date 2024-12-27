@@ -14,6 +14,7 @@ public class ProjectilePool : MonoBehaviour {
     private Dictionary<ApprenticeType, Queue<GameObject>> pools = new Dictionary<ApprenticeType, Queue<GameObject>>();
 
     void Start() {
+
         foreach (var typeInfo in projectileTypes) {
             Queue<GameObject> typePool = new Queue<GameObject>();
             pools[typeInfo.type] = typePool;
@@ -25,6 +26,7 @@ public class ProjectilePool : MonoBehaviour {
     }
 
     private void CreateNewProjectile(ApprenticeType type) {
+
         var typeInfo = System.Array.Find(projectileTypes, x => x.type == type);
         GameObject projectile = Instantiate(typeInfo.prefab);
         projectile.SetActive(false);
@@ -32,16 +34,24 @@ public class ProjectilePool : MonoBehaviour {
     }
 
     public GameObject GetProjectile(ApprenticeType type) {
+
+        //create new projectile if required
         if (!pools.ContainsKey(type) || pools[type].Count == 0) {
             CreateNewProjectile(type);
         }
+
+        //reset state
         GameObject projectile = pools[type].Dequeue();
+        projectile.transform.rotation = Quaternion.identity;
         projectile.SetActive(true);
         return projectile;
     }
 
     public void ReturnProjectile(GameObject projectile) {
+
+        //reset state before returning to pool
         projectile.SetActive(false);
+        projectile.transform.rotation = Quaternion.identity;
         ApprenticeType type = projectile.GetComponent<ProjectileController>().projectileType;
         pools[type].Enqueue(projectile);
     }
