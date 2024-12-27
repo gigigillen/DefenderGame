@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour {
 
     public ApprenticeController selectedApprentice;
     public bool isMenuOpen = false;
+    private bool isSelectingApprentice = false;
 
     [SerializeField] private UISkillTree uiSkillTree;
     [SerializeField] private GameObject uiToolBar;
@@ -92,19 +93,28 @@ public class GameController : MonoBehaviour {
 
     // selects an apprentice and puts up its skilltree ui
     public void SelectApprentice(ApprenticeController apprentice) {
-        //checks if a skilltree ui is already open and closes it if so
-        if (selectedApprentice != null && (isMenuOpen = true)) {
-            DeselectApprentice();
+
+        if (isSelectingApprentice) return;
+
+        isSelectingApprentice = true;
+        try {
+            if (selectedApprentice != null) {
+                DeselectApprentice();
+            }
+
+
+            // finds which apprentice and fetches their skilltree from their method
+            selectedApprentice = apprentice;
+            uiSkillTree.SetApprenticeSkills(apprentice.GetApprenticeSkills());
+            uiSkillTree.SetVisible(true);
+            apprentice.GetComponent<Renderer>().material.color = Color.yellow;
+
+            Debug.Log("Selected Apprentice: " + apprentice.gameObject.name);
+            Debug.Log("Skills: " + apprentice.GetApprenticeSkills().GetUnlockedSkills());
         }
-
-        // finds which apprentice and fetches their skilltree from their method
-        selectedApprentice = apprentice;
-        uiSkillTree.SetApprenticeSkills(apprentice.GetApprenticeSkills());
-        uiSkillTree.SetVisible(true);
-        apprentice.GetComponent<Renderer>().material.color = Color.yellow;
-
-        Debug.Log("Selected Apprentice: " + apprentice.gameObject.name);
-        Debug.Log("Skills: " + apprentice.GetApprenticeSkills().GetUnlockedSkills());
+        finally {
+            isSelectingApprentice = false;
+        }
     }
 
     //deselects apprentice skilltree
