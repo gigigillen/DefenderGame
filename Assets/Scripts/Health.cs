@@ -42,7 +42,6 @@ public class Health : MonoBehaviour {
         // works out damage taken
         if (health > 0) {
             this.health -= amount;
-            Debug.Log("TAKEN DMG. DMG NOW" + health);
             // if 0 or less kills off game object
             if (health <= 0) {
                 StartCoroutine(HandleDeath());

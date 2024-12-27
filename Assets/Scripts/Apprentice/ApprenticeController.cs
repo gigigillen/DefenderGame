@@ -5,6 +5,9 @@ using UnityEngine;
 public class ApprenticeController : MonoBehaviour {
 
     [SerializeField] private ApprenticeTypeData typeData;
+    [SerializeField] private TargetingStrategy currentStrategy = TargetingStrategy.ClosestToStronghold;
+    [SerializeField] private GameObject stronghold;
+
     public ApprenticeType apprenticeType;
     private float currentCooldown;
 
@@ -12,10 +15,11 @@ public class ApprenticeController : MonoBehaviour {
     private ApprenticeAttack apprenticeAttack;
     private ProjectilePool projectilePool;
 
-    private GameObject nearestEnemy;
+    private GameObject enemyToTarget;
     private float nearestDist;
 
     private bool hasInitialShot = false;
+
 
     private void Awake() {
 
@@ -38,9 +42,8 @@ public class ApprenticeController : MonoBehaviour {
             if (currentCooldown>0) {
                 currentCooldown -= Time.deltaTime;
             }
-
-            FindNearestEnemy();
-            if (nearestEnemy != null) {
+            FindEnemyToTarget();
+            if (enemyToTarget != null) {
                 HandleAttack();
             }
         }
@@ -53,7 +56,7 @@ public class ApprenticeController : MonoBehaviour {
         }
         else if (nearestDist<=typeData.attackRange) {
 
-            Vector3 directionToEnemy = nearestEnemy.transform.position - transform.position;
+            Vector3 directionToEnemy = enemyToTarget.transform.position - transform.position;
             directionToEnemy.y = 0f;
             transform.rotation = Quaternion.LookRotation(directionToEnemy);
 
@@ -66,7 +69,7 @@ public class ApprenticeController : MonoBehaviour {
     }
 
     private void MeleeAttack() {
-        Vector3 targetPos = nearestEnemy.transform.position;
+        Vector3 targetPos = enemyToTarget.transform.position;
         // keep y position consistent
         targetPos.y = transform.position.y;
 
@@ -84,7 +87,7 @@ public class ApprenticeController : MonoBehaviour {
 
         GameObject projectile = projectilePool.GetProjectile(apprenticeType);
         projectile.transform.position = transform.position + transform.forward;
-        projectile.GetComponent<ProjectileController>().Initialize(nearestEnemy.transform, projectilePool, this);
+        projectile.GetComponent<ProjectileController>().Initialize(enemyToTarget.transform, projectilePool, this);
     }
 
 
@@ -109,35 +112,86 @@ public class ApprenticeController : MonoBehaviour {
         return apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Ultimate);
     }
 
-    private void FindNearestEnemy() {
+    //calculate a score for each potential enemy to target
+    //lowest score = best target
+    private void FindEnemyToTarget() {
 
         // enemies can have either tag "Enemy" or "Wizard", both are searched for
         string[] tags = { "Enemy", "Wizard" };
+        float bestScore = float.MaxValue;
+        GameObject bestTarget = null;
         nearestDist = float.MaxValue;
 
         foreach (string tag in tags) {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag(tag);
-            foreach (GameObject enemy in enemies)
-            {
-                if (enemy.activeSelf)
-                {
-                    float dist = Vector3.Distance(transform.position, enemy.transform.position);
+            foreach (GameObject enemy in enemies) {
+                if (!enemy.activeSelf) continue;
 
-                    if (dist < nearestDist)
-                    {
-                        if (nearestEnemy != null)
-                        {
-                            // reset colour of previous nearest enemy back to red
-                            nearestEnemy.GetComponent<Renderer>().material.color = Color.red;
+                float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+                if (distanceToEnemy <= typeData.attackRange) {
+                    Health enemyHealth = enemy.GetComponent<Health>();
+                    if (enemyHealth == null || enemyHealth.getHealth() <= 0) continue;
+
+                    float score = EvaluateTarget(enemy, enemyHealth);
+
+                    if (score < bestScore) {
+                        if (bestTarget != null) {
+                            bestTarget.GetComponent<Renderer>().material.color = Color.red;
                         }
-
-                        // set new nearest enemy, change its colour to magenta
-                        nearestDist = dist;
-                        nearestEnemy = enemy;
-                        nearestEnemy.GetComponent<Renderer>().material.color = Color.magenta;
+                        bestScore = score;
+                        bestTarget = enemy;
+                        bestTarget.GetComponent<Renderer>().material.color = Color.magenta;
                     }
                 }
             }
+        }
+
+        enemyToTarget = bestTarget;
+        if (bestTarget!=null) {
+            nearestDist = Vector3.Distance(transform.position, bestTarget.transform.position);
+        }
+    }
+
+
+    private float EvaluateTarget(GameObject enemy, Health enemyHealth) {
+        float distanceToTower = Vector3.Distance(transform.position, enemy.transform.position);
+        float distanceToStronghold = Vector3.Distance(stronghold.transform.position, enemy.transform.position);
+
+        if (distanceToTower > typeData.attackRange) {
+            return float.MaxValue;
+        }
+
+        switch (currentStrategy) {
+            //basic targeting available by default
+            case TargetingStrategy.ClosestToTower:
+                return distanceToTower;
+
+            //defensive instincts - low tier unlocked skill
+            case TargetingStrategy.ClosestToStronghold:
+                return distanceToStronghold;
+
+            //threat awareness - mid tier unlocked skill
+            case TargetingStrategy.MostDangerous:
+                float dangerMultiplier = enemy.CompareTag("Wizard") ? 0.5f : 1.0f;
+                return distanceToTower * dangerMultiplier;
+
+            //focused fire - high tier unlocked skill
+            case TargetingStrategy.LowestHealth:
+                float healthScore = enemyHealth.getHealth() * 10f;
+                return healthScore + (distanceToTower * 0.5f);
+
+            default:
+                return float.MaxValue;
+        }
+    }
+
+    public void SetTargetingStrategy(TargetingStrategy strategy) {
+        currentStrategy = strategy;
+
+        //clear current target
+        if (enemyToTarget!=null) {
+            enemyToTarget.GetComponent<Renderer>().material.color = Color.red;
+            enemyToTarget = null;
         }
     }
 }

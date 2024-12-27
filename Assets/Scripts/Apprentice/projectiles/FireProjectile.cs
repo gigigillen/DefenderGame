@@ -13,7 +13,6 @@ public class FireProjectile : ProjectileController {
     }
 
     protected override void OnReachTarget() {
-        Debug.Log("FIRE DMG DEALT");
         if (target != null) {
             Health health = target.GetComponent<Health>();
             if (health != null) {

@@ -108,7 +108,6 @@ public class EarthProjectile : ProjectileController {
             if (col.CompareTag("Enemy") || col.CompareTag("Wizard")) {
                 Health health = col.GetComponent<Health>();
                 if (health != null) {
-                    Debug.Log("HIT PULSE");
                     health.Damage(damagePerPulse);
                 }
 
