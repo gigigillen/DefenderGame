@@ -7,6 +7,9 @@ public class EarthProjectile : ProjectileController {
     [SerializeField] private float gravity = 9.81f;
     [SerializeField] private float arcHeight = 3f;
 
+    [Header("Visual Effects")]
+    [SerializeField] private ParticleSystem crashEffect;
+    [SerializeField] private ParticleSystem pulseEffect;
 
     [Header("Impact Effects")]
     [SerializeField] private int damagePerPulse = 3;
@@ -14,7 +17,6 @@ public class EarthProjectile : ProjectileController {
     [SerializeField] private float pulseInterval = 1f;
     [SerializeField] private float stunDuration = 3f;
     [SerializeField] private float aoeRadius = 3f;
-    //[SerializeField] private GameObject crashEffectPrefab; // Optional VFX
 
 
     private Vector3 initialVelocity;
@@ -25,6 +27,8 @@ public class EarthProjectile : ProjectileController {
 
         projectileType = ApprenticeType.Earth;
         speed = 6f;
+
+        crashEffect.Stop();
     }
 
     public override void Initialize(Transform target, ProjectilePool pool, ApprenticeController owner) {
@@ -91,13 +95,17 @@ public class EarthProjectile : ProjectileController {
 
     private IEnumerator EarthCrash() {
         speed = 0f;
-        //if (crashEffectPrefab != null) {
-        //    Instantiate(crashEffectPrefab, transform.position, Quaternion.identity);
-        //}
 
         for (int i = 0; i < numberOfPulses; i++) {
+            crashEffect.Play();
+            if (pulseEffect!=null) {
+                pulseEffect.Play();
+                yield return new WaitForSeconds(pulseInterval);
+                pulseEffect.Stop();
+            }
             ApplyAoEDamage();
-            yield return new WaitForSeconds(pulseInterval);
+            float waitTime = Mathf.Max(0, pulseInterval - pulseEffect.main.duration);
+            yield return new WaitForSeconds(waitTime);
         }
         pool.ReturnProjectile(gameObject);
     }
@@ -117,10 +125,5 @@ public class EarthProjectile : ProjectileController {
                 }
             }
         }
-    }
-
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, aoeRadius);
     }
 }
