@@ -14,6 +14,7 @@ public class GameController : MonoBehaviour {
     public bool isMenuOpen = false;
     private bool isSelectingApprentice = false;
 
+    [SerializeField] private GameObject selectorRingPrefab;
     [SerializeField] private UISkillTree uiSkillTree;
     [SerializeField] private GameObject uiToolBar;
     [SerializeField] private LayerMask attackAreaMask;
@@ -25,6 +26,7 @@ public class GameController : MonoBehaviour {
     private Camera cam;
     private InputActionMap selectingActionMap;
     private InputAction selectAction;
+    private GameObject currentSelectorRing;
 
 
     private void Awake() {
@@ -108,7 +110,11 @@ public class GameController : MonoBehaviour {
             selectedApprentice = apprentice;
             uiSkillTree.SetApprenticeSkills(apprentice.GetApprenticeSkills());
             uiSkillTree.SetVisible(true);
-            apprentice.GetComponent<Renderer>().material.color = Color.yellow;
+
+            Vector3 ringPosition = apprentice.transform.position;
+            ringPosition.y = 0.1f;
+            currentSelectorRing = Instantiate(selectorRingPrefab, ringPosition, Quaternion.identity);
+            currentSelectorRing.transform.SetParent(apprentice.transform);
 
             Debug.Log("Selected Apprentice: " + apprentice.gameObject.name);
             Debug.Log("Skills: " + apprentice.GetApprenticeSkills().GetUnlockedSkills());
@@ -120,7 +126,10 @@ public class GameController : MonoBehaviour {
 
     //deselects apprentice skilltree
     public void DeselectApprentice() {
-        selectedApprentice.GetComponent<Renderer>().material.color = Color.green;
+
+        if (currentSelectorRing!=null) {
+            Destroy(currentSelectorRing);
+        }
         selectedApprentice = null;
         uiSkillTree.SetVisible(false);
     }
