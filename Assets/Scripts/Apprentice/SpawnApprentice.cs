@@ -192,6 +192,7 @@ public class SpawnApprentice : MonoBehaviour {
     private void PlaceApprentice(Vector3 position) {
 
         GameObject finalApprentice = Instantiate(apprenticePrefab, position, Quaternion.identity);
+        finalApprentice.layer = LayerMask.NameToLayer("Apprentices");
         Debug.Log("placed final apprentice!");
         finalApprentice.transform.SetParent(apprentices);
         apprenticeCount++;

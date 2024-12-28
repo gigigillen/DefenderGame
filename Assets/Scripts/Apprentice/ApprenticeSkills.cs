@@ -20,7 +20,6 @@ public class ApprenticeSkills {
     }
 
     public void UnlockSkill(SkillType skillType) {
-
         // only add the skill if not unlocked already
         if (!IsSkillUnlocked(skillType)) {
             unlockedSkillTypeList.Add(skillType);
