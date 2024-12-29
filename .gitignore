@@ -64,10 +64,15 @@ crashlytics-build.properties
 
 # Packed Addressables
 /[Aa]ssets/TerrainSampleAssets
+/[Aa]ssets/RuinsCreationKit
 
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-Assets/Scenes/gigi.unity
-Assets/Scenes/gigi.unity.meta
+# Personal editing scenes
+/[Aa]ssets/[Ss]cenes/gigi.unity
+/[Aa]ssets/[Ss]cenes/gigi.unity.meta
+
+/[Aa]ssets/[Ss]cenes/selin.unity
+/[Aa]ssets/[Ss]cenes/selin.unity.meta
