@@ -63,7 +63,15 @@ sysinfo.txt
 crashlytics-build.properties
 
 # Packed Addressables
-/[Aa]ssets/TerrainSampleAssets
+/[Aa]ssets/ImportedAssets/TerrainSampleAssets
+/[Aa]ssets/ImportedAssets/TerrainSampleAssets.meta
+Assets/ImportedAssets/BasicTowerAssets
+Assets/ImportedAssets/BasicTowerAssets.meta
+Assets/ImportedAssets/LowPolyRocks
+Assets/ImportedAssets/LowPolyRocks.meta
+Assets/ImportedAssets/FreeUIBuildPackage
+Assets/ImportedAssets/FreeUIBuildPackage.meta
+
 
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
@@ -71,3 +79,14 @@ crashlytics-build.properties
 
 Assets/Scenes/gigi.unity
 Assets/Scenes/gigi.unity.meta
+
+Assets/Scenes/annie.unity
+Assets/Scenes/annie.unity.meta
+
+Assets/Scenes/alla.unity
+Assets/Scenes/alla.unity.meta
+
+Assets/Scenes/selin.unity
+Assets/Scenes/selin.unity.meta
+
+

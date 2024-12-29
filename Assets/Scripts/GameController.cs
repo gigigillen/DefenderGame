@@ -7,40 +7,52 @@ using UnityEngine.SceneManagement;
 
 
 public class GameController : MonoBehaviour {
-    // makes GameController a siingeton by calling itself
+    // makes GameController a singleton by calling itself
     public static GameController instance;
 
-    [SerializeField] private UISkillTree uiSkillTree;
-
-    [SerializeField] private GameObject uiToolBar;
-
     public ApprenticeController selectedApprentice;
+    public bool isMenuOpen = false;
+    private bool isSelectingApprentice = false;
+
+    [SerializeField] private GameObject selectorRingPrefab;
+    [SerializeField] private UISkillTree uiSkillTree;
+    [SerializeField] private GameObject uiToolBar;
+    [SerializeField] private LayerMask attackAreaMask;
+    [SerializeField] private GameObject gameOverUI;
+    [SerializeField] private InputActionAsset inputActions;
+    [SerializeField] private GameObject menuUI;
+    [SerializeField] private GameObject openMenuButton;
+    [SerializeField] private SpawnApprentice spawnController;
 
     private Camera cam;
-
-    [SerializeField] private LayerMask attackAreaMask;
-
-    [SerializeField] private GameObject gameOverUI;
-
-    [SerializeField] private InputActionAsset inputActions;
     private InputActionMap selectingActionMap;
-    private InputAction selectAction;
-
-    [SerializeField] private GameObject menuUI;
-
-    [SerializeField] private GameObject openMenuButton;
-
-    public bool isMenuOpen = false;
+    private InputAction clickSelectAction;
+    private InputAction[] keySelectActions = new InputAction[5];
+    private GameObject currentSelectorRing;
+    private bool isPointerOverUI;
 
     private void Awake() {
         selectingActionMap = inputActions.FindActionMap("Selecting");
-        selectAction = selectingActionMap.FindAction("SelectApprentice");
+        clickSelectAction = selectingActionMap.FindAction("SelectApprentice");
 
-        selectAction.performed += OnSelect;
+        for (int i=0; i<5; i++) {
+            int index = i;
+            keySelectActions[i] = selectingActionMap.FindAction($"SelectApprentice{i + 1}");
+            keySelectActions[i].performed += _ => SelectApprenticeByNumber(index);
+        }
+
+        clickSelectAction.performed += OnSelect;
     }
 
     private void OnDestroy() {
-        selectAction.performed -= OnSelect;
+        clickSelectAction.performed -= OnSelect;
+
+        for (int i=0; i<keySelectActions.Length; i++) {
+            if (keySelectActions[i] != null) {
+                int index = i;
+                keySelectActions[i].performed -= _ => SelectApprenticeByNumber(index);
+            }
+        }
     }
 
 
@@ -52,7 +64,18 @@ public class GameController : MonoBehaviour {
         selectingActionMap.Enable();
     }
 
+    // what the game checks every frame
+    private void Update() {
+       isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
+    }
+
+
     private void OnSelect(InputAction.CallbackContext context) {
+
+        if (isPointerOverUI) {
+            // if over UI as of this frame’s Update, skip the 3D raycast
+            return;
+        }
 
         Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
@@ -70,11 +93,6 @@ public class GameController : MonoBehaviour {
                 DeselectApprentice();
             }
         }
-    }
-
-    // what the game checks every frame
-    private void Update() {
-
     }
 
     // pauses all the game physics and puts a game over scene
@@ -99,24 +117,49 @@ public class GameController : MonoBehaviour {
 
     // selects an apprentice and puts up its skilltree ui
     public void SelectApprentice(ApprenticeController apprentice) {
-        //checks if a skilltree ui is already open and closes it if so
-        if (selectedApprentice != null && (isMenuOpen = true)) {
-            DeselectApprentice();
+
+        if (isSelectingApprentice) return;
+
+        isSelectingApprentice = true;
+        try {
+            if (selectedApprentice != null) {
+                DeselectApprentice();
+            }
+
+
+            // finds which apprentice and fetches their skilltree from their method
+            selectedApprentice = apprentice;
+            uiSkillTree.SetApprenticeSkills(apprentice.GetApprenticeSkills());
+            uiSkillTree.SetVisible(true);
+
+            Vector3 ringPosition = apprentice.transform.position;
+            ringPosition.y = 0.1f;
+            currentSelectorRing = Instantiate(selectorRingPrefab, ringPosition, Quaternion.identity);
+            currentSelectorRing.transform.SetParent(apprentice.transform);
+
+            Debug.Log("Selected Apprentice: " + apprentice.gameObject.name);
+            Debug.Log("Skills: " + apprentice.GetApprenticeSkills().GetUnlockedSkills());
         }
+        finally {
+            isSelectingApprentice = false;
+        }
+    }
 
-        // finds which apprentice and fetches their skilltree from their method
-        selectedApprentice = apprentice;
-        uiSkillTree.SetApprenticeSkills(apprentice.GetApprenticeSkills());
-        uiSkillTree.SetVisible(true);
-        apprentice.GetComponent<Renderer>().material.color = Color.yellow;
+    private void SelectApprenticeByNumber(int index) {
+        if (isMenuOpen) return;
 
-        Debug.Log("Selected Apprentice: " + apprentice.gameObject.name);
-        Debug.Log("Skills: " + apprentice.GetApprenticeSkills().GetUnlockedSkills());
+        ApprenticeController apprentice = spawnController.GetApprenticeByIndex(index);
+        if (apprentice != null) {
+            SelectApprentice(apprentice);
+        }
     }
 
     //deselects apprentice skilltree
     public void DeselectApprentice() {
-        selectedApprentice.GetComponent<Renderer>().material.color = Color.green;
+
+        if (currentSelectorRing!=null) {
+            Destroy(currentSelectorRing);
+        }
         selectedApprentice = null;
         uiSkillTree.SetVisible(false);
     }

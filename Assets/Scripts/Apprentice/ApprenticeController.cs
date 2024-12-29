@@ -4,39 +4,93 @@ using UnityEngine;
 
 public class ApprenticeController : MonoBehaviour {
 
+    [SerializeField] private ApprenticeTypeData typeData;
+    [SerializeField] private TargetingStrategy currentStrategy = TargetingStrategy.ClosestToStronghold;
+    [SerializeField] private GameObject stronghold;
+
     public ApprenticeType apprenticeType;
+    private float currentCooldown;
 
     private ApprenticeSkills apprenticeSkills;
     private ApprenticeAttack apprenticeAttack;
+    private ProjectilePool projectilePool;
 
-    private GameObject nearestEnemy;
+    private GameObject enemyToTarget;
     private float nearestDist;
 
-    public float speed;
+    private bool hasInitialShot = false;
+
 
     private void Awake() {
 
         // apprentice skills initialised, and attack component retrieved
         apprenticeSkills = new ApprenticeSkills();
-        apprenticeAttack = GetComponent<ApprenticeAttack>();
+        typeData.isStatic = (typeData.type != ApprenticeType.Basic);
+        if (!typeData.isStatic) {
+            apprenticeAttack = GetComponent<ApprenticeAttack>();
+        }
+        projectilePool = ProjectilePool.FindAnyObjectByType<ProjectilePool>();
+        currentCooldown = 0f;
         gameObject.tag = "Apprentice";
     }
 
-    void Start() {
-
-    }
 
     void Update() {
 
         // if basic skill unlocked, find and move towards nearest enemy
         if (apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Basic)) {
-            FindNearestEnemy();
-            if (nearestEnemy != null) {
-                MoveTowardsEnemy();
+            if (currentCooldown>0) {
+                currentCooldown -= Time.deltaTime;
+            }
+            FindEnemyToTarget();
+            if (enemyToTarget != null) {
+                HandleAttack();
             }
         }
     }
-    
+
+
+    private void HandleAttack() {
+        if(!typeData.isStatic) {
+            MeleeAttack();
+        }
+        else if (nearestDist<=typeData.attackRange) {
+
+            Vector3 directionToEnemy = enemyToTarget.transform.position - transform.position;
+            directionToEnemy.y = 0f;
+            transform.rotation = Quaternion.LookRotation(directionToEnemy);
+
+            if(!hasInitialShot || currentCooldown<=0) {
+                RangedAttack();
+                hasInitialShot = true;
+                currentCooldown = typeData.cooldown;
+            }
+        }
+    }
+
+    private void MeleeAttack() {
+        Vector3 targetPos = enemyToTarget.transform.position;
+        // keep y position consistent
+        targetPos.y = transform.position.y;
+
+        // only move towards the enemy if not within attack range
+        if (nearestDist > 1.0f) {
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, typeData.speed * Time.deltaTime);
+        }
+        else {
+            // launch attack when in range
+            apprenticeAttack.Attack();
+        }
+}
+
+    private void RangedAttack() {
+
+        GameObject projectile = projectilePool.GetProjectile(apprenticeType);
+        projectile.transform.position = transform.position + transform.forward;
+        projectile.GetComponent<ProjectileController>().Initialize(enemyToTarget.transform, projectilePool, this);
+    }
+
+
     public ApprenticeSkills GetApprenticeSkills() {
 
         return apprenticeSkills;
@@ -58,51 +112,86 @@ public class ApprenticeController : MonoBehaviour {
         return apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Ultimate);
     }
 
-    private void FindNearestEnemy() {
+    //calculate a score for each potential enemy to target
+    //lowest score = best target
+    private void FindEnemyToTarget() {
 
         // enemies can have either tag "Enemy" or "Wizard", both are searched for
         string[] tags = { "Enemy", "Wizard" };
+        float bestScore = float.MaxValue;
+        GameObject bestTarget = null;
         nearestDist = float.MaxValue;
 
         foreach (string tag in tags) {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag(tag);
-            foreach (GameObject enemy in enemies)
-            {
-                if (enemy.activeSelf)
-                {
-                    float dist = Vector3.Distance(transform.position, enemy.transform.position);
+            foreach (GameObject enemy in enemies) {
+                if (!enemy.activeSelf) continue;
 
-                    if (dist < nearestDist)
-                    {
-                        if (nearestEnemy != null)
-                        {
-                            // reset colour of previous nearest enemy back to red
-                            nearestEnemy.GetComponent<Renderer>().material.color = Color.red;
+                float distanceToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+                if (distanceToEnemy <= typeData.attackRange) {
+                    Health enemyHealth = enemy.GetComponent<Health>();
+                    if (enemyHealth == null || enemyHealth.getHealth() <= 0) continue;
+
+                    float score = EvaluateTarget(enemy, enemyHealth);
+
+                    if (score < bestScore) {
+                        if (bestTarget != null) {
+                            bestTarget.GetComponent<Renderer>().material.color = Color.red;
                         }
-
-                        // set new nearest enemy, change its colour to magenta
-                        nearestDist = dist;
-                        nearestEnemy = enemy;
-                        nearestEnemy.GetComponent<Renderer>().material.color = Color.magenta;
+                        bestScore = score;
+                        bestTarget = enemy;
+                        bestTarget.GetComponent<Renderer>().material.color = Color.magenta;
                     }
                 }
             }
         }
+
+        enemyToTarget = bestTarget;
+        if (bestTarget!=null) {
+            nearestDist = Vector3.Distance(transform.position, bestTarget.transform.position);
+        }
     }
 
-    private void MoveTowardsEnemy() {
 
-        Vector3 targetPos = nearestEnemy.transform.position;
-        // keep y position consistent
-        targetPos.y = transform.position.y;
+    private float EvaluateTarget(GameObject enemy, Health enemyHealth) {
+        float distanceToTower = Vector3.Distance(transform.position, enemy.transform.position);
+        float distanceToStronghold = Vector3.Distance(stronghold.transform.position, enemy.transform.position);
 
-        // only move towards the enemy if not within attack range
-        if (nearestDist > 1.0f) {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);
+        if (distanceToTower > typeData.attackRange) {
+            return float.MaxValue;
         }
-        else {
-            // launch attack when in range
-            apprenticeAttack.Attack();
+
+        switch (currentStrategy) {
+            //basic targeting available by default
+            case TargetingStrategy.ClosestToTower:
+                return distanceToTower;
+
+            //defensive instincts - low tier unlocked skill
+            case TargetingStrategy.ClosestToStronghold:
+                return distanceToStronghold;
+
+            //threat awareness - mid tier unlocked skill
+            case TargetingStrategy.MostDangerous:
+                float dangerMultiplier = enemy.CompareTag("Wizard") ? 0.5f : 1.0f;
+                return distanceToTower * dangerMultiplier;
+
+            //focused fire - high tier unlocked skill
+            case TargetingStrategy.LowestHealth:
+                float healthScore = enemyHealth.getHealth() * 10f;
+                return healthScore + (distanceToTower * 0.5f);
+
+            default:
+                return float.MaxValue;
+        }
+    }
+
+    public void SetTargetingStrategy(TargetingStrategy strategy) {
+        currentStrategy = strategy;
+
+        //clear current target
+        if (enemyToTarget!=null) {
+            enemyToTarget.GetComponent<Renderer>().material.color = Color.red;
+            enemyToTarget = null;
         }
     }
 }

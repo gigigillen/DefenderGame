@@ -7,6 +7,8 @@ public class ApprenticeAttack : MonoBehaviour {
     private GameObject attackArea = default;
     private ApprenticeSkills apprenticeSkills;
 
+    private ProjectilePool projectilePool;
+
     private bool attacking = false;
 
     // for prototype, attack area of apprentice is active for 0.05s
@@ -54,5 +56,14 @@ public class ApprenticeAttack : MonoBehaviour {
  
         }
     }
+
+    //public void LaunchProjectile(Transform target) {
+    //    if(!attacking) {
+    //        GameObject projectile = projectilePool.GetProjectile();
+    //        projectile.transform.position = transform.position + transform.forward;
+    //        projectile.GetComponent<Projectile>().Initialize(nearestEnemy.transform, projectilePool);
+    //        attacking = true;
+    //    }
+    //}
 
 }

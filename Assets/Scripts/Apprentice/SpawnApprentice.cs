@@ -11,9 +11,11 @@ public class SpawnApprentice : MonoBehaviour {
     private InputActionMap spawningActionMap;
     private InputActionMap selectingActionMap;
     private InputAction spawnAction;
+    private InputAction cancelPlacementAction;
 
-    [SerializeField] private GameObject basicApprenticePrefab; // the apprentice prefab to instantiate
-    [SerializeField] private GameObject earthApprenticePrefab;
+
+    [SerializeField] private ApprenticeTypeData basicTypeData;
+    [SerializeField] private ApprenticeTypeData earthTypeData;
     [SerializeField] private LayerMask placementBlockingLayers;
     [SerializeField] private GameObject attackArea; // the attack area prefab
     [SerializeField] private Transform apprentices;
@@ -28,8 +30,8 @@ public class SpawnApprentice : MonoBehaviour {
     private const int maxApprentices = 5; // max apprentices is immutable
     private bool canPlace = false;
     private GameController gameController;
-
     private GameObject apprenticePrefab;
+    private List<ApprenticeController> activeApprentices = new List<ApprenticeController>();
 
 
     private void Awake() {
@@ -37,8 +39,10 @@ public class SpawnApprentice : MonoBehaviour {
         spawningActionMap = inputActions.FindActionMap("Spawning");
         selectingActionMap = inputActions.FindActionMap("Selecting");
         spawnAction = spawningActionMap.FindAction("PlaceApprentice");
+        cancelPlacementAction = spawningActionMap.FindAction("CancelPlacement");
 
         spawnAction.performed += OnSpawnPerformed;
+        cancelPlacementAction.performed += OnCancelPlacement;
     }
 
 
@@ -106,6 +110,19 @@ public class SpawnApprentice : MonoBehaviour {
         }
     }
 
+    private void OnCancelPlacement(InputAction.CallbackContext context) {
+
+        if (currentPlacingApprentice != null) {
+
+            Debug.Log("cancelling placement");
+            spawningActionMap.Disable();
+            selectingActionMap.Enable();
+
+            Destroy(currentPlacingApprentice);
+            currentPlacingApprentice = null;
+        }
+    }
+
 
     public void SetApprenticeTypeToPlace(GameObject apprenticePrefab) {
         if (apprenticeCount >= maxApprentices) {
@@ -159,13 +176,13 @@ public class SpawnApprentice : MonoBehaviour {
         }
 
         Collider col = apprentice.GetComponent<Collider>();
-        if (col!=null) {
+        if (col != null) {
             col.isTrigger = true;
         }
 
         MonoBehaviour[] scripts = apprentice.GetComponents<MonoBehaviour>();
         foreach (MonoBehaviour script in scripts) {
-            if (script!=this) {
+            if (script != this) {
                 script.enabled = false;
             }
         }
@@ -175,7 +192,11 @@ public class SpawnApprentice : MonoBehaviour {
     private void PlaceApprentice(Vector3 position) {
 
         GameObject finalApprentice = Instantiate(apprenticePrefab, position, Quaternion.identity);
-        Debug.Log("placed final apprentice!");
+        finalApprentice.layer = LayerMask.NameToLayer("Apprentices");
+
+        ApprenticeController apprenticeController = finalApprentice.GetComponent<ApprenticeController>();
+        activeApprentices.Add(apprenticeController);
+
         finalApprentice.transform.SetParent(apprentices);
         apprenticeCount++;
         finalApprentice.name = $"{type} Apprentice {apprenticeCount}";
@@ -193,22 +214,20 @@ public class SpawnApprentice : MonoBehaviour {
     }
 
 
-    private GameObject GetApprenticePrefab(ApprenticeType apprenticeType) {
-
-        switch (apprenticeType) {
-            case ApprenticeType.Basic: return basicApprenticePrefab;
-            case ApprenticeType.Earth: return earthApprenticePrefab;
-            default: return null;
-        }
-    }
-
-
     // decrease apprentice count and hide skill tree on death
-    public void killApprentice() {
+    public void RemoveApprentice(ApprenticeController apprentice) {
 
+        activeApprentices.Remove(apprentice);
         apprenticeCount--;
         uiSkillTree.SetVisible(false);
 
+    }
+
+    public ApprenticeController GetApprenticeByIndex(int index) {
+        if (index>= 0 && index < activeApprentices.Count) {
+            return activeApprentices[index];
+        }
+        return null;
     }
 
 
