@@ -20,9 +20,14 @@ public class ApprenticeSkills {
     }
 
     public void UnlockSkill(SkillType skillType) {
+        Debug.Log("unlocking skill...");
         // only add the skill if not unlocked already
         if (!IsSkillUnlocked(skillType)) {
+            Debug.Log("skill not unlocked... unlocking");
             unlockedSkillTypeList.Add(skillType);
+        }
+        else {
+            Debug.Log("skill already unlocked");
         }
     }
 

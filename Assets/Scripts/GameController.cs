@@ -27,7 +27,7 @@ public class GameController : MonoBehaviour {
     private InputActionMap selectingActionMap;
     private InputAction selectAction;
     private GameObject currentSelectorRing;
-
+    private bool isPointerOverUI;
 
     private void Awake() {
         selectingActionMap = inputActions.FindActionMap("Selecting");
@@ -51,10 +51,16 @@ public class GameController : MonoBehaviour {
 
     // what the game checks every frame
     private void Update() {
+       isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
     }
 
 
     private void OnSelect(InputAction.CallbackContext context) {
+
+        if (isPointerOverUI) {
+            // if over UI as of this frame’s Update, skip the 3D raycast
+            return;
+        }
 
         Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
