@@ -28,12 +28,14 @@ public class GameController : MonoBehaviour {
     private InputActionMap selectingActionMap;
     private InputAction clickSelectAction;
     private InputAction[] keySelectActions = new InputAction[5];
+    private InputAction deselectAction;
     private GameObject currentSelectorRing;
     private bool isPointerOverUI;
 
     private void Awake() {
         selectingActionMap = inputActions.FindActionMap("Selecting");
         clickSelectAction = selectingActionMap.FindAction("SelectApprentice");
+        deselectAction = selectingActionMap.FindAction("DeselectApprentice");
 
         for (int i=0; i<5; i++) {
             int index = i;
@@ -42,10 +44,12 @@ public class GameController : MonoBehaviour {
         }
 
         clickSelectAction.performed += OnSelect;
+        deselectAction.performed += OnDeselect;
     }
 
     private void OnDestroy() {
         clickSelectAction.performed -= OnSelect;
+        deselectAction.performed -= OnDeselect;
 
         for (int i=0; i<keySelectActions.Length; i++) {
             if (keySelectActions[i] != null) {
@@ -72,18 +76,16 @@ public class GameController : MonoBehaviour {
 
     private void OnSelect(InputAction.CallbackContext context) {
 
-        if (isPointerOverUI) {
-            // if over UI as of this frame’s Update, skip the 3D raycast
-            return;
-        }
+        // if over UI as of this frame’s update, skip the raycast
+        if (isPointerOverUI) return;
 
         Ray ray = cam.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
 
         int apprenticeLayer = LayerMask.GetMask("Apprentices");
 
-        //checks if the mouse clicked andywhere on the game screen
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, apprenticeLayer)) {
+        //checks if the mouse clicked anywhere on the game screen
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
             //checks if an apprentice was clicked and uses method SelectedApprentice
             ApprenticeController clickedApprentice = hit.collider.GetComponent<ApprenticeController>();
             if (clickedApprentice != null) {
@@ -92,6 +94,12 @@ public class GameController : MonoBehaviour {
             else if (selectedApprentice != null) {
                 DeselectApprentice();
             }
+        }
+    }
+
+    private void OnDeselect(InputAction.CallbackContext context) {
+        if (selectedApprentice!=null) {
+            DeselectApprentice();
         }
     }
 
@@ -149,7 +157,11 @@ public class GameController : MonoBehaviour {
         if (isMenuOpen) return;
 
         ApprenticeController apprentice = spawnController.GetApprenticeByIndex(index);
-        if (apprentice != null) {
+        // if same apprentice selected again, deselect
+        if (apprentice == selectedApprentice) {
+            DeselectApprentice();
+        }
+        else if (apprentice != null) {
             SelectApprentice(apprentice);
         }
     }

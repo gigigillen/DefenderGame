@@ -877,6 +877,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "DeselectApprentice",
+                    "type": "Button",
+                    "id": "ec4027d5-b5fd-42e6-8322-3f86b59558d1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -943,6 +952,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "SelectApprentice5",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9de3fb64-ef72-4903-91b1-8d08265210ac",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DeselectApprentice",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
