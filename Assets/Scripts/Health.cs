@@ -8,8 +8,14 @@ public class Health : MonoBehaviour {
 
     private const int MAX_HEALTH = 100;
 
+    public int xpReward = 25; // XP reward for destroying this object
+    private XPSystem xpSystem; // Reference to the XP system
+
     // assigns the health of the game characters at the start
     void Start() {
+
+        // Locate the XPSystem in the scene
+        xpSystem = FindObjectOfType<XPSystem>();
         if (CompareTag("Enemy"))
         {
             health = 1;
@@ -58,6 +64,11 @@ public class Health : MonoBehaviour {
 
         Debug.Log("i am dead:(");
         HealthBarController.instance.GainHealth(10f);
+        // Award XP for the kill
+        if (xpSystem != null && CompareTag("Enemy")) // Only grant XP for enemies
+        {
+            xpSystem.AddXP(xpReward);
+        }
         Destroy(gameObject);
     }
 }

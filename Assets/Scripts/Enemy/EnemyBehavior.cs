@@ -10,10 +10,12 @@ public class EnemyBehavior : MonoBehaviour
 
     // enemy speed
     public float speed;
+    
 
 
     void Start()
     {
+        
 
     }
 
@@ -35,4 +37,6 @@ public class EnemyBehavior : MonoBehaviour
 
 
     }
+
+    
 }
