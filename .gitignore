@@ -73,4 +73,8 @@ crashlytics-build.properties
 Assets/Scenes/annieScene.unity
 Assets/Scenes/annieScene.unity.meta
 
+# Personal scene
+Assets/Scenes/Alla.unity
+Assets/Scenes/Alla.unity.meta
+
 
