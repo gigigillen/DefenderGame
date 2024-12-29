@@ -22,22 +22,37 @@ public class GameController : MonoBehaviour {
     [SerializeField] private InputActionAsset inputActions;
     [SerializeField] private GameObject menuUI;
     [SerializeField] private GameObject openMenuButton;
+    [SerializeField] private SpawnApprentice spawnController;
 
     private Camera cam;
     private InputActionMap selectingActionMap;
-    private InputAction selectAction;
+    private InputAction clickSelectAction;
+    private InputAction[] keySelectActions = new InputAction[5];
     private GameObject currentSelectorRing;
     private bool isPointerOverUI;
 
     private void Awake() {
         selectingActionMap = inputActions.FindActionMap("Selecting");
-        selectAction = selectingActionMap.FindAction("SelectApprentice");
+        clickSelectAction = selectingActionMap.FindAction("SelectApprentice");
 
-        selectAction.performed += OnSelect;
+        for (int i=0; i<5; i++) {
+            int index = i;
+            keySelectActions[i] = selectingActionMap.FindAction($"SelectApprentice{i + 1}");
+            keySelectActions[i].performed += _ => SelectApprenticeByNumber(index);
+        }
+
+        clickSelectAction.performed += OnSelect;
     }
 
     private void OnDestroy() {
-        selectAction.performed -= OnSelect;
+        clickSelectAction.performed -= OnSelect;
+
+        for (int i=0; i<keySelectActions.Length; i++) {
+            if (keySelectActions[i] != null) {
+                int index = i;
+                keySelectActions[i].performed -= _ => SelectApprenticeByNumber(index);
+            }
+        }
     }
 
 
@@ -127,6 +142,15 @@ public class GameController : MonoBehaviour {
         }
         finally {
             isSelectingApprentice = false;
+        }
+    }
+
+    private void SelectApprenticeByNumber(int index) {
+        if (isMenuOpen) return;
+
+        ApprenticeController apprentice = spawnController.GetApprenticeByIndex(index);
+        if (apprentice != null) {
+            SelectApprentice(apprentice);
         }
     }
 

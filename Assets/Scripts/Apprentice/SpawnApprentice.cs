@@ -30,8 +30,8 @@ public class SpawnApprentice : MonoBehaviour {
     private const int maxApprentices = 5; // max apprentices is immutable
     private bool canPlace = false;
     private GameController gameController;
-
     private GameObject apprenticePrefab;
+    private List<ApprenticeController> activeApprentices = new List<ApprenticeController>();
 
 
     private void Awake() {
@@ -193,10 +193,12 @@ public class SpawnApprentice : MonoBehaviour {
 
         GameObject finalApprentice = Instantiate(apprenticePrefab, position, Quaternion.identity);
         finalApprentice.layer = LayerMask.NameToLayer("Apprentices");
-        Debug.Log("placed final apprentice!");
+
+        ApprenticeController apprenticeController = finalApprentice.GetComponent<ApprenticeController>();
+        activeApprentices.Add(apprenticeController);
+
         finalApprentice.transform.SetParent(apprentices);
         apprenticeCount++;
-        //GameController.ApprenticesInGame.Add(finalApprentice.GetComponent<ApprenticeController>());
         finalApprentice.name = $"{type} Apprentice {apprenticeCount}";
 
         GameObject newAttackArea = Instantiate(attackArea, finalApprentice.transform.position, Quaternion.identity);
@@ -213,11 +215,19 @@ public class SpawnApprentice : MonoBehaviour {
 
 
     // decrease apprentice count and hide skill tree on death
-    public void killApprentice() {
+    public void RemoveApprentice(ApprenticeController apprentice) {
 
+        activeApprentices.Remove(apprentice);
         apprenticeCount--;
         uiSkillTree.SetVisible(false);
 
+    }
+
+    public ApprenticeController GetApprenticeByIndex(int index) {
+        if (index>= 0 && index < activeApprentices.Count) {
+            return activeApprentices[index];
+        }
+        return null;
     }
 
 

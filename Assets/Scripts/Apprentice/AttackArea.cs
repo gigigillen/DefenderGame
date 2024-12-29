@@ -12,8 +12,6 @@ public class AttackArea : MonoBehaviour
     private void Awake() {
 
         // find SpawnApprentice script
-        // killApprentice() method in SpawnApprentice as it is where
-        // apprentice count is dealt with currently
         spawnApprentice = FindAnyObjectByType<SpawnApprentice>();
     }
 
@@ -31,9 +29,11 @@ public class AttackArea : MonoBehaviour
             int enemyHealth = targetedEnemyHealth.getHealth();
             if (enemyHealth <= 0)
             {
-                // destroy the apprentice after defeating the enemy
+
+                ApprenticeController apprentice = transform.parent.GetComponent<ApprenticeController>();
+                spawnApprentice.RemoveApprentice(apprentice);
+                // destroy apprentice after removing it from tracking
                 Destroy(transform.parent.gameObject);
-                spawnApprentice.killApprentice();
             }
         }
     }
