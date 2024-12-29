@@ -773,54 +773,6 @@
             ]
         },
         {
-            "name": "Apprentice",
-            "id": "29304670-fdcd-411f-97c9-9401f48e3f9d",
-            "actions": [
-                {
-                    "name": "Spawn",
-                    "type": "Button",
-                    "id": "d346ff0a-578c-4c66-a163-a9f678a9f399",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Select",
-                    "type": "Button",
-                    "id": "f1f80844-9a15-4149-b97d-619ef245d5e8",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "f8571b16-ab0c-432f-80b3-42691f2528a7",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Spawn",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "fcf939bc-ea30-435e-a9e2-ca1fabb766ca",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Select",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
             "name": "Selecting",
             "id": "bbb0160f-893e-4609-a152-5a552fb75b04",
             "actions": [
