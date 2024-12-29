@@ -14,8 +14,6 @@ public class SpawnApprentice : MonoBehaviour {
     private InputAction cancelPlacementAction;
 
 
-    [SerializeField] private ApprenticeTypeData basicTypeData;
-    [SerializeField] private ApprenticeTypeData earthTypeData;
     [SerializeField] private LayerMask placementBlockingLayers;
     [SerializeField] private GameObject attackArea; // the attack area prefab
     [SerializeField] private Transform apprentices;
@@ -90,15 +88,6 @@ public class SpawnApprentice : MonoBehaviour {
             currentPlacingApprentice.transform.rotation = Quaternion.identity;
 
             canPlace = IsWithinBounds(position) && !IsOverlappingObjects(position) ;
-
-            Renderer[] renderers = currentPlacingApprentice.GetComponentsInChildren<Renderer>();
-            Color newColor = canPlace && hit.collider.CompareTag("Floor") ?
-                Color.green :
-                Color.red;
-
-            foreach (Renderer renderer in renderers) {
-                renderer.material.color = newColor;
-            }
         }
     }
 

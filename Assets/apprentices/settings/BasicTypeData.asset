@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: BasicTypeData
   m_EditorClassIdentifier: 
   type: 0
-  cooldown: 2
-  attackRange: 5
-  speed: 5
-  isStatic: 0
+  apprenticePrefab: {fileID: 187918, guid: 338cd86154d8d45cc95d11e862813d29, type: 3}
+  cooldown: 1
+  attackRange: 10
+  speed: 2
+  isStatic: 1

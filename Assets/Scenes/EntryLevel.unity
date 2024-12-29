@@ -1990,7 +1990,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileTypes:
   - type: 0
-    prefab: {fileID: 8871293011686952898, guid: baea996f3820248b698942d9ae7b612f, type: 3}
+    prefab: {fileID: 7329009967607460490, guid: 3766ea98b67e5471592a0fc09f88787f, type: 3}
     initialPoolSize: 20
   - type: 1
     prefab: {fileID: 9092153641127998179, guid: bb22f75fa46d94e7dbc2fd315a96482f, type: 3}
@@ -10139,7 +10139,7 @@ MonoBehaviour:
         m_MethodName: SetApprenticeTypeToPlace
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 204899795603797225, guid: 28f19d38c91544de58452d63d6a9f513, type: 3}
+          m_ObjectArgument: {fileID: 187918, guid: 338cd86154d8d45cc95d11e862813d29, type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -11308,8 +11308,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputActions: {fileID: -944628639613478452, guid: bcf424c1c56128148b233ead7ae55b66, type: 3}
-  basicTypeData: {fileID: 11400000, guid: e77706b7714e24da98b4b9627b2b0b8b, type: 2}
-  earthTypeData: {fileID: 11400000, guid: ecb45f84b61fe4434aa7344576b83331, type: 2}
   placementBlockingLayers:
     serializedVersion: 2
     m_Bits: 776

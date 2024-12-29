@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileController : MonoBehaviour {
+
+    [Header("Basic Effects")]
+    private int damage = 1;
     public float speed = 5f;
-    public ApprenticeType projectileType;
+    public ApprenticeType projectileType = ApprenticeType.Basic;
     protected Transform target;
     protected ProjectilePool pool;
     protected Vector3 lastTargetPosition;
@@ -36,6 +39,12 @@ public class ProjectileController : MonoBehaviour {
     }
 
     protected virtual void OnReachTarget() {
+        if (target != null) {
+            Health health = target.GetComponent<Health>();
+            if (health != null) {
+                health.Damage(damage);
+            }
+        }
         pool.ReturnProjectile(gameObject);
     }
 }

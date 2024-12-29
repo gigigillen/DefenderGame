@@ -22,10 +22,8 @@ public class ApprenticeController : MonoBehaviour {
 
 
     private void Awake() {
-
         // apprentice skills initialised, and attack component retrieved
         apprenticeSkills = new ApprenticeSkills();
-        typeData.isStatic = (typeData.type != ApprenticeType.Basic);
         if (!typeData.isStatic) {
             apprenticeAttack = GetComponent<ApprenticeAttack>();
         }
@@ -37,7 +35,6 @@ public class ApprenticeController : MonoBehaviour {
 
     void Update() {
 
-        // if basic skill unlocked, find and move towards nearest enemy
         if (apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Basic)) {
             if (currentCooldown>0) {
                 currentCooldown -= Time.deltaTime;

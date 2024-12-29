@@ -15,10 +15,10 @@ public class Health : MonoBehaviour {
     void Start() {
 
         // Locate the XPSystem in the scene
-        xpSystem = FindObjectOfType<XPSystem>();
+        xpSystem = XPSystem.FindFirstObjectByType<XPSystem>();
         if (CompareTag("Enemy"))
         {
-            health = 1;
+            health = 3;
         }
         // if it is a special enemy (ie wizard) it gets assigned more health
         else if (CompareTag("Wizard"))
