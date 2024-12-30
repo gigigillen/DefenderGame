@@ -26,10 +26,12 @@ public class GameController : MonoBehaviour {
     private Camera cam;
     private InputActionMap selectingActionMap;
     private InputActionMap skillTreeMap;
+    private InputActionMap menuMap;
     private InputAction clickSelectAction;
     private InputAction[] keySelectActions = new InputAction[5];
     private InputAction deselectAction;
     private InputAction toggleSkillTreeAction;
+    private InputAction toggleMenuAction;
 
     private GameObject currentSelectorRing;
     private bool isPointerOverUI;
@@ -43,6 +45,9 @@ public class GameController : MonoBehaviour {
         skillTreeMap = inputActions.FindActionMap("SkillTree");
         toggleSkillTreeAction = skillTreeMap.FindAction("ToggleSkillTree");
 
+        menuMap = inputActions.FindActionMap("Menu");
+        toggleMenuAction = menuMap.FindAction("ToggleMenu");
+
         isSkillTreeOpen = false;
 
 
@@ -55,6 +60,7 @@ public class GameController : MonoBehaviour {
         clickSelectAction.performed += OnSelect;
         deselectAction.performed += OnDeselect;
         toggleSkillTreeAction.performed += ToggleSkillTree;
+        toggleMenuAction.performed += ToggleMenu;
     }
 
     private void OnDestroy() {
@@ -78,6 +84,7 @@ public class GameController : MonoBehaviour {
 
         selectingActionMap.Enable();
         skillTreeMap.Enable();
+        menuMap.Enable();
     }
 
     // what the game checks every frame
@@ -121,6 +128,18 @@ public class GameController : MonoBehaviour {
 
         isSkillTreeOpen = !isSkillTreeOpen;
         uiSkillTree.SetVisible(isSkillTreeOpen);
+    }
+
+    private void ToggleMenu(InputAction.CallbackContext context) {
+
+        if (isMenuOpen) {
+            MenuClose();
+        }
+        else {
+            MenuOpen();
+        }
+       
+    
     }
 
     // pauses all the game physics and puts a game over scene
@@ -201,6 +220,7 @@ public class GameController : MonoBehaviour {
             DeselectApprentice();
         }
         menuUI.SetActive(true);
+        uiSkillTree.SetVisible(false);
         openMenuButton.SetActive(false);
         Time.timeScale = 0f;
         isMenuOpen = true;
