@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileController : MonoBehaviour {
-    public float speed = 5f;
+
     public ApprenticeType projectileType;
+    protected int damage = 1;
+    protected float speed;
     protected Transform target;
     protected ProjectilePool pool;
     protected Vector3 lastTargetPosition;
     protected ApprenticeController owner;
+    protected ApprenticeTypeData typeData;
 
-    public virtual void Initialize(Transform target, ProjectilePool pool, ApprenticeController owner) {
+    public virtual void Initialize(ApprenticeTypeData typeData, Transform target, ProjectilePool pool, ApprenticeController owner) {
+        this.typeData = typeData;
         this.target = target;
         this.pool = pool;
         this.owner = owner;
+
+        speed = typeData.speed;
+        projectileType = typeData.type;
         lastTargetPosition = target.position;
     }
 
@@ -36,6 +43,12 @@ public class ProjectileController : MonoBehaviour {
     }
 
     protected virtual void OnReachTarget() {
+        if (target != null) {
+            Health health = target.GetComponent<Health>();
+            if (health != null) {
+                health.Damage(damage);
+            }
+        }
         pool.ReturnProjectile(gameObject);
     }
 }
