@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemyBehavior : MonoBehaviour
 {
 
+    [SerializeField] private Transform canvasTransform;
+
     public GameObject enemy;
     public GameObject stronghold;
 
@@ -50,5 +52,11 @@ public class EnemyBehavior : MonoBehaviour
             Destroy(gameObject);
         }
 
+    }
+
+
+    private void LateUpdate() {
+
+        canvasTransform.LookAt(transform.position + Camera.main.transform.forward);
     }
 }
