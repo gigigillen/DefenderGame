@@ -7,6 +7,5 @@ public class WindProjectile : ProjectileController {
 
     private void Awake() {
         projectileType = ApprenticeType.Wind;
-        speed = 3f;
     }
 }

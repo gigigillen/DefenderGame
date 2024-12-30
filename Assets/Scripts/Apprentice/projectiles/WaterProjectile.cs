@@ -5,6 +5,5 @@ public class WaterProjectile : ProjectileController {
 
     private void Awake() {
         projectileType = ApprenticeType.Water;
-        speed = 3f;
     }
 }

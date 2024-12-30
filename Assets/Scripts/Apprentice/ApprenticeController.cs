@@ -84,7 +84,7 @@ public class ApprenticeController : MonoBehaviour {
 
         GameObject projectile = projectilePool.GetProjectile(apprenticeType);
         projectile.transform.position = transform.position + transform.forward;
-        projectile.GetComponent<ProjectileController>().Initialize(enemyToTarget.transform, projectilePool, this);
+        projectile.GetComponent<ProjectileController>().Initialize(typeData, enemyToTarget.transform, projectilePool, this);
     }
 
 

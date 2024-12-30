@@ -4,19 +4,23 @@ using UnityEngine;
 
 public class ProjectileController : MonoBehaviour {
 
-    [Header("Basic Effects")]
-    private int damage = 1;
-    public float speed = 5f;
-    public ApprenticeType projectileType = ApprenticeType.Basic;
+    public ApprenticeType projectileType;
+    protected int damage = 1;
+    protected float speed;
     protected Transform target;
     protected ProjectilePool pool;
     protected Vector3 lastTargetPosition;
     protected ApprenticeController owner;
+    protected ApprenticeTypeData typeData;
 
-    public virtual void Initialize(Transform target, ProjectilePool pool, ApprenticeController owner) {
+    public virtual void Initialize(ApprenticeTypeData typeData, Transform target, ProjectilePool pool, ApprenticeController owner) {
+        this.typeData = typeData;
         this.target = target;
         this.pool = pool;
         this.owner = owner;
+
+        speed = typeData.speed;
+        projectileType = typeData.type;
         lastTargetPosition = target.position;
     }
 

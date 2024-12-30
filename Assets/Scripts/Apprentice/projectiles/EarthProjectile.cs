@@ -31,9 +31,8 @@ public class EarthProjectile : ProjectileController {
         crashEffect.Stop();
     }
 
-    public override void Initialize(Transform target, ProjectilePool pool, ApprenticeController owner) {
-
-        base.Initialize(target, pool, owner);
+    public override void Initialize(ApprenticeTypeData typeData, Transform target, ProjectilePool pool, ApprenticeController owner) {
+        base.Initialize(typeData, target, pool, owner);
         hasCrashed = false;
         CalculateArcTrajectory();
     }

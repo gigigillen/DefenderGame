@@ -967,6 +967,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "SkillTree",
+            "id": "0760cd01-821f-4cc6-8006-c4b63018dfc9",
+            "actions": [
+                {
+                    "name": "ToggleSkillTree",
+                    "type": "Button",
+                    "id": "2cb6547b-9ab7-4dd1-b6d8-898e80277881",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "cd9669b0-97bf-4068-96ef-44647a833dc2",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleSkillTree",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

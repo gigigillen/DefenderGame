@@ -16,7 +16,6 @@ public class GameController : MonoBehaviour {
 
     [SerializeField] private GameObject selectorRingPrefab;
     [SerializeField] private UISkillTree uiSkillTree;
-    [SerializeField] private GameObject uiToolBar;
     [SerializeField] private LayerMask attackAreaMask;
     [SerializeField] private GameObject gameOverUI;
     [SerializeField] private InputActionAsset inputActions;
@@ -26,16 +25,26 @@ public class GameController : MonoBehaviour {
 
     private Camera cam;
     private InputActionMap selectingActionMap;
+    private InputActionMap skillTreeMap;
     private InputAction clickSelectAction;
     private InputAction[] keySelectActions = new InputAction[5];
     private InputAction deselectAction;
+    private InputAction toggleSkillTreeAction;
+
     private GameObject currentSelectorRing;
     private bool isPointerOverUI;
+    private bool isSkillTreeOpen;
 
     private void Awake() {
         selectingActionMap = inputActions.FindActionMap("Selecting");
         clickSelectAction = selectingActionMap.FindAction("SelectApprentice");
         deselectAction = selectingActionMap.FindAction("DeselectApprentice");
+
+        skillTreeMap = inputActions.FindActionMap("SkillTree");
+        toggleSkillTreeAction = skillTreeMap.FindAction("ToggleSkillTree");
+
+        isSkillTreeOpen = false;
+
 
         for (int i=0; i<5; i++) {
             int index = i;
@@ -45,11 +54,13 @@ public class GameController : MonoBehaviour {
 
         clickSelectAction.performed += OnSelect;
         deselectAction.performed += OnDeselect;
+        toggleSkillTreeAction.performed += ToggleSkillTree;
     }
 
     private void OnDestroy() {
         clickSelectAction.performed -= OnSelect;
         deselectAction.performed -= OnDeselect;
+        toggleSkillTreeAction.performed -= ToggleSkillTree;
 
         for (int i=0; i<keySelectActions.Length; i++) {
             if (keySelectActions[i] != null) {
@@ -66,6 +77,7 @@ public class GameController : MonoBehaviour {
         uiSkillTree.SetVisible(false);
 
         selectingActionMap.Enable();
+        skillTreeMap.Enable();
     }
 
     // what the game checks every frame
@@ -103,6 +115,14 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    private void ToggleSkillTree(InputAction.CallbackContext context) {
+
+        if (isMenuOpen) return;
+
+        isSkillTreeOpen = !isSkillTreeOpen;
+        uiSkillTree.SetVisible(isSkillTreeOpen);
+    }
+
     // pauses all the game physics and puts a game over scene
     public void GameOver()
     {
@@ -138,7 +158,6 @@ public class GameController : MonoBehaviour {
             // finds which apprentice and fetches their skilltree from their method
             selectedApprentice = apprentice;
             uiSkillTree.SetApprenticeSkills(apprentice.GetApprenticeSkills());
-            uiSkillTree.SetVisible(true);
 
             Vector3 ringPosition = apprentice.transform.position;
             ringPosition.y = 0.1f;
@@ -173,7 +192,6 @@ public class GameController : MonoBehaviour {
             Destroy(currentSelectorRing);
         }
         selectedApprentice = null;
-        uiSkillTree.SetVisible(false);
     }
 
     public void MenuOpen()
@@ -183,7 +201,6 @@ public class GameController : MonoBehaviour {
             DeselectApprentice();
         }
         menuUI.SetActive(true);
-        uiToolBar.SetActive(false);
         openMenuButton.SetActive(false);
         Time.timeScale = 0f;
         isMenuOpen = true;
@@ -195,7 +212,6 @@ public class GameController : MonoBehaviour {
             DeselectApprentice();
         }
         menuUI.SetActive(false);
-        uiToolBar.SetActive(true);
         openMenuButton.SetActive(true);
         Time.timeScale = 1f;
         isMenuOpen = false;
