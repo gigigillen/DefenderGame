@@ -14,7 +14,7 @@ public class UI_HealthBar : MonoBehaviour
     private void Awake() {
 
         health = GetComponentInParent<Health>();
-        maxHealth = health.CompareTag("Enemy") ? 5 : 10;
+        maxHealth = health.CompareTag("Enemy") ? 10 : 20;
     }
 
     private void Update() {
