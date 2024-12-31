@@ -24,25 +24,9 @@ public class BurningEffect : StatusEffect {
         RefreshDuration(duration);
     }
 
-    public void RefreshDuration(float newDuration) {
-        duration = newDuration;
-        isActive = true;
-        nextTickTime = Time.time + tickRate;
-    }
-
     protected override void ApplyEffectTick() {
         if (targetHealth != null) {
             targetHealth.Damage(dmgPerTick);
         }
-    }
-
-
-    protected override void RemoveEffect() {
-        base.RemoveEffect();
-
-        if (activeVfx != null) {
-            Destroy(activeVfx);
-        }
-        Destroy(this);
     }
 }

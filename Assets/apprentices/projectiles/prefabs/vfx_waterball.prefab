@@ -9870,8 +9870,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f691a9c24e90f4a029d5d8215c06824c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
   projectileType: 4
+  wetnessDuration: 5
+  vfxWetPrefab: {fileID: 3160887156302815652, guid: 2d3824c6209164cf890042f7c5959317, type: 3}
 --- !u!1 &4446362455380392840
 GameObject:
   m_ObjectHideFlags: 0

@@ -31,10 +31,21 @@ public class StatusEffect : MonoBehaviour
         nextTickTime = Time.time + tickRate;
     }
 
+    public void RefreshDuration(float newDuration) {
+        duration = newDuration;
+        isActive = true;
+        nextTickTime = Time.time + tickRate;
+    }
+
     protected virtual void ApplyEffectTick() { }
 
     protected virtual void RemoveEffect() {
 
+        if (activeVfx != null) {
+            Destroy(activeVfx);
+        }
+
+        Destroy(this);
         isActive = false;
     }
 }

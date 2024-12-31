@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 4
   apprenticePrefab: {fileID: 187918, guid: 690ede50791714cf4877e39a64865949, type: 3}
-  cooldown: 1
+  cooldown: 3
   attackRange: 10
   speed: 2
   isStatic: 1
