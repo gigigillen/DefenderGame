@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7b6207dd2500004e9adc8bdcee69938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasTransform: {fileID: 0}
   enemy: {fileID: 3240977648046654704}
   stronghold: {fileID: 7762094187858457249, guid: 4066f3d65bfe2294194ebf8e2c12efc7, type: 3}
   speed: 0.01
@@ -135,6 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ac7fa9c40e5f4e02a16401b319f912b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  xpReward: 25
 --- !u!114 &4603772989381159046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7814afa6cbc9add45823f39ce937712a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waypoints: {fileID: 3597824883093729772, guid: 7b8709d34b148684681184cadb24e96b, type: 3}
+  waypoints: {fileID: 114694733362203515, guid: 51d97900becd6c44e872f51dd9773136, type: 3}
   moveSpeed: 5
   distanceThreshold: 0.1
   stronghold: {fileID: 7762094187858457249, guid: 4066f3d65bfe2294194ebf8e2c12efc7, type: 3}
