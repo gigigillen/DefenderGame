@@ -15,7 +15,7 @@ public class SpawnController : MonoBehaviour
         SetEastSpawnRate(5f);  // East spawner interval
         SetNorthSpawnRate(14f); // North spawner interval
         SetSouthSpawnRate(10f); // South spawner interval
-        SetWestSpawnRate(0f); // West spawner interval
+        SetWestSpawnRate(7f); // West spawner interval
     }
 
     void SetEastSpawnRate(float newInterval)
