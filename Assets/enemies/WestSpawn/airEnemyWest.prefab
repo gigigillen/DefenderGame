@@ -89,7 +89,6 @@ GameObject:
   - component: {fileID: 7630096573079814130}
   - component: {fileID: 2077870888884834716}
   - component: {fileID: -2280580193372134535}
-  - component: {fileID: -803931279158482250}
   - component: {fileID: 1805357839724305177}
   m_Layer: 9
   m_Name: airEnemyWest
@@ -214,22 +213,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xpReward: 25
---- !u!114 &-803931279158482250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3240977648046654704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7814afa6cbc9add45823f39ce937712a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  waypoints: {fileID: 0}
-  moveSpeed: 5
-  distanceThreshold: 0.1
-  stronghold: {fileID: 0}
 --- !u!114 &1805357839724305177
 MonoBehaviour:
   m_ObjectHideFlags: 0
