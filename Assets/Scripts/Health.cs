@@ -18,12 +18,12 @@ public class Health : MonoBehaviour {
         xpSystem = XPSystem.FindFirstObjectByType<XPSystem>();
         if (CompareTag("Enemy"))
         {
-            health = 10;
+            health = 20;
         }
         // if it is a special enemy (ie wizard) it gets assigned more health
         else if (CompareTag("Wizard"))
         {
-            health = 20;
+            health = 30;
         }
     }
 

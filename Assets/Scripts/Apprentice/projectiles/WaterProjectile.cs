@@ -13,18 +13,32 @@ public class WaterProjectile : ProjectileController {
     }
 
     protected override void OnReachTarget() {
-        base.OnReachTarget();
 
-        if (canApplyWetness && target != null) {
+        BurningEffect burningEffect = target.GetComponent<BurningEffect>();
 
-            WetEffect wetnessEffect = target.GetComponent<WetEffect>();
-
-            if (wetnessEffect != null) {
-                wetnessEffect.StartWetness(wetnessDuration, vfxWetPrefab);
+        if (burningEffect != null) {
+            if (VaporiseController.CanVaporise(target.gameObject)) {
+                DealDamage();
+                base.OnReachTarget();
+                Debug.Log("vaporise triggered!");
+                burningEffect.RemoveEffect();
+                VaporiseController.RecordVaporise(target.gameObject);
             }
-            else {
-                WetEffect newWetnessEffect = target.gameObject.AddComponent<WetEffect>();
-                newWetnessEffect.StartWetness(wetnessDuration, vfxWetPrefab);
+        }
+        else {
+            base.OnReachTarget();
+
+            if (canApplyWetness && target != null) {
+
+                WetEffect wetnessEffect = target.GetComponent<WetEffect>();
+
+                if (wetnessEffect != null) {
+                    wetnessEffect.StartWetness(wetnessDuration, vfxWetPrefab);
+                }
+                else {
+                    WetEffect newWetnessEffect = target.gameObject.AddComponent<WetEffect>();
+                    newWetnessEffect.StartWetness(wetnessDuration, vfxWetPrefab);
+                }
             }
         }
     }

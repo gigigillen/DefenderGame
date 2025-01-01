@@ -20,18 +20,30 @@ public class FireProjectile : ProjectileController {
     }
 
     protected override void OnReachTarget() {
-        base.OnReachTarget();
 
-        if (canApplyBurning && target != null) {
-
-            BurningEffect burningEffect = target.GetComponent<BurningEffect>();
-
-            if (burningEffect != null) {
-                burningEffect.StartBurning(burnDuration, vfxBurnPrefab);
+        WetEffect wetEffect = target.GetComponent<WetEffect>();
+        if (wetEffect != null) {
+            if (VaporiseController.CanVaporise(target.gameObject)) {
+                DealDamage();
+                base.OnReachTarget();
+                Debug.Log("vaporise triggered!");
+                wetEffect.RemoveEffect();
+                VaporiseController.RecordVaporise(target.gameObject);
             }
-            else {
-                BurningEffect newBurningEffect = target.gameObject.AddComponent<BurningEffect>();
-                newBurningEffect.StartBurning(burnDuration, vfxBurnPrefab);
+        }
+        else {
+            base.OnReachTarget();
+            if (canApplyBurning && target != null) {
+
+                BurningEffect burningEffect = target.GetComponent<BurningEffect>();
+
+                if (burningEffect != null) {
+                    burningEffect.StartBurning(burnDuration, vfxBurnPrefab);
+                }
+                else {
+                    BurningEffect newBurningEffect = target.gameObject.AddComponent<BurningEffect>();
+                    newBurningEffect.StartBurning(burnDuration, vfxBurnPrefab);
+                }
             }
         }
     }

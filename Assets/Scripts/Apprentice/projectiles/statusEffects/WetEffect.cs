@@ -35,7 +35,7 @@ public class WetEffect : StatusEffect {
         RefreshDuration(duration);
     }
 
-    protected override void RemoveEffect() {
+    public override void RemoveEffect() {
 
 
         if (enemyBehavior != null) {

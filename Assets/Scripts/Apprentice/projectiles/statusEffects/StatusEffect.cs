@@ -39,7 +39,7 @@ public class StatusEffect : MonoBehaviour
 
     protected virtual void ApplyEffectTick() { }
 
-    protected virtual void RemoveEffect() {
+    public virtual void RemoveEffect() {
 
         if (activeVfx != null) {
             Destroy(activeVfx);
