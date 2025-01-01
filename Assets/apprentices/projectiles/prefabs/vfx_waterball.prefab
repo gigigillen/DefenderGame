@@ -9872,7 +9872,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileType: 4
   wetnessDuration: 5
-  vfxWetPrefab: {fileID: 3160887156302815652, guid: 2d3824c6209164cf890042f7c5959317, type: 3}
+  vfxWetPrefab: {fileID: 3160887156302815652, guid: e52d9c2da4a454f99a577eb7d66e5521, type: 3}
 --- !u!1 &4446362455380392840
 GameObject:
   m_ObjectHideFlags: 0

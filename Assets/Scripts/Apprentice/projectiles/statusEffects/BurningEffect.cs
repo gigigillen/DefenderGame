@@ -18,7 +18,7 @@ public class BurningEffect : StatusEffect {
         if (activeVfx == null && burnVfxPrefab != null) {
             vfxPrefab = burnVfxPrefab;
             activeVfx = Instantiate(vfxPrefab, transform);
-            activeVfx.transform.localPosition = new Vector3(0.5f, 0.5f, 0.1f);
+            activeVfx.transform.localPosition = new Vector3(0.5f, 0.2f, 0.1f);
         }
 
         RefreshDuration(duration);
