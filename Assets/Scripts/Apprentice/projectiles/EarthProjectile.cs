@@ -13,12 +13,13 @@ public class EarthProjectile : ProjectileController {
 
     [Header("Impact Effects")]
     [SerializeField] private int damagePerPulse = 3;
-    [SerializeField] private int numberOfPulses = 3;
     [SerializeField] private float pulseInterval = 1f;
     [SerializeField] private float stunDuration = 3f;
     [SerializeField] private float aoeRadius = 3f;
 
 
+    private bool hasPulsingUnlocked = false;
+    private int pulseDamageUpgradeLevel = 0;
     private Vector3 initialVelocity;
     private bool hasCrashed;
 
@@ -27,6 +28,7 @@ public class EarthProjectile : ProjectileController {
 
         projectileType = ApprenticeType.Earth;
         speed = 6f;
+        damage = 4;
 
         crashEffect.Stop();
     }
@@ -35,6 +37,8 @@ public class EarthProjectile : ProjectileController {
         base.Initialize(typeData, target, pool, owner);
         hasCrashed = false;
         CalculateArcTrajectory();
+
+        // check skill tree status
     }
 
     private void CalculateArcTrajectory() {
@@ -95,27 +99,34 @@ public class EarthProjectile : ProjectileController {
     private IEnumerator EarthCrash() {
         speed = 0f;
 
-        for (int i = 0; i < numberOfPulses; i++) {
+        int totalPulseDamage = hasPulsingUnlocked ?
+            (damagePerPulse + (pulseDamageUpgradeLevel * 2)) :
+            damage;
+
+        int pulseCount = hasPulsingUnlocked ? 3 : 1;
+
+
+        for (int i = 0; i < pulseCount; i++) {
             crashEffect.Play();
             if (pulseEffect!=null) {
                 pulseEffect.Play();
                 yield return new WaitForSeconds(pulseInterval);
                 pulseEffect.Stop();
             }
-            ApplyAoEDamage();
+            ApplyAoEDamage(totalPulseDamage);
             float waitTime = Mathf.Max(0, pulseInterval - pulseEffect.main.duration);
             yield return new WaitForSeconds(waitTime);
         }
         pool.ReturnProjectile(gameObject);
     }
 
-    private void ApplyAoEDamage() {
+    private void ApplyAoEDamage(int damage) {
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, aoeRadius);
         foreach (Collider col in hitColliders) {
             if (col.CompareTag("Enemy") || col.CompareTag("Wizard")) {
                 Health health = col.GetComponent<Health>();
                 if (health != null) {
-                    health.Damage(damagePerPulse);
+                    health.Damage(damage);
                 }
 
                 EnemyBehavior enemy = col.GetComponent<EnemyBehavior>();
