@@ -12,10 +12,10 @@ public class CameraController : MonoBehaviour
     private float maxZoom = 80f;
 
     // Define the min and max corners for camera movement bounds
-    private float minX = -205f; // Minimum X boundary
-    private float maxX = 40f;  // Maximum X boundary
-    private float minZ = -20f; // Minimum Z boundary
-    private float maxZ = 20f;  // Maximum Z boundary
+    private float minX = -5f; // Minimum X boundary
+    private float maxX = 60f;  // Maximum X boundary
+    private float minZ = -15f; // Minimum Z boundary
+    private float maxZ = 32.5f;  // Maximum Z boundary
 
     private Camera cam;
 
