@@ -3,23 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_HealthBar : MonoBehaviour
-{
+public class UI_HealthBar : MonoBehaviour { 
 
     [SerializeField] private Image healthBarFill;
-
     private Health health;
-    private int maxHealth;
+
 
     private void Awake() {
 
         health = GetComponentInParent<Health>();
-        maxHealth = health.CompareTag("Enemy") ? 20 : 30;
     }
+
 
     private void Update() {
 
-        float healthPercentage = (float)health.getHealth() / maxHealth;
+        float healthPercentage = (float)health.getHealth() / health.GetMaxHealth();
         healthBarFill.fillAmount = healthPercentage;
         healthBarFill.color = GetHealthBarColour(healthPercentage);
     }

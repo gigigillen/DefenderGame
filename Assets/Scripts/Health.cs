@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Health : MonoBehaviour {
 
+    [SerializeField] private int enemyMaxHealth = 20;
+    [SerializeField] private int wizardMaxHealth = 30;
+
     private int health;
-
-    private const int MAX_HEALTH = 100;
-
+    private int maxHealth;
     public int xpReward = 25; // XP reward for destroying this object
     private XPSystem xpSystem; // Reference to the XP system
+
 
     // assigns the health of the game characters at the start
     void Start() {
@@ -18,25 +20,28 @@ public class Health : MonoBehaviour {
         xpSystem = XPSystem.FindFirstObjectByType<XPSystem>();
         if (CompareTag("Enemy"))
         {
-            health = 20;
+            maxHealth = enemyMaxHealth;
         }
         // if it is a special enemy (ie wizard) it gets assigned more health
         else if (CompareTag("Wizard"))
         {
-            health = 30;
+            maxHealth = wizardMaxHealth;
         }
+
+        health = maxHealth;
     }
 
-    // Update is called once per frame
-    void Update() { 
-    
-        
+
+    public int GetMaxHealth() {
+        return maxHealth;
     }
+
 
     // health getter method
     public int getHealth() {
         return health;
     }
+
 
     // deals with damage taken
     public void Damage(int amount) {
@@ -55,6 +60,7 @@ public class Health : MonoBehaviour {
         }
 
     }
+
 
     // gives the stronghold 10% more health and destroys game object
     // the IEnumerator return is a future implementation
