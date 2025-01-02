@@ -11,12 +11,29 @@ public class RandomizedEnemies : MonoBehaviour
     [SerializeField] private Transform enemies;  // Parent object for spawned enemies
     private int enemyCount;  // Track the number of enemies spawned
 
+    private Coroutine spawnCoroutine;
+
+    public float SpawnInterval
+    {
+        get { return spawnInterval; }
+        set
+        {
+            spawnInterval = value;
+            // Restart the coroutine with new interval
+            if (spawnCoroutine != null)
+            {
+                StopCoroutine(spawnCoroutine);
+            }
+            spawnCoroutine = StartCoroutine(SpawnEnemies(spawnInterval));
+        }
+    }
+
     void Start()
     {
         enemyCount = 0;
 
         // Start the enemy spawning coroutine
-        StartCoroutine(SpawnEnemies(spawnInterval));
+        spawnCoroutine = StartCoroutine(SpawnEnemies(spawnInterval));
     }
 
     // This coroutine spawns enemies, randomly selecting from the available enemy prefabs
