@@ -10,7 +10,10 @@ public class XPSystem : MonoBehaviour
     private int currentXP = 0;
     private int maxXP = 100;
     private int skillPoints = 0;
-
+    public int GetSkillPoints()
+    {
+    return skillPoints;
+    }
     public void AddXP(int xp)
     {
         currentXP += xp;
@@ -45,12 +48,16 @@ public class XPSystem : MonoBehaviour
         if (skillPoints > 0)
         {
             skillPoints--;
-            UpdateSkillPointsUI();
+            UpdateSkillPointsUI(); // Ensure the UI updates
+            Debug.Log($"Skill point spent. Remaining skill points: {skillPoints}");
             return true;
         }
+
+        Debug.Log("Not enough skill points to spend.");
         return false;
     }
     private void Update()
+
 {
     // Test adding XP with the "X" key
     if (Input.GetKeyDown(KeyCode.X)) 
