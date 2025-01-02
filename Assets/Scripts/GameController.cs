@@ -48,9 +48,6 @@ public class GameController : MonoBehaviour {
         menuMap = inputActions.FindActionMap("Menu");
         toggleMenuAction = menuMap.FindAction("ToggleMenu");
 
-        isSkillTreeOpen = false;
-
-
         for (int i=0; i<5; i++) {
             int index = i;
             keySelectActions[i] = selectingActionMap.FindAction($"SelectApprentice{i + 1}");
@@ -61,12 +58,16 @@ public class GameController : MonoBehaviour {
         deselectAction.performed += OnDeselect;
         toggleSkillTreeAction.performed += ToggleSkillTree;
         toggleMenuAction.performed += ToggleMenu;
+
+        isSkillTreeOpen = false;
+        isMenuOpen = false;
     }
 
     private void OnDestroy() {
         clickSelectAction.performed -= OnSelect;
         deselectAction.performed -= OnDeselect;
         toggleSkillTreeAction.performed -= ToggleSkillTree;
+        toggleMenuAction.performed -= ToggleMenu;
 
         for (int i=0; i<keySelectActions.Length; i++) {
             if (keySelectActions[i] != null) {
@@ -74,6 +75,8 @@ public class GameController : MonoBehaviour {
                 keySelectActions[i].performed -= _ => SelectApprenticeByNumber(index);
             }
         }
+
+        Time.timeScale = 1f;
     }
 
 
@@ -132,14 +135,14 @@ public class GameController : MonoBehaviour {
 
     private void ToggleMenu(InputAction.CallbackContext context) {
 
+        if (gameOverUI != null && gameOverUI.activeSelf) return;
+
         if (isMenuOpen) {
             MenuClose();
         }
         else {
             MenuOpen();
         }
-       
-    
     }
 
     // pauses all the game physics and puts a game over scene
@@ -213,20 +216,24 @@ public class GameController : MonoBehaviour {
         selectedApprentice = null;
     }
 
+    // called when menu is toggled open
     public void MenuOpen()
     {
         if (selectedApprentice != null)
         {
             DeselectApprentice();
         }
-        menuUI.SetActive(true);
+
         uiSkillTree.SetVisible(false);
+        menuUI.SetActive(true);
         openMenuButton.SetActive(false);
         Time.timeScale = 0f;
         isMenuOpen = true;
     }
 
+    // called when menu is toggled close
     public void MenuClose() {
+
         if (selectedApprentice != null)
         {
             DeselectApprentice();
@@ -235,5 +242,25 @@ public class GameController : MonoBehaviour {
         openMenuButton.SetActive(true);
         Time.timeScale = 1f;
         isMenuOpen = false;
+    }
+
+
+    // called when options button is clicked
+    public void OnOptionsClick() {
+
+        // make the options panel visible
+        // set the rest of the menu not visible
+    }
+
+    // called when main menu button is clicked
+    public void OnMainMenuClick() {
+
+        SceneManager.LoadScene(0);
+    }
+
+    // called when quit button is clicked
+    public void OnQuitClick() {
+
+        Application.Quit();
     }
 }
