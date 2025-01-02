@@ -8,10 +8,12 @@ using TMPro;
 public class SpawnApprentice : MonoBehaviour {
 
     [SerializeField] private InputActionAsset inputActions;
+    [SerializeField] private XPSystem xpSystem; // Reference to XPSystem
     private InputActionMap spawningActionMap;
     private InputActionMap selectingActionMap;
     private InputAction spawnAction;
     private InputAction cancelPlacementAction;
+    
 
 
     [SerializeField] private LayerMask placementBlockingLayers;
@@ -113,21 +115,69 @@ public class SpawnApprentice : MonoBehaviour {
     }
 
 
-    public void SetApprenticeTypeToPlace(GameObject apprenticePrefab) {
-        if (apprenticeCount >= maxApprentices) {
-            Debug.Log("max apprentices reached");
+   public void SetApprenticeTypeToPlace(GameObject apprenticePrefab)
+    {
+        // Dynamically assign XPSystem if it's null
+        if (xpSystem == null)
+        {
+            xpSystem = FindObjectOfType<XPSystem>();
+            if (xpSystem == null)
+            {
+                Debug.LogError("XPSystem reference is null! Ensure an XPSystem is in the scene.");
+                return;
+            }
+        }
+
+        ApprenticeController apprenticeController = apprenticePrefab.GetComponent<ApprenticeController>();
+        if (apprenticeController != null)
+        {
+            int requiredSkillPoints = 0; // Default required skill points
+
+            // Check for apprentices that require more skill points
+            switch (apprenticeController.apprenticeType)
+            {
+                case ApprenticeType.Water:
+                case ApprenticeType.Earth:
+                requiredSkillPoints = 1;
+                break;
+                case ApprenticeType.Wind:
+                case ApprenticeType.Fire:
+                    requiredSkillPoints = 2;
+                    break;
+            }
+
+            // Check if the player has enough skill points
+            if (xpSystem.GetSkillPoints() < requiredSkillPoints)
+            {
+                Debug.Log($"Not enough skill points to place {apprenticeController.apprenticeType} apprentice. Required: {requiredSkillPoints}, Available: {xpSystem.GetSkillPoints()}");
+                return;
+            }
+
+            // Spend the required skill points
+            for (int i = 0; i < requiredSkillPoints; i++)
+            {
+                xpSystem.SpendSkillPoint();
+            }
+
+            Debug.Log($"{apprenticeController.apprenticeType} apprentice unlocked! Remaining skill points: {xpSystem.GetSkillPoints()}");
+        }
+
+        if (apprenticeCount >= maxApprentices)
+        {
+            Debug.Log("Max apprentices reached");
             return;
         }
 
-        if (currentPlacingApprentice != null) {
+        if (currentPlacingApprentice != null)
+        {
             Destroy(currentPlacingApprentice);
             currentPlacingApprentice = null;
         }
 
         this.apprenticePrefab = apprenticePrefab;
 
-        ApprenticeController apprenticeController = apprenticePrefab.GetComponent<ApprenticeController>();
-        if (apprenticeController != null) {
+        if (apprenticeController != null)
+        {
             type = apprenticeController.apprenticeType;
         }
 
@@ -135,23 +185,25 @@ public class SpawnApprentice : MonoBehaviour {
         RaycastHit hit;
         Vector3 spawnPos = Vector3.zero;
 
-        if (Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask("Floor"))) {
+        if (Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask("Floor")))
+        {
             spawnPos = hit.point;
             spawnPos.y = 0.5f;
         }
 
-        if (apprenticePrefab != null) {
+        if (apprenticePrefab != null)
+        {
             currentPlacingApprentice = Instantiate(apprenticePrefab, spawnPos, Quaternion.identity);
-            Debug.Log("placed preview apprentice!");
+            Debug.Log($"Placed preview apprentice of type {apprenticeController?.apprenticeType}!");
             SetupPreviewApprentice(currentPlacingApprentice);
 
             selectingActionMap.Disable();
             spawningActionMap.Enable();
 
-            Debug.Log("spawning enabled, selecting disabled");
+            Debug.Log("Spawning enabled, selecting disabled");
         }
-
     }
+
 
 
     private void SetupPreviewApprentice(GameObject apprentice) {

@@ -7,8 +7,10 @@ public class ApprenticeSkills {
     // in prototype, only the Basic skill works. Mid and Ultimate are placeholders
     public enum SkillType {
         Basic,
-        Mid,
-        Ultimate,
+        Earth,
+        Fire,
+        Water,
+        Wind,
     }
 
     private List<SkillType> unlockedSkillTypeList;
@@ -20,12 +22,17 @@ public class ApprenticeSkills {
         unlockedSkillTypeList.Add(SkillType.Basic);
     }
 
-    public void UnlockSkill(SkillType skillType) {
-        // only add the skill if not unlocked already
-        if (!IsSkillUnlocked(skillType)) {
+    public void UnlockSkill(SkillType skillType)
+    {
+        // Only add the skill if it is not already unlocked
+        if (!IsSkillUnlocked(skillType))
+        {
             unlockedSkillTypeList.Add(skillType);
+            Debug.Log($"{skillType} skill unlocked.");
         }
-        else {
+        else
+        {
+            Debug.Log($"{skillType} skill is already unlocked.");
         }
     }
 
