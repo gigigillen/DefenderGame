@@ -9871,6 +9871,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileType: 2
+  vortexDuration: 3
+  vfxVortexPrefab: {fileID: 2860059356145484580, guid: 71f8a981006ab4da582be1fb005a4d9e, type: 3}
 --- !u!1 &4446362455380392840
 GameObject:
   m_ObjectHideFlags: 0
