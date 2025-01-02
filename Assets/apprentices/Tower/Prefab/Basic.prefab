@@ -589,7 +589,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Apprentice
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &-4497944113126900203
@@ -607,6 +607,7 @@ MonoBehaviour:
   typeData: {fileID: 11400000, guid: e77706b7714e24da98b4b9627b2b0b8b, type: 2}
   currentStrategy: 1
   stronghold: {fileID: 7762094187858457249, guid: 4066f3d65bfe2294194ebf8e2c12efc7, type: 3}
+  apprenticeCanvas: {fileID: 0}
   apprenticeType: 0
 --- !u!65 &3881441197443881214
 BoxCollider:
