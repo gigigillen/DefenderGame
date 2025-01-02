@@ -3,7 +3,8 @@ using UnityEngine;
 public class UISelectCanvas : MonoBehaviour {
 
     private Camera mainCamera;
-    [SerializeField] private Vector3 offset = new Vector3(2, 0, 0);
+    [SerializeField] private Vector2 screenOffset = new Vector2(100,0);
+    [SerializeField] private RectTransform canvasRectTransform;
     private ApprenticeController currentApprentice;
 
 
@@ -26,8 +27,9 @@ public class UISelectCanvas : MonoBehaviour {
 
         if (currentApprentice != null) {
 
-            transform.position = currentApprentice.transform.position + offset;
-            transform.LookAt(transform.position + mainCamera.transform.forward);
+            Vector2 screenPoint = mainCamera.WorldToScreenPoint(currentApprentice.transform.position);
+            screenPoint += screenOffset;
+            canvasRectTransform.position = screenPoint;
         }
     }
 }
