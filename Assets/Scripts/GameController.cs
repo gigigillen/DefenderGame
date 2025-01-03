@@ -130,6 +130,12 @@ public class GameController : MonoBehaviour {
 
         if (isMenuOpen) return;
 
+        if (spawnController.isPlacingApprentice) {
+            // while placing an apprentice the placement tip appears in the skill tree
+            // skill tree cannot close during placement
+            return;
+        }
+
         isSkillTreeOpen = !isSkillTreeOpen;
         uiSkillTree.SetVisible(isSkillTreeOpen);
     }

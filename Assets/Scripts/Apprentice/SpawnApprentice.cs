@@ -21,6 +21,7 @@ public class SpawnApprentice : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI apprenticeText;
 
     public ApprenticeType type = ApprenticeType.Basic; // default type basic
+    public bool isPlacingApprentice = false;
 
     private GameObject currentPlacingApprentice;
     private Camera cam;
@@ -31,7 +32,6 @@ public class SpawnApprentice : MonoBehaviour {
     private GameObject apprenticePrefab;
     private List<ApprenticeController> activeApprentices = new List<ApprenticeController>();
     private int pendingSkillPointCost = 0;
-    private bool isPlacingApprentice = false;
 
 
     private void Awake() {
@@ -120,6 +120,12 @@ public class SpawnApprentice : MonoBehaviour {
             }
         }
 
+        if (apprenticeCount >= maxApprentices)
+        {
+            Debug.Log("Max apprentices reached");
+            return;
+        }
+
         ApprenticeController apprenticeController = apprenticePrefab.GetComponent<ApprenticeController>();
         if (apprenticeController != null)
         {
@@ -132,49 +138,10 @@ public class SpawnApprentice : MonoBehaviour {
                 return;
             }
 
+            this.apprenticePrefab = apprenticePrefab;
+            type = apprenticeController.apprenticeType;
             CreateApprenticePreview(apprenticePrefab, apprenticeController);
             isPlacingApprentice = true;
-        }
-
-        if (apprenticeCount >= maxApprentices)
-        {
-            Debug.Log("Max apprentices reached");
-            return;
-        }
-
-        if (currentPlacingApprentice != null)
-        {
-            Destroy(currentPlacingApprentice);
-            currentPlacingApprentice = null;
-        }
-
-        this.apprenticePrefab = apprenticePrefab;
-
-        if (apprenticeController != null)
-        {
-            type = apprenticeController.apprenticeType;
-        }
-
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        Vector3 spawnPos = Vector3.zero;
-
-        if (Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask("Floor")))
-        {
-            spawnPos = hit.point;
-            spawnPos.y = 0.5f;
-        }
-
-        if (apprenticePrefab != null)
-        {
-            currentPlacingApprentice = Instantiate(apprenticePrefab, spawnPos, Quaternion.identity);
-            Debug.Log($"Placed preview apprentice of type {apprenticeController?.apprenticeType}!");
-            SetupPreviewApprentice(currentPlacingApprentice);
-
-            selectingActionMap.Disable();
-            spawningActionMap.Enable();
-
-            Debug.Log("Spawning enabled, selecting disabled");
         }
     }
 
@@ -223,19 +190,20 @@ public class SpawnApprentice : MonoBehaviour {
             CancelPlacement();
         }
 
-        this.apprenticePrefab = apprenticePrefab;
-        type = controller.apprenticeType;
-
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        Vector3 spawnPos = Vector3.zero;
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, LayerMask.GetMask("Floor"))) {
-            Vector3 spawnPos = hit.point;
+            spawnPos = hit.point;
             spawnPos.y = 0.5f;
-            currentPlacingApprentice = Instantiate(apprenticePrefab, spawnPos, Quaternion.identity);
-            SetupPreviewApprentice(currentPlacingApprentice);
-
-            selectingActionMap.Disable();
-            spawningActionMap.Enable();
         }
+
+        currentPlacingApprentice = Instantiate(apprenticePrefab, spawnPos, Quaternion.identity);
+        SetupPreviewApprentice(currentPlacingApprentice);
+
+        selectingActionMap.Disable();
+        spawningActionMap.Enable();
+
+        uiSkillTree.OnPlacementStart();
     }
 
 
@@ -272,6 +240,7 @@ public class SpawnApprentice : MonoBehaviour {
         pendingSkillPointCost = 0;
         spawningActionMap.Disable();
         selectingActionMap.Enable();
+        uiSkillTree.OnPlacementEnd();
     }
 
 
