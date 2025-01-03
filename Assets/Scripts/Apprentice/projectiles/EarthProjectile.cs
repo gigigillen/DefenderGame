@@ -6,6 +6,7 @@ public class EarthProjectile : ProjectileController {
     [Header("Projectile Physics")]
     [SerializeField] private float gravity = 9.81f;
     [SerializeField] private float arcHeight = 3f;
+    [SerializeField] private float baseScale = 1f;
 
     [Header("Visual Effects")]
     [SerializeField] private ParticleSystem crashEffect;
@@ -29,6 +30,7 @@ public class EarthProjectile : ProjectileController {
         projectileType = ApprenticeType.Earth;
         speed = 6f;
         damage = 4;
+        baseScale = transform.localScale.x;
 
         crashEffect.Stop();
     }
@@ -53,8 +55,11 @@ public class EarthProjectile : ProjectileController {
         float horizontalDistance = horizontalDiff.magnitude;
         horizontalDistance = Mathf.Max(horizontalDistance, 1f);
 
-        float timeToTarget = horizontalDistance / speed*2f;
-        float adjustedArcHeight = Mathf.Min(arcHeight, horizontalDistance * 0.1f);
+        float scaleModifier = transform.localScale.x / baseScale;
+        float timeToTarget = (horizontalDistance / speed * 2f) * Mathf.Sqrt(scaleModifier);
+        float heightScaleModifier = Mathf.Lerp(1f, scaleModifier, 0.5f);
+
+        float adjustedArcHeight = Mathf.Min(arcHeight * heightScaleModifier, horizontalDistance * 0.1f);
 
         initialVelocity = new Vector3(
             horizontalDiff.x / timeToTarget,

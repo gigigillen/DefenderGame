@@ -60,7 +60,7 @@ public class GameController : MonoBehaviour {
         toggleSkillTreeAction.performed += ToggleSkillTree;
         toggleMenuAction.performed += ToggleMenu;
 
-        isSkillTreeOpen = false;
+        //isSkillTreeOpen = false;
         isMenuOpen = false;
     }
 
