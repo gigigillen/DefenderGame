@@ -15,6 +15,6 @@ MonoBehaviour:
   type: 1
   apprenticePrefab: {fileID: 187918, guid: 77a599bd67f72e24999e1d5d60f433d0, type: 3}
   cooldown: 5
-  attackRange: 5
+  attackRange: 30
   speed: 5
   isStatic: 1

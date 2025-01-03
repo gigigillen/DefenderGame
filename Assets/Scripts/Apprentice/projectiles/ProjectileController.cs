@@ -5,7 +5,7 @@ using UnityEngine;
 public class ProjectileController : MonoBehaviour {
 
     public ApprenticeType projectileType;
-    protected int damage = 1;
+    protected int damage = 2;
     protected float speed;
     protected Transform target;
     protected ProjectilePool pool;
@@ -25,6 +25,12 @@ public class ProjectileController : MonoBehaviour {
     }
 
     protected virtual void Update() {
+
+        if (target==null) {
+            pool.ReturnProjectile(gameObject);
+            return;
+        }
+
         Vector3 destination = target != null ? target.position : lastTargetPosition;
         transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
 
@@ -43,13 +49,18 @@ public class ProjectileController : MonoBehaviour {
     }
 
     protected virtual void OnReachTarget() {
+
+        DealDamage();
+        pool.ReturnProjectile(gameObject);
+    }
+
+    protected virtual void DealDamage() {
         if (target != null) {
             Health health = target.GetComponent<Health>();
             if (health != null) {
                 health.Damage(damage);
             }
         }
-        pool.ReturnProjectile(gameObject);
     }
 }
 

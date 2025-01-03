@@ -36,7 +36,7 @@ public class ApprenticeController : MonoBehaviour
     void Update()
     {
         // Check if the apprentice has unlocked the skill corresponding to their type
-        if (apprenticeSkills.IsSkillUnlocked(GetCorrespondingSkillType()))
+        if (apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Basic))
         {
             if (currentCooldown > 0)
             {
@@ -107,6 +107,7 @@ public class ApprenticeController : MonoBehaviour
             case ApprenticeType.Water: return ApprenticeSkills.SkillType.Water;
             case ApprenticeType.Wind: return ApprenticeSkills.SkillType.Wind;
             case ApprenticeType.Fire: return ApprenticeSkills.SkillType.Fire;
+            case ApprenticeType.Earth: return ApprenticeSkills.SkillType.Earth;
             default: return ApprenticeSkills.SkillType.Basic;
         }
     }

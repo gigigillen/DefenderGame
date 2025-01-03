@@ -529,7 +529,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 409546}
@@ -589,7 +589,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Apprentice
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &-4497944113126900203
@@ -605,7 +605,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeData: {fileID: 11400000, guid: 40fd09e979fc146c3bb821352ff70fc9, type: 2}
-  currentStrategy: 1
+  currentStrategy: 0
   stronghold: {fileID: 7762094187858457249, guid: 4066f3d65bfe2294194ebf8e2c12efc7, type: 3}
   apprenticeType: 4
 --- !u!65 &3881441197443881214

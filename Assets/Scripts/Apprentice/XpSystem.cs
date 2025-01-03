@@ -9,7 +9,9 @@ public class XPSystem : MonoBehaviour
 
     private int currentXP = 0;
     private int maxXP = 100;
-    private int skillPoints = 0;
+    [SerializeField] private int skillPoints = 0;
+
+
     public int GetSkillPoints()
     {
     return skillPoints;
@@ -59,6 +61,9 @@ public class XPSystem : MonoBehaviour
     private void Update()
 
 {
+
+    UpdateSkillPointsUI();
+
     // Test adding XP with the "X" key
     if (Input.GetKeyDown(KeyCode.X)) 
     {

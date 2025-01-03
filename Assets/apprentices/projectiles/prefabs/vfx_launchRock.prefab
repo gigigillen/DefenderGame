@@ -162,13 +162,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3647494458904213104}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.034, y: -0.484, z: 0}
+  m_LocalScale: {x: 2.64, y: 2.4, z: 2.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9092153641127998183}
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &1237681277620897715
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -5013,7 +5013,7 @@ ParticleSystemRenderer:
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
   m_VertexStreams: 00010304
-  m_Mesh: {fileID: 4300002, guid: 78d8c60f364b56c468c7213af9ceda1e, type: 3}
+  m_Mesh: {fileID: 4300002, guid: 0fe51bac2e8e34905a120d2814a30726, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -5050,7 +5050,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.35, z: 0.05}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_LocalScale: {x: 2.25, y: 2.25, z: 2.25}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9092153641127998183}
@@ -19841,6 +19841,18 @@ PrefabInstance:
       value: vfx_launchRock
       objectReference: {fileID: 0}
     - target: {fileID: 128935687, guid: a574611293e624ae29ab282dcfe31508, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 128935687, guid: a574611293e624ae29ab282dcfe31508, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 128935687, guid: a574611293e624ae29ab282dcfe31508, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 128935687, guid: a574611293e624ae29ab282dcfe31508, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.11
       objectReference: {fileID: 0}
@@ -19850,7 +19862,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 128935687, guid: a574611293e624ae29ab282dcfe31508, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.56
       objectReference: {fileID: 0}
     - target: {fileID: 128935687, guid: a574611293e624ae29ab282dcfe31508, type: 3}
       propertyPath: m_LocalRotation.w
