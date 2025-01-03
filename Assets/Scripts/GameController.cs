@@ -177,10 +177,8 @@ public class GameController : MonoBehaviour {
                 DeselectApprentice();
             }
 
-
             // finds which apprentice and fetches their skilltree from their method
             selectedApprentice = apprentice;
-            uiSkillTree.SetApprenticeSkills(apprentice.GetApprenticeSkills());
 
             Vector3 ringPosition = apprentice.transform.position;
             ringPosition.y = 0.1f;
@@ -191,7 +189,6 @@ public class GameController : MonoBehaviour {
             //selectCanvas.gameObject.SetActive(true);
 
             Debug.Log("Selected Apprentice: " + apprentice.gameObject.name);
-            Debug.Log("Skills: " + apprentice.GetApprenticeSkills().GetUnlockedSkills());
         }
         finally {
             isSelectingApprentice = false;

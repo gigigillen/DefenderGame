@@ -11,8 +11,6 @@ public class ApprenticeController : MonoBehaviour
     public ApprenticeType apprenticeType; // Type of apprentice (Basic, Water, Wind, Fire)
     private float currentCooldown;
 
-    private ApprenticeSkills apprenticeSkills;
-    private ApprenticeAttack apprenticeAttack;
     private ProjectilePool projectilePool;
 
     private GameObject enemyToTarget;
@@ -22,12 +20,7 @@ public class ApprenticeController : MonoBehaviour
 
     private void Awake()
     {
-        // Initialize apprentice skills and components
-        apprenticeSkills = new ApprenticeSkills();
-        if (!typeData.isStatic)
-        {
-            apprenticeAttack = GetComponent<ApprenticeAttack>();
-        }
+
         projectilePool = ProjectilePool.FindAnyObjectByType<ProjectilePool>();
         currentCooldown = 0f;
         gameObject.tag = "Apprentice";
@@ -35,28 +28,22 @@ public class ApprenticeController : MonoBehaviour
 
     void Update()
     {
-        // Check if the apprentice has unlocked the skill corresponding to their type
-        if (apprenticeSkills.IsSkillUnlocked(ApprenticeSkills.SkillType.Basic))
+        
+        if (currentCooldown > 0)
         {
-            if (currentCooldown > 0)
-            {
-                currentCooldown -= Time.deltaTime;
-            }
-            FindEnemyToTarget();
-            if (enemyToTarget != null)
-            {
-                HandleAttack();
-            }
+            currentCooldown -= Time.deltaTime;
+        }
+        FindEnemyToTarget();
+        if (enemyToTarget != null)
+        {
+            HandleAttack();
         }
     }
 
     private void HandleAttack()
     {
-        if (!typeData.isStatic)
-        {
-            MeleeAttack();
-        }
-        else if (nearestDist <= typeData.attackRange)
+
+        if (nearestDist <= typeData.attackRange)
         {
             Vector3 directionToEnemy = enemyToTarget.transform.position - transform.position;
             directionToEnemy.y = 0f;
@@ -71,21 +58,6 @@ public class ApprenticeController : MonoBehaviour
         }
     }
 
-    private void MeleeAttack()
-    {
-        Vector3 targetPos = enemyToTarget.transform.position;
-        targetPos.y = transform.position.y;
-
-        if (nearestDist > 1.0f)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, typeData.speed * Time.deltaTime);
-        }
-        else
-        {
-            apprenticeAttack.Attack();
-        }
-    }
-
     private void RangedAttack()
     {
         GameObject projectile = projectilePool.GetProjectile(apprenticeType);
@@ -93,24 +65,6 @@ public class ApprenticeController : MonoBehaviour
         projectile.GetComponent<ProjectileController>().Initialize(typeData, enemyToTarget.transform, projectilePool, this);
     }
 
-    public ApprenticeSkills GetApprenticeSkills()
-    {
-        return apprenticeSkills;
-    }
-
-    // Determine the skill type corresponding to the apprentice type
-    private ApprenticeSkills.SkillType GetCorrespondingSkillType()
-    {
-        switch (apprenticeType)
-        {
-            case ApprenticeType.Basic: return ApprenticeSkills.SkillType.Basic;
-            case ApprenticeType.Water: return ApprenticeSkills.SkillType.Water;
-            case ApprenticeType.Wind: return ApprenticeSkills.SkillType.Wind;
-            case ApprenticeType.Fire: return ApprenticeSkills.SkillType.Fire;
-            case ApprenticeType.Earth: return ApprenticeSkills.SkillType.Earth;
-            default: return ApprenticeSkills.SkillType.Basic;
-        }
-    }
 
     private void FindEnemyToTarget()
     {

@@ -17,7 +17,6 @@ public class SpawnApprentice : MonoBehaviour {
 
 
     [SerializeField] private LayerMask placementBlockingLayers;
-    [SerializeField] private GameObject attackArea; // the attack area prefab
     [SerializeField] private Transform apprentices;
     [SerializeField] private UISkillTree uiSkillTree;
     [SerializeField] private TextMeshProUGUI apprenticeText;
@@ -120,7 +119,7 @@ public class SpawnApprentice : MonoBehaviour {
         // Dynamically assign XPSystem if it's null
         if (xpSystem == null)
         {
-            xpSystem = FindObjectOfType<XPSystem>();
+            xpSystem = XPSystem.FindFirstObjectByType<XPSystem>();
             if (xpSystem == null)
             {
                 Debug.LogError("XPSystem reference is null! Ensure an XPSystem is in the scene.");
@@ -241,9 +240,6 @@ public class SpawnApprentice : MonoBehaviour {
         finalApprentice.transform.SetParent(apprentices);
         apprenticeCount++;
         finalApprentice.name = $"{type} Apprentice {apprenticeCount}";
-
-        GameObject newAttackArea = Instantiate(attackArea, finalApprentice.transform.position, Quaternion.identity);
-        newAttackArea.transform.SetParent(finalApprentice.transform);
 
         Destroy(currentPlacingApprentice);
         currentPlacingApprentice = null;
