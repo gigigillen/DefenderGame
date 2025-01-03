@@ -13,7 +13,6 @@ public class SpawnApprentice : MonoBehaviour {
     private InputActionMap selectingActionMap;
     private InputAction spawnAction;
     private InputAction cancelPlacementAction;
-    
 
 
     [SerializeField] private LayerMask placementBlockingLayers;
@@ -31,6 +30,8 @@ public class SpawnApprentice : MonoBehaviour {
     private GameController gameController;
     private GameObject apprenticePrefab;
     private List<ApprenticeController> activeApprentices = new List<ApprenticeController>();
+    private int pendingSkillPointCost = 0;
+    private bool isPlacingApprentice = false;
 
 
     private void Awake() {
@@ -102,15 +103,7 @@ public class SpawnApprentice : MonoBehaviour {
 
     private void OnCancelPlacement(InputAction.CallbackContext context) {
 
-        if (currentPlacingApprentice != null) {
-
-            Debug.Log("cancelling placement");
-            spawningActionMap.Disable();
-            selectingActionMap.Enable();
-
-            Destroy(currentPlacingApprentice);
-            currentPlacingApprentice = null;
-        }
+        CancelPlacement();
     }
 
 
@@ -130,35 +123,17 @@ public class SpawnApprentice : MonoBehaviour {
         ApprenticeController apprenticeController = apprenticePrefab.GetComponent<ApprenticeController>();
         if (apprenticeController != null)
         {
-            int requiredSkillPoints = 0; // Default required skill points
-
-            // Check for apprentices that require more skill points
-            switch (apprenticeController.apprenticeType)
-            {
-                case ApprenticeType.Water:
-                case ApprenticeType.Earth:
-                requiredSkillPoints = 1;
-                break;
-                case ApprenticeType.Wind:
-                case ApprenticeType.Fire:
-                    requiredSkillPoints = 2;
-                    break;
-            }
+            pendingSkillPointCost = CalculateSkillPointCost(apprenticeController.apprenticeType);
 
             // Check if the player has enough skill points
-            if (xpSystem.GetSkillPoints() < requiredSkillPoints)
+            if (xpSystem.GetSkillPoints() < pendingSkillPointCost)
             {
-                Debug.Log($"Not enough skill points to place {apprenticeController.apprenticeType} apprentice. Required: {requiredSkillPoints}, Available: {xpSystem.GetSkillPoints()}");
+                Debug.Log($"Not enough skill points to place {apprenticeController.apprenticeType} apprentice. Required: {pendingSkillPointCost}, Available: {xpSystem.GetSkillPoints()}");
                 return;
             }
 
-            // Spend the required skill points
-            for (int i = 0; i < requiredSkillPoints; i++)
-            {
-                xpSystem.SpendSkillPoint();
-            }
-
-            Debug.Log($"{apprenticeController.apprenticeType} apprentice unlocked! Remaining skill points: {xpSystem.GetSkillPoints()}");
+            CreateApprenticePreview(apprenticePrefab, apprenticeController);
+            isPlacingApprentice = true;
         }
 
         if (apprenticeCount >= maxApprentices)
@@ -203,6 +178,19 @@ public class SpawnApprentice : MonoBehaviour {
         }
     }
 
+    private int CalculateSkillPointCost(ApprenticeType type) {
+        switch (type) {
+            case ApprenticeType.Water:
+            case ApprenticeType.Earth:
+                return 2;
+            case ApprenticeType.Wind:
+            case ApprenticeType.Fire:
+                return 3;
+            default:
+                return 1;
+        }
+    }
+
 
 
     private void SetupPreviewApprentice(GameObject apprentice) {
@@ -229,7 +217,33 @@ public class SpawnApprentice : MonoBehaviour {
     }
 
 
+    private void CreateApprenticePreview(GameObject apprenticePrefab, ApprenticeController controller) {
+
+        if (currentPlacingApprentice != null) {
+            CancelPlacement();
+        }
+
+        this.apprenticePrefab = apprenticePrefab;
+        type = controller.apprenticeType;
+
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, LayerMask.GetMask("Floor"))) {
+            Vector3 spawnPos = hit.point;
+            spawnPos.y = 0.5f;
+            currentPlacingApprentice = Instantiate(apprenticePrefab, spawnPos, Quaternion.identity);
+            SetupPreviewApprentice(currentPlacingApprentice);
+
+            selectingActionMap.Disable();
+            spawningActionMap.Enable();
+        }
+    }
+
+
     private void PlaceApprentice(Vector3 position) {
+
+        for (int i = 0; i < pendingSkillPointCost; i++) {
+            xpSystem.SpendSkillPoint();
+        }
 
         GameObject finalApprentice = Instantiate(apprenticePrefab, position, Quaternion.identity);
         finalApprentice.layer = LayerMask.NameToLayer("Apprentices");
@@ -241,15 +255,34 @@ public class SpawnApprentice : MonoBehaviour {
         apprenticeCount++;
         finalApprentice.name = $"{type} Apprentice {apprenticeCount}";
 
-        Destroy(currentPlacingApprentice);
-        currentPlacingApprentice = null;
-
-        spawningActionMap.Disable();
-        selectingActionMap.Enable();
+        CleanupPlacement();
 
         Debug.Log($"{type} apprentice placed at {position}.");
     }
 
+
+    private void CleanupPlacement() {
+
+        if (currentPlacingApprentice != null) {
+            Destroy(currentPlacingApprentice);
+            currentPlacingApprentice = null;
+        }
+
+        isPlacingApprentice = false;
+        pendingSkillPointCost = 0;
+        spawningActionMap.Disable();
+        selectingActionMap.Enable();
+    }
+
+
+    public void CancelPlacement() {
+
+        if (isPlacingApprentice) {
+            Debug.Log("Cancelled placement - no skill points spent");
+            CleanupPlacement();
+        }
+    }
+  
 
     // decrease apprentice count and hide skill tree on death
     public void RemoveApprentice(ApprenticeController apprentice) {
