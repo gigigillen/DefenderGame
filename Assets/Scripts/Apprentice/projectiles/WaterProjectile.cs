@@ -3,7 +3,7 @@ using System.Collections;
 
 public class WaterProjectile : ProjectileController {
 
-    private bool canApplyWetness = true;
+    private bool canApplyWetness => SkillManager.IsAbilityUnlocked(ApprenticeType.Water, "Wetness");
     [SerializeField] private float wetnessDuration = 5f;
     [SerializeField] private GameObject vfxWetPrefab;
 
@@ -16,11 +16,11 @@ public class WaterProjectile : ProjectileController {
 
         BurningEffect burningEffect = target.GetComponent<BurningEffect>();
 
-        if (burningEffect != null) {
+        if (burningEffect != null && canApplyWetness) {
             if (VaporiseController.CanVaporise(target.gameObject)) {
                 DealDamage();
                 base.OnReachTarget();
-                Debug.Log("vaporise triggered!");
+                Debug.Log("vaporise triggered from water!");
                 burningEffect.RemoveEffect();
                 VaporiseController.RecordVaporise(target.gameObject);
             }

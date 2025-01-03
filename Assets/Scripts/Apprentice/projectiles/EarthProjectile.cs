@@ -20,7 +20,7 @@ public class EarthProjectile : ProjectileController {
     private float arcDuration = 1f;
     private float elapsed = 0f;
 
-    private bool hasPulsingUnlocked = false;
+    private bool canAoePulse => SkillManager.IsAbilityUnlocked(ApprenticeType.Earth, "aoePulse");
     private int pulseDamageUpgradeLevel = 0;
     private bool hasCrashed;
 
@@ -95,11 +95,11 @@ public class EarthProjectile : ProjectileController {
     private IEnumerator EarthCrash() {
         speed = 0f;
 
-        int totalPulseDamage = hasPulsingUnlocked ?
+        int totalPulseDamage = canAoePulse ?
             (damagePerPulse + (pulseDamageUpgradeLevel * 2)) :
             damage;
 
-        int pulseCount = hasPulsingUnlocked ? 3 : 1;
+        int pulseCount = canAoePulse ? 3 : 1;
 
 
         for (int i = 0; i < pulseCount; i++) {

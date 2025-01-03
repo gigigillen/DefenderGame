@@ -4,7 +4,7 @@ using System.Collections;
 public class FireProjectile : ProjectileController {
 
     // unlocked further in the skill tree
-    private bool canApplyBurning = true;
+    private bool canApplyBurning => SkillManager.IsAbilityUnlocked(ApprenticeType.Fire, "Burning");
     [SerializeField] private float burnDuration = 3f;
     [SerializeField] private GameObject vfxBurnPrefab;
 
@@ -13,20 +13,15 @@ public class FireProjectile : ProjectileController {
         projectileType = ApprenticeType.Fire;
     }
 
-    // call this when burning skill is unlocked
-    public void EnableBurning() {
-
-        canApplyBurning = true;
-    }
 
     protected override void OnReachTarget() {
 
         WetEffect wetEffect = target.GetComponent<WetEffect>();
-        if (wetEffect != null) {
+        if (wetEffect != null && canApplyBurning) {
             if (VaporiseController.CanVaporise(target.gameObject)) {
                 DealDamage();
                 base.OnReachTarget();
-                Debug.Log("vaporise triggered!");
+                Debug.Log("vaporise triggered in fire!");
                 wetEffect.RemoveEffect();
                 VaporiseController.RecordVaporise(target.gameObject);
             }

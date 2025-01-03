@@ -9,14 +9,16 @@ public class SkillManager : MonoBehaviour {
     [SerializeField] private ApprenticeTypeData[] apprenticeTypes;
 
     private Dictionary<ApprenticeType, bool> unlockedTypes = new Dictionary<ApprenticeType, bool>();
-    private Dictionary<ApprenticeType, bool> unlockedVortex = new Dictionary<ApprenticeType, bool>();
+
+    private bool unlockedVortex = false;
+    private bool unlockedAoePulse = false;
+    private bool unlockedBurning = false;
+    private bool unlockedWetness = false;
 
     private void Awake() {
 
         if (instance == null) {
             instance = this;
-
-            InitialiseUnlockStates();
         }
         else {
             Destroy(gameObject);
@@ -24,42 +26,43 @@ public class SkillManager : MonoBehaviour {
     }
 
 
-    private void InitialiseUnlockStates() {
-        unlockedTypes.Clear();
-        unlockedVortex.Clear();
-
-        // setup initial states for each apprentice type
-        foreach (var data in apprenticeTypes) {
-            unlockedTypes[data.type] = (data.type == ApprenticeType.Basic);
-            unlockedVortex[data.type] = false;
-        }
-    }
-
-
     public void UnlockAbility(ApprenticeType type, string abilityName) {
 
-        switch (abilityName) {
-            case "Vortex":
-                if (type == ApprenticeType.Wind) {
-                    unlockedVortex[type] = true;
-                    Debug.Log("Vortex ability unlocked for wind apprentices!");
-                }
-                break;
-
-            // cases for other abilities
+        if (type == ApprenticeType.Wind && abilityName == "Vortex") {
+            unlockedVortex = true;
+            Debug.Log("Vortex ability unlocked for Wind apprentices!");
         }
+        else if (type == ApprenticeType.Earth && abilityName == "aoePulse") {
+            unlockedAoePulse = true;
+            Debug.Log("Aoe pulse ability unlocked for Earth apprentices!");
+        }
+        else if (type == ApprenticeType.Fire && abilityName == "Burning") {
+            unlockedBurning = true;
+            Debug.Log("Burning ability unlocked for Fire apprentices!");
+        }
+        else if (type == ApprenticeType.Water && abilityName == "Wetness") {
+            unlockedWetness = true;
+            Debug.Log("Wetness ability unlocked for Water apprentices!");
+        }
+
+        
     }
 
     public static bool IsAbilityUnlocked(ApprenticeType type, string abilityName) {
 
-        switch (abilityName) {
-            case "Vortex":
-                return type == ApprenticeType.Wind &&
-                    instance.unlockedVortex.TryGetValue(type, out bool unlocked) &&
-                    unlocked;
-            default:
-                return false;
+        if (type == ApprenticeType.Wind && abilityName == "Vortex") {
+            return instance.unlockedVortex;
         }
+        else if (type == ApprenticeType.Earth && abilityName == "aoePulse") {
+            return instance.unlockedAoePulse;
+        }
+        else if (type == ApprenticeType.Fire && abilityName == "Burning") {
+            return instance.unlockedBurning;
+        }
+        else if (type == ApprenticeType.Water && abilityName == "Wetness") {
+            return instance.unlockedWetness;
+        }
+        return false;
     }
 
 
