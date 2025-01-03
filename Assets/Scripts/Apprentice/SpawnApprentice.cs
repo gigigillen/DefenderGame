@@ -27,7 +27,7 @@ public class SpawnApprentice : MonoBehaviour {
     private GameObject currentPlacingApprentice;
     private Camera cam;
     private int apprenticeCount;
-    private const int maxApprentices = 5; // max apprentices is immutable
+    private const int maxApprentices = 9;
     private bool canPlace = false;
     private GameController gameController;
     private GameObject apprenticePrefab;
@@ -275,7 +275,7 @@ public class SpawnApprentice : MonoBehaviour {
     // update apprentice count in UI
     private void SetApprenticeText() {
 
-        apprenticeText.text = $"Apprentices: {apprenticeCount}/{maxApprentices}";
+        apprenticeText.text = $"{apprenticeCount}/{maxApprentices}";
     }
 
 
