@@ -26,7 +26,7 @@ public class WindProjectile : ProjectileController {
 
             if (VaporiseController.CanVaporise(target.gameObject) && VortexController.CanCreateVortex(owner)) {
                 Vector3 impactPosition = transform.position;
-                impactPosition.y = 0.1f;
+                impactPosition.y = 0.5f;
                 GameObject vortexObject = Instantiate(vfxVortexPrefab, impactPosition, Quaternion.identity);
                 VortexEffect vortexEffect = vortexObject.GetComponent<VortexEffect>();
                 if (vortexEffect != null) {
