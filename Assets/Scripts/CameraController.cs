@@ -17,12 +17,12 @@ public class CameraController : MonoBehaviour
     private float minZ = -15f; 
     private float maxZ = 32.5f;
 
-    private float pitch = 30f; // Default pitch angle
-    private float yaw = 0f;    // Default yaw angle
+    private float pitch = 30f; 
+    private float yaw = 0f;    
     private float pitchSpeed = 100f;
     private float yawSpeed = 100f;
-    private float minPitch = 10f; // Min pitch angle
-    private float maxPitch = 80f; // Max pitch angle
+    private float minPitch = 40f; 
+    private float maxPitch = 60f; 
 
     private Camera cam;
 
