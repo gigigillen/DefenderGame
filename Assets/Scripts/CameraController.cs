@@ -6,22 +6,43 @@ using UnityEngine.InputSystem;
 public class CameraController : MonoBehaviour
 {
     private Vector2 moveValue;
-    private float speed = 5f;
-    private float zoomSpeed = 2f;
+    private Vector2 rotationValue;
+    private float speed = 10f;
+    private float zoomSpeed = 0.5f;
     private float minZoom = 20f;
     private float maxZoom = 80f;
 
-    // Define the min and max corners for camera movement bounds
-    private float minX = -5f; // Minimum X boundary
-    private float maxX = 60f;  // Maximum X boundary
-    private float minZ = -15f; // Minimum Z boundary
-    private float maxZ = 32.5f;  // Maximum Z boundary
+    private float minX = -5f; 
+    private float maxX = 60f;  
+    private float minZ = -15f; 
+    private float maxZ = 32.5f;
+
+    private float pitch = 30f; 
+    private float yaw = 0f;    
+    private float pitchSpeed = 100f;
+    private float yawSpeed = 100f;
+    private float minPitch = 40f; 
+    private float maxPitch = 60f; 
 
     private Camera cam;
 
-    void Start()
-    {
+    void Start() {
         cam = Camera.main;
+    }
+
+    void Update() {
+        Vector3 movement = new Vector3(moveValue.x, 0f, moveValue.y) * speed * Time.deltaTime;
+
+        Vector3 targetPosition = transform.position + movement;
+
+        targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX);
+        targetPosition.y = 22.5f; 
+        targetPosition.z = Mathf.Clamp(targetPosition.z, minZ, maxZ); 
+
+        transform.position = targetPosition;
+
+        HandleZoom();
+        HandleRotation();
     }
 
     void OnMove(InputValue value)
@@ -32,41 +53,25 @@ public class CameraController : MonoBehaviour
         moveValue.y = temp;
     }
 
-    void Update()
-    {
-        // Calculate the movement based on input
-        Vector3 movement = new Vector3(moveValue.x, 0f, moveValue.y) * speed * Time.deltaTime;
+    void HandleZoom() {
+        float scrollValue = Mouse.current.scroll.ReadValue().y;
 
-        // Apply the movement to the camera's position
-        Vector3 targetPosition = transform.position + movement;
+        float currentZoom = cam.fieldOfView;
+        currentZoom -= scrollValue * zoomSpeed * Time.deltaTime * 100;
 
-        // Clamp the camera's position within the defined bounds
-        targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX); // Clamp X-axis
-        targetPosition.y = 22.5f; // Fixed Y-axis (as you want it to stay at 0)
-        targetPosition.z = Mathf.Clamp(targetPosition.z, minZ, maxZ); // Clamp Z-axis
-
-        // Apply the new clamped position to the camera
-        transform.position = targetPosition;
-
-        // Handle zooming
-        HandleZoom();
+        cam.fieldOfView = Mathf.Clamp(currentZoom, minZoom, maxZoom);
     }
 
-    void HandleZoom()
-    {
-        float currentZoom = cam.fieldOfView;
+    void HandleRotation() {
+        if (Mouse.current.rightButton.isPressed) {
+            Vector2 mouseDelta = Mouse.current.delta.ReadValue();
 
-        if (Keyboard.current.equalsKey.isPressed) // For + key
-        {
-            currentZoom -= zoomSpeed * Time.deltaTime * 100;
+            yaw += mouseDelta.x * yawSpeed * Time.deltaTime;
+            pitch -= mouseDelta.y * pitchSpeed * Time.deltaTime;
+
+            pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+
+            transform.eulerAngles = new Vector3(pitch, yaw, 0f);
         }
-
-        if (Keyboard.current.minusKey.isPressed) // For - key
-        {
-            currentZoom += zoomSpeed * Time.deltaTime * 100;
-        }
-
-        // Clamp the zoom to prevent going out of bounds
-        cam.fieldOfView = Mathf.Clamp(currentZoom, minZoom, maxZoom);
     }
 }
