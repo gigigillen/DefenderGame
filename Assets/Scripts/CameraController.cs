@@ -12,8 +12,8 @@ public class CameraController : MonoBehaviour
     private float minZoom = 20f;
     private float maxZoom = 80f;
 
-    private float minX = -5f; 
-    private float maxX = 60f;  
+    private float minX = -25f; 
+    private float maxX = 40f;  
     private float minZ = -15f; 
     private float maxZ = 32.5f;
 

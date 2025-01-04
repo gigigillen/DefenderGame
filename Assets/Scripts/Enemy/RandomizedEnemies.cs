@@ -5,12 +5,9 @@ using UnityEngine;
 public class RandomizedEnemies : MonoBehaviour
 {
     public GameObject[] enemyPrefabs;  // Array to hold the different enemy prefabs
-
     public float spawnInterval = 7f;  // Default spawn interval
-
     [SerializeField] private Transform enemies;  // Parent object for spawned enemies
     private int enemyCount;  // Track the number of enemies spawned
-
     private Coroutine spawnCoroutine;
 
     public float SpawnInterval
@@ -19,21 +16,52 @@ public class RandomizedEnemies : MonoBehaviour
         set
         {
             spawnInterval = value;
-            // Restart the coroutine with new interval
-            if (spawnCoroutine != null)
+            // Restart the coroutine with new interval if the component is enabled
+            if (isActiveAndEnabled)
             {
-                StopCoroutine(spawnCoroutine);
+                RestartSpawnCoroutine();
             }
-            spawnCoroutine = StartCoroutine(SpawnEnemies(spawnInterval));
         }
     }
 
     void Start()
     {
         enemyCount = 0;
-
         // Start the enemy spawning coroutine
-        spawnCoroutine = StartCoroutine(SpawnEnemies(spawnInterval));
+        StartSpawning();
+    }
+
+    void OnEnable()
+    {
+        StartSpawning();
+    }
+
+    void OnDisable()
+    {
+        StopSpawning();
+    }
+
+    private void StartSpawning()
+    {
+        if (spawnCoroutine == null)
+        {
+            spawnCoroutine = StartCoroutine(SpawnEnemies(spawnInterval));
+        }
+    }
+
+    private void StopSpawning()
+    {
+        if (spawnCoroutine != null)
+        {
+            StopCoroutine(spawnCoroutine);
+            spawnCoroutine = null;
+        }
+    }
+
+    private void RestartSpawnCoroutine()
+    {
+        StopSpawning();
+        StartSpawning();
     }
 
     // This coroutine spawns enemies, randomly selecting from the available enemy prefabs
@@ -49,7 +77,6 @@ public class RandomizedEnemies : MonoBehaviour
             GameObject enemy = Instantiate(selectedEnemy, transform.position, Quaternion.identity);
             enemy.transform.SetParent(enemies);  // Set the parent of the spawned enemy
             enemy.name = selectedEnemy.name + " " + (enemyCount + 1);  // Name the enemy (e.g., "Water Enemy 1")
-
             enemyCount++;  // Increment the enemy count
 
             // Wait for the specified interval before spawning the next enemy
