@@ -7,8 +7,8 @@ TagManager:
   - Apprentice
   - Enemy
   - Wizard
-  - Floor
   - Projectile
+  - ApprenticePath
   layers:
   - Default
   - TransparentFX
@@ -17,7 +17,7 @@ TagManager:
   - Water
   - UI
   - AttackArea
-  - Floor
+  - ApprenticePath
   - Stronghold
   - Enemies
   - ApprenticePreview
