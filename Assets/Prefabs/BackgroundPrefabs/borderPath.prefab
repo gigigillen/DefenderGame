@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7167986024793993805}
   - component: {fileID: 6734359074321636192}
   m_Layer: 0
-  m_Name: apprenticePath
+  m_Name: borderPath
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

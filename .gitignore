@@ -65,7 +65,7 @@ BuildTest
 crashlytics-build.properties
 
 # Packed Addressables
-/[Aa]ssets/ImportedAssets/
+# /[Aa]ssets/ImportedAssets/
 
 
 # Temporary auto-generated Android Assets
