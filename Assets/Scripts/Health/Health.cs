@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Health : MonoBehaviour {
 
-    [SerializeField] private int enemyMaxHealth = 20;
-    [SerializeField] private int wizardMaxHealth = 30;
+    private int enemyMaxHealth = 10;
+    private int wizardMaxHealth = 30;
 
     private int health;
     private int maxHealth;

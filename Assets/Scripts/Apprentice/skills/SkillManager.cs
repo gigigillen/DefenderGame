@@ -28,7 +28,7 @@ public class SkillManager : MonoBehaviour {
             unlockedVortex = true;
             Debug.Log("Vortex ability unlocked for Wind apprentices!");
         }
-        else if (type == ApprenticeType.Earth && abilityName == "aoePulse") {
+        else if (type == ApprenticeType.Earth && abilityName == "Rocky Pulse") {
             unlockedAoePulse = true;
             Debug.Log("Aoe pulse ability unlocked for Earth apprentices!");
         }
@@ -49,7 +49,7 @@ public class SkillManager : MonoBehaviour {
         if (type == ApprenticeType.Wind && abilityName == "Vortex") {
             return instance.unlockedVortex;
         }
-        else if (type == ApprenticeType.Earth && abilityName == "aoePulse") {
+        else if (type == ApprenticeType.Earth && abilityName == "Rocky Pulse") {
             return instance.unlockedAoePulse;
         }
         else if (type == ApprenticeType.Fire && abilityName == "Burning") {

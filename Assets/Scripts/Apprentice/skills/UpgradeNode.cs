@@ -22,11 +22,14 @@ public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData) {
 
+        bool isUnlocked = SkillManager.IsAbilityUnlocked(apprenticeType, upgradeName);
+
         TooltipManager.instance.SetAndShowTooltip(
             upgradeName,
             apprenticeType,
             description,
-            skillPointCost
+            skillPointCost,
+            isUnlocked
         );
     }
 

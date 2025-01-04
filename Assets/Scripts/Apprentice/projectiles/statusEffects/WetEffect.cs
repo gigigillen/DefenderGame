@@ -11,7 +11,6 @@ public class WetEffect : StatusEffect {
     private GameObject vfxPrefab;
 
     private void Awake() {
-        tickRate = 1f;
         enemyBehavior = GetComponent<EnemyBehavior>();
 
         if (enemyBehavior != null) {

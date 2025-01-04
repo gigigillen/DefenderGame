@@ -37,7 +37,7 @@ public class TooltipManager : MonoBehaviour {
     private void Update() {
 
         Vector2 mousePos = Mouse.current.position.ReadValue();
-        float offset = 100f;
+        float offset = 120f;
         transform.position = mousePos + new Vector2(-offset, -offset/2);
     }
 
@@ -58,12 +58,21 @@ public class TooltipManager : MonoBehaviour {
     }
 
 
-    public void SetAndShowTooltip(string title, ApprenticeType type, string description, int cost) {
+    public void SetAndShowTooltip(string title, ApprenticeType type, string description, int cost, bool isPurchased) {
 
         tooltipPanel.SetActive(true);
-        string formattedText = $"<size=120%><color={GetTypeColor(type)}>{title}</color></size>\n" +
-                             $"{description}\n" +
-                             $"<align=right><color=#FFD700>Cost: {cost} SP</color></align>";
+
+        string formattedText = $"<size=120%><color={GetTypeColor(type)}>{title}</color></size>\n\n" +
+                         $"{description}\n\n";
+
+        // Create a bottom line with spaces for visual separation
+        if (isPurchased) {
+            formattedText += $"<color=red>Purchased</color>        <color=#FFD700>Cost: {cost} SP</color>";
+        }
+        else {
+            formattedText += $"<color=#FFD700>Cost: {cost} SP</color>";
+        }
+
         textComponent.text = formattedText;
     }
 
