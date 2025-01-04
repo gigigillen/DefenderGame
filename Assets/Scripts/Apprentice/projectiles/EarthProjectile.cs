@@ -40,7 +40,7 @@ public class EarthProjectile : ProjectileController {
 
         startPos = transform.position;
         endPos = (target != null) ? target.position : lastTargetPosition;
-        endPos.y = 0.5f;
+        endPos.y = 1f;
         float horizontalDistance = Vector3.Distance(
             new Vector3(startPos.x, 0f, startPos.z),
             new Vector3(endPos.x, 0f, endPos.z)
@@ -85,7 +85,7 @@ public class EarthProjectile : ProjectileController {
         if (hasCrashed) return;
 
         Vector3 pos = transform.position;
-        pos.y = 0.5f;
+        pos.y = 1f;
         transform.position = pos;
         hasCrashed = true;
         StartCoroutine(EarthCrash());
