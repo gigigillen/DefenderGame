@@ -6,10 +6,6 @@ public class SkillManager : MonoBehaviour {
 
     private static SkillManager instance;
 
-    [SerializeField] private ApprenticeTypeData[] apprenticeTypes;
-
-    private Dictionary<ApprenticeType, bool> unlockedTypes = new Dictionary<ApprenticeType, bool>();
-
     private bool unlockedVortex = false;
     private bool unlockedAoePulse = false;
     private bool unlockedBurning = false;
@@ -63,15 +59,6 @@ public class SkillManager : MonoBehaviour {
             return instance.unlockedWetness;
         }
         return false;
-    }
-
-
-    private ApprenticeTypeData GetTypeData(ApprenticeType type) {
-
-        foreach (var data in apprenticeTypes) {
-            if (data.type == type) return data;
-        }
-        return null;
     }
 
 }

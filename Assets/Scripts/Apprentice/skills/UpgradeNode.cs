@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class UpgradeNode : MonoBehaviour {
+public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 
     [SerializeField] private XPSystem xpSystem;
     [SerializeField] private SkillManager skillManager;
     [SerializeField] private ApprenticeType apprenticeType;
     [SerializeField] private string upgradeName;
+    [SerializeField] private string message;
 
     private Button button;
 
@@ -15,7 +17,16 @@ public class UpgradeNode : MonoBehaviour {
 
         button = GetComponent<Button>();
         UpdateButtonState();
-        
+    }
+
+    public void OnPointerEnter(PointerEventData eventData) {
+
+        TooltipManager.instance.SetAndShowTooltip(message);
+    }
+
+    public void OnPointerExit(PointerEventData eventData) {
+
+        TooltipManager.instance.HideToolTip();
     }
 
     public void TryPurchaseUpgrade() {
