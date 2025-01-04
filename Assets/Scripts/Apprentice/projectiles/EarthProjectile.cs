@@ -6,6 +6,7 @@ public class EarthProjectile : ProjectileController {
     [Header("Visual Effects")]
     [SerializeField] private ParticleSystem crashEffect;
     [SerializeField] private ParticleSystem pulseEffect;
+    [SerializeField] private float effectsHeightOffset = 0.5f;
 
     [Header("Impact Effects")]
     [SerializeField] private int damagePerPulse = 3;
@@ -85,7 +86,6 @@ public class EarthProjectile : ProjectileController {
         if (hasCrashed) return;
 
         Vector3 pos = transform.position;
-        pos.y = 1f;
         transform.position = pos;
         hasCrashed = true;
         StartCoroutine(EarthCrash());
@@ -100,6 +100,15 @@ public class EarthProjectile : ProjectileController {
             damage;
 
         int pulseCount = canAoePulse ? 3 : 1;
+
+        Vector3 effectPosition = transform.position;
+        effectPosition.y += effectsHeightOffset;
+
+        // position effect systems at the offset height
+        crashEffect.transform.position = effectPosition;
+        if (pulseEffect != null) {
+            pulseEffect.transform.position = effectPosition;
+        }
 
 
         for (int i = 0; i < pulseCount; i++) {
