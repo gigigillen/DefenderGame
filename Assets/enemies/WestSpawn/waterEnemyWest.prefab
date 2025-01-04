@@ -212,6 +212,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ac7fa9c40e5f4e02a16401b319f912b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyMaxHealth: 20
+  wizardMaxHealth: 30
   xpReward: 25
 --- !u!114 &2234893811984280576
 MonoBehaviour:
