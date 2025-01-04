@@ -606,7 +606,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeData: {fileID: 11400000, guid: 40fd09e979fc146c3bb821352ff70fc9, type: 2}
   currentStrategy: 0
-  stronghold: {fileID: 7762094187858457249, guid: 4066f3d65bfe2294194ebf8e2c12efc7, type: 3}
+  stronghold: {fileID: 3464937897299100125, guid: a8993236d2149b24eb4a5210d47b6d88, type: 3}
   apprenticeType: 4
 --- !u!65 &3881441197443881214
 BoxCollider:
