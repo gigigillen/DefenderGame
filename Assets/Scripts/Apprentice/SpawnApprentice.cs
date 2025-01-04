@@ -46,11 +46,6 @@ public class SpawnApprentice : MonoBehaviour {
     }
 
 
-    private void OnDestroy() {
-        spawnAction.performed -= OnSpawnPerformed;
-    }
-
-
     void Start() {
 
         cam = Camera.main;
@@ -121,7 +116,7 @@ public class SpawnApprentice : MonoBehaviour {
     }
 
 
-   public void SetApprenticeTypeToPlace(GameObject apprenticePrefab)
+    public void SetApprenticeTypeToPlace(GameObject apprenticePrefab)
     {
         // Dynamically assign XPSystem if it's null
         if (xpSystem == null)
@@ -276,11 +271,9 @@ public class SpawnApprentice : MonoBehaviour {
 
     }
 
-    public ApprenticeController GetApprenticeByIndex(int index) {
-        if (index>= 0 && index < activeApprentices.Count) {
-            return activeApprentices[index];
-        }
-        return null;
+
+    public List<ApprenticeController> GetActiveApprentices() {
+        return new List<ApprenticeController>(activeApprentices);
     }
 
 
@@ -295,5 +288,11 @@ public class SpawnApprentice : MonoBehaviour {
         float checkRadius = 0.5f;
         Collider[] hitColliders = Physics.OverlapSphere(position, checkRadius, placementBlockingLayers);
         return hitColliders.Length > 0;
+    }
+
+
+    private void OnDestroy() {
+        spawnAction.performed -= OnSpawnPerformed;
+        cancelPlacementAction.performed -= OnCancelPlacement;
     }
 }

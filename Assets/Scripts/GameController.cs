@@ -29,19 +29,21 @@ public class GameController : MonoBehaviour {
     private InputActionMap skillTreeMap;
     private InputActionMap menuMap;
     private InputAction clickSelectAction;
-    private InputAction[] keySelectActions = new InputAction[5];
-    private InputAction deselectAction;
+    private InputAction cycleApprenticeAction;
+    private InputAction deselectApprenticeAction;
     private InputAction toggleSkillTreeAction;
     private InputAction toggleMenuAction;
 
     private GameObject currentSelectorRing;
+    private int currentApprenticeIndex = -1;
     private bool isPointerOverUI;
     private bool isSkillTreeOpen;
 
     private void Awake() {
         selectingActionMap = inputActions.FindActionMap("Selecting");
         clickSelectAction = selectingActionMap.FindAction("SelectApprentice");
-        deselectAction = selectingActionMap.FindAction("DeselectApprentice");
+        deselectApprenticeAction = selectingActionMap.FindAction("DeselectApprentice");
+        cycleApprenticeAction = selectingActionMap.FindAction("CycleApprentice");
 
         skillTreeMap = inputActions.FindActionMap("SkillTree");
         toggleSkillTreeAction = skillTreeMap.FindAction("ToggleSkillTree");
@@ -49,14 +51,9 @@ public class GameController : MonoBehaviour {
         menuMap = inputActions.FindActionMap("Menu");
         toggleMenuAction = menuMap.FindAction("ToggleMenu");
 
-        for (int i=0; i<5; i++) {
-            int index = i;
-            keySelectActions[i] = selectingActionMap.FindAction($"SelectApprentice{i + 1}");
-            keySelectActions[i].performed += _ => SelectApprenticeByNumber(index);
-        }
-
         clickSelectAction.performed += OnSelect;
-        deselectAction.performed += OnDeselect;
+        deselectApprenticeAction.performed += OnDeselect;
+        cycleApprenticeAction.performed += OnCycleApprentice;
         toggleSkillTreeAction.performed += ToggleSkillTree;
         toggleMenuAction.performed += ToggleMenu;
 
@@ -66,16 +63,10 @@ public class GameController : MonoBehaviour {
 
     private void OnDestroy() {
         clickSelectAction.performed -= OnSelect;
-        deselectAction.performed -= OnDeselect;
+        deselectApprenticeAction.performed -= OnDeselect;
+        cycleApprenticeAction.performed -= OnCycleApprentice;
         toggleSkillTreeAction.performed -= ToggleSkillTree;
         toggleMenuAction.performed -= ToggleMenu;
-
-        for (int i=0; i<keySelectActions.Length; i++) {
-            if (keySelectActions[i] != null) {
-                int index = i;
-                keySelectActions[i].performed -= _ => SelectApprenticeByNumber(index);
-            }
-        }
 
         Time.timeScale = 1f;
     }
@@ -119,6 +110,34 @@ public class GameController : MonoBehaviour {
             }
         }
     }
+
+    private void OnCycleApprentice(InputAction.CallbackContext context) {
+
+        if (isMenuOpen) return;
+
+        List<ApprenticeController> apprentices = spawnController.GetActiveApprentices();
+        if (apprentices.Count == 0) return;
+
+        // If no apprentice is selected, start with the first one
+        if (selectedApprentice == null) {
+            currentApprenticeIndex = 0;
+            SelectApprentice(apprentices[currentApprenticeIndex]);
+            return;
+        }
+
+        // Find next valid apprentice
+        currentApprenticeIndex = (currentApprenticeIndex + 1) % apprentices.Count;
+
+        // If we've cycled back to the start, deselect
+        if (currentApprenticeIndex == 0 && selectedApprentice == apprentices[apprentices.Count - 1]) {
+            DeselectApprentice();
+            currentApprenticeIndex = -1;
+        }
+        else {
+            SelectApprentice(apprentices[currentApprenticeIndex]);
+        }
+    }
+
 
     private void OnDeselect(InputAction.CallbackContext context) {
         if (selectedApprentice!=null) {
@@ -186,6 +205,9 @@ public class GameController : MonoBehaviour {
             // finds which apprentice and fetches their skilltree from their method
             selectedApprentice = apprentice;
 
+            List<ApprenticeController> apprentices = spawnController.GetActiveApprentices();
+            currentApprenticeIndex = apprentices.IndexOf(apprentice);
+
             Vector3 ringPosition = apprentice.transform.position;
             ringPosition.y = 0.1f;
             currentSelectorRing = Instantiate(selectorRingPrefab, ringPosition, Quaternion.identity);
@@ -201,19 +223,7 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    private void SelectApprenticeByNumber(int index) {
-        if (isMenuOpen) return;
-
-        ApprenticeController apprentice = spawnController.GetApprenticeByIndex(index);
-        // if same apprentice selected again, deselect
-        if (apprentice == selectedApprentice) {
-            DeselectApprentice();
-        }
-        else if (apprentice != null) {
-            SelectApprentice(apprentice);
-        }
-    }
-
+ 
     //deselects apprentice skilltree
     public void DeselectApprentice() {
 
@@ -222,6 +232,7 @@ public class GameController : MonoBehaviour {
         }
         //selectCanvas.gameObject.SetActive(false);
         selectedApprentice = null;
+        currentApprenticeIndex = -1;
     }
 
     // called when menu is toggled open

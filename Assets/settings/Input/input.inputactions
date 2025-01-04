@@ -779,52 +779,16 @@
                 {
                     "name": "SelectApprentice",
                     "type": "Button",
-                    "id": "1224bc6e-4f80-41c1-8588-4308dee67e05",
+                    "id": "b719817e-5ea6-48b3-842d-9c179597106e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SelectApprentice1",
+                    "name": "CycleApprentice",
                     "type": "Button",
-                    "id": "ae7f3aa3-a80e-4293-8056-c78043ff66ce",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SelectApprentice2",
-                    "type": "Button",
-                    "id": "281a2f07-77e4-4e31-a487-deedaf3e9744",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SelectApprentice3",
-                    "type": "Button",
-                    "id": "64efe192-5b0c-4f51-b617-d89bace8a1ac",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SelectApprentice4",
-                    "type": "Button",
-                    "id": "5d308f43-711a-4648-9aa0-a99aec0c1b21",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "SelectApprentice5",
-                    "type": "Button",
-                    "id": "145d154e-3e82-4d72-9b07-b0c31525f54a",
+                    "id": "320adfe1-aade-4b6d-a4ce-7200b7543487",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -843,7 +807,7 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "ede20605-4437-4462-900f-c86298ce85a5",
+                    "id": "86092281-e63e-40c4-957f-8d5aa7752862",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
@@ -854,56 +818,12 @@
                 },
                 {
                     "name": "",
-                    "id": "179524c1-3cde-4596-883e-510063a72690",
-                    "path": "<Keyboard>/1",
+                    "id": "b0a3ac79-0657-46df-a54d-58e3e25eac22",
+                    "path": "<Keyboard>/t",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "SelectApprentice1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0f6d819b-3632-4a0b-a3af-1a5bf8f33a3e",
-                    "path": "<Keyboard>/2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "SelectApprentice2",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "4275a88a-fd05-4319-9d5f-fbf3892b733e",
-                    "path": "<Keyboard>/3",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "SelectApprentice3",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "fba82f33-c6ac-4a1f-831f-d2d34f43d92d",
-                    "path": "<Keyboard>/4",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "SelectApprentice4",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0b5e8c1f-69f7-4dcf-acb6-3020132e184c",
-                    "path": "<Keyboard>/5",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "SelectApprentice5",
+                    "action": "CycleApprentice",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
