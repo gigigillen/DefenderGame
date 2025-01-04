@@ -12,7 +12,6 @@ public class TooltipManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI textComponent;
 
     private RectTransform tooltipRect;
-    private float offset = 70f;
 
    
     private void Awake() {
@@ -38,26 +37,43 @@ public class TooltipManager : MonoBehaviour {
     private void Update() {
 
         Vector2 mousePos = Mouse.current.position.ReadValue();
-        float spaceOnRight = Screen.width - mousePos.x;
-        bool shouldShowOnRight = spaceOnRight >= (tooltipRect.rect.width + offset);
-
-        Vector2 tooltipPosition;
-        if (shouldShowOnRight) {
-            tooltipPosition = mousePos + new Vector2(offset, -offset / 2);
-        }
-        else {
-            tooltipPosition = mousePos + new Vector2(offset - tooltipRect.rect.width - (offset * 2), -offset / 2);
-        }
-
-        transform.position = tooltipPosition;
-        transform.position = mousePos + new Vector2(offset, -offset/2);
+        float offset = 120f;
+        transform.position = mousePos + new Vector2(-offset, -offset/2);
     }
 
 
-    public void SetAndShowTooltip(string message) {
+    private string GetTypeColor(ApprenticeType type) {
+        switch (type) {
+            case ApprenticeType.Wind:
+                return "#2B7B12";
+            case ApprenticeType.Earth:
+                return "#BCB804";
+            case ApprenticeType.Water:
+                return "#1026B0";
+            case ApprenticeType.Fire:
+                return "#A83C32";
+            default:
+                return "white";
+        }
+    }
+
+
+    public void SetAndShowTooltip(string title, ApprenticeType type, string description, int cost, bool isPurchased) {
 
         tooltipPanel.SetActive(true);
-        textComponent.text = message;
+
+        string formattedText = $"<size=120%><color={GetTypeColor(type)}>{title}</color></size>\n\n" +
+                         $"{description}\n\n";
+
+        // Create a bottom line with spaces for visual separation
+        if (isPurchased) {
+            formattedText += $"<color=red>Purchased</color>        <color=#FFD700>Cost: {cost} SP</color>";
+        }
+        else {
+            formattedText += $"<color=#FFD700>Cost: {cost} SP</color>";
+        }
+
+        textComponent.text = formattedText;
     }
 
 

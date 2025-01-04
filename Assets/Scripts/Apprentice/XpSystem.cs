@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class XPSystem : MonoBehaviour
 {
     public Image xpBarImage; // Reference to the XP bar's Image
-    public Text skillPointsText;
-    public Text xpText;     
+    public TextMeshProUGUI skillPointsText;
+    public TextMeshProUGUI xpText;     
 
     private int currentXP = 0;
     private int maxXP = 100;

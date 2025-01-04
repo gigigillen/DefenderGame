@@ -8,7 +8,8 @@ public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private SkillManager skillManager;
     [SerializeField] private ApprenticeType apprenticeType;
     [SerializeField] private string upgradeName;
-    [SerializeField] private string message;
+    [SerializeField] private string description;
+    [SerializeField] private int skillPointCost = 1;
 
     private Button button;
 
@@ -21,7 +22,15 @@ public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData) {
 
-        TooltipManager.instance.SetAndShowTooltip(message);
+        bool isUnlocked = SkillManager.IsAbilityUnlocked(apprenticeType, upgradeName);
+
+        TooltipManager.instance.SetAndShowTooltip(
+            upgradeName,
+            apprenticeType,
+            description,
+            skillPointCost,
+            isUnlocked
+        );
     }
 
     public void OnPointerExit(PointerEventData eventData) {
@@ -34,13 +43,26 @@ public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         Debug.Log("trying to purchase upgrade...");
 
         if (!SkillManager.IsAbilityUnlocked(apprenticeType, upgradeName)) {
-            if (xpSystem.SpendSkillPoint()) {
-                skillManager.UnlockAbility(apprenticeType, upgradeName);
-                button.interactable = false;
+            if (xpSystem.GetSkillPoints() >= skillPointCost) {
+                bool success = SpendRequiredSkillPoints();
+                if (success) {
+                    skillManager.UnlockAbility(apprenticeType, upgradeName);
+                    button.interactable = false;
+                }
             }
         }
     }
 
+    private bool SpendRequiredSkillPoints() {
+
+        for (int i=0; i< skillPointCost; i++) {
+            if (!xpSystem.SpendSkillPoint()) {
+                return false;
+            }
+        }
+        return true;
+    }
+ 
     private void UpdateButtonState() {
         button.interactable = !SkillManager.IsAbilityUnlocked(apprenticeType, upgradeName);
     }
