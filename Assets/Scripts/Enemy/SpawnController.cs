@@ -34,7 +34,7 @@ public class SpawnController : MonoBehaviour {
 
     IEnumerator WaveController() {
         while (currentWave <= numberOfWaves) {
-            ShowMessage($"Starting Waves {currentWave}!");
+            ShowMessage($"Starting Wave {currentWave}!");
 
             float spawnInterval = CalculateSpawnInterval(currentWave);
 
