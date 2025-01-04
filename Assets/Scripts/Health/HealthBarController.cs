@@ -34,7 +34,7 @@ public class HealthBarController : MonoBehaviour
     void Start()
     {
         gameController = FindAnyObjectByType<GameController>();
-        currentHealth = maxHealth * 0.65f;
+        currentHealth = maxHealth;
         UpdateHealthBar();
 
     }

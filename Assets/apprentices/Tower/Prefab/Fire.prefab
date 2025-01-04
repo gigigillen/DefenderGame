@@ -605,7 +605,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeData: {fileID: 11400000, guid: c2292b9f6c9824da19a5da7d846d8b57, type: 2}
-  currentStrategy: 0
+  currentStrategy: 2
   stronghold: {fileID: 7762094187858457249, guid: 4066f3d65bfe2294194ebf8e2c12efc7, type: 3}
   apprenticeType: 3
 --- !u!65 &3881441197443881214

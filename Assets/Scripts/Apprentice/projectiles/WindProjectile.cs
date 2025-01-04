@@ -4,7 +4,7 @@ using System.Collections;
 public class WindProjectile : ProjectileController {
 
     // unlocked further in the skill tree
-    private bool canCreateVortex = true;
+    private bool canCreateVortex => SkillManager.IsAbilityUnlocked(ApprenticeType.Wind, "Vortex");
     [SerializeField] private GameObject vfxVortexPrefab;
 
     private void Awake() {
@@ -12,11 +12,6 @@ public class WindProjectile : ProjectileController {
         projectileType = ApprenticeType.Wind;
     }
 
-    // call this when vortex skill is unlocked
-    public void EnableVortex() {
-
-        canCreateVortex = true;
-    }
 
     protected override void OnReachTarget() {
 
@@ -26,7 +21,7 @@ public class WindProjectile : ProjectileController {
 
             if (VaporiseController.CanVaporise(target.gameObject) && VortexController.CanCreateVortex(owner)) {
                 Vector3 impactPosition = transform.position;
-                impactPosition.y = 0.1f;
+                impactPosition.y = 0.5f;
                 GameObject vortexObject = Instantiate(vfxVortexPrefab, impactPosition, Quaternion.identity);
                 VortexEffect vortexEffect = vortexObject.GetComponent<VortexEffect>();
                 if (vortexEffect != null) {
