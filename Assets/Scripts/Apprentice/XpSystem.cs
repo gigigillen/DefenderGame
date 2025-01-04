@@ -58,31 +58,8 @@ public class XPSystem : MonoBehaviour
         Debug.Log("Not enough skill points to spend.");
         return false;
     }
-    private void Update()
 
-{
-
-    UpdateSkillPointsUI();
-
-    // Test adding XP with the "X" key
-    if (Input.GetKeyDown(KeyCode.X)) 
-    {
-        Debug.Log("X key pressed. Adding 25 XP.");
-        AddXP(25); // Add 25 XP
+    private void Update() { 
+        UpdateSkillPointsUI();
     }
-
-    // Test spending skill points with the "S" key
-    if (Input.GetKeyDown(KeyCode.S)) 
-    {
-        Debug.Log("S key pressed. Attempting to spend a skill point.");
-        if (SpendSkillPoint())
-        {
-            Debug.Log("Skill point spent successfully!");
-        }
-        else
-        {
-            Debug.Log("Not enough skill points to spend.");
-        }
-    }
-}
 }

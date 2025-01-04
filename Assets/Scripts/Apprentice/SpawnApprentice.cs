@@ -80,16 +80,30 @@ public class SpawnApprentice : MonoBehaviour {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        int layerMask = LayerMask.GetMask("Floor");
-
-        if (Physics.Raycast(ray, out hit, 100f, layerMask)) {
+        if (Physics.Raycast(ray, out hit)) {
             Vector3 position = hit.point;
             position.y = 0.5f;
 
             currentPlacingApprentice.transform.position = position;
             currentPlacingApprentice.transform.rotation = Quaternion.identity;
 
-            canPlace = IsWithinBounds(position) && !IsOverlappingObjects(position) ;
+            Ray downRay = new Ray(position + Vector3.up * 2f, Vector3.down);
+            RaycastHit pathHit;
+
+            if (Physics.Raycast(downRay, out pathHit, 4f, LayerMask.GetMask("ApprenticePath"))) {
+                bool noOverlap = !IsOverlappingObjects(position);
+                canPlace = noOverlap;
+            }
+            else {
+                canPlace = false;
+            }
+
+            Renderer[] renderers = currentPlacingApprentice.GetComponentsInChildren<Renderer>();
+            Color newColor = canPlace ? Color.green : Color.red;
+
+            foreach (Renderer renderer in renderers) {
+                renderer.material.color = newColor;
+            }
         }
     }
 
@@ -192,7 +206,7 @@ public class SpawnApprentice : MonoBehaviour {
 
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         Vector3 spawnPos = Vector3.zero;
-        if (Physics.Raycast(ray, out RaycastHit hit, 100f, LayerMask.GetMask("Floor"))) {
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f, LayerMask.GetMask("ApprenticePath"))) {
             spawnPos = hit.point;
             spawnPos.y = 0.5f;
         }
@@ -274,12 +288,6 @@ public class SpawnApprentice : MonoBehaviour {
     private void SetApprenticeText() {
 
         apprenticeText.text = $"{apprenticeCount}/{maxApprentices}";
-    }
-
-
-    private bool IsWithinBounds(Vector3 position) {
-        return position.x >= -9f && position.x <= 9f &&
-               position.z >= -9f && position.z <= 9f;
     }
 
 
