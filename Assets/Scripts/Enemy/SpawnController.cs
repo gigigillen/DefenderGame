@@ -9,8 +9,13 @@ public class SpawnController : MonoBehaviour
     public RandomizedEnemies southSpawner;
     public RandomizedEnemies westSpawner;
 
+    private int numberOfWaves;
+
     void Start()
     {
+        numberOfWaves = MainMenu.NumberOfWaves; // Retrieve the selected wave count
+        Debug.Log($"Number of Waves in Game Scene: {numberOfWaves}");
+
         // Set initial spawn intervals for each spawner
         SetEastSpawnRate(5f);  // East spawner interval
         SetNorthSpawnRate(14f); // North spawner interval
