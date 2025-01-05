@@ -21,7 +21,9 @@ public class GameController : MonoBehaviour {
     [SerializeField] private GameObject winGameUI;
     [SerializeField] private InputActionAsset inputActions;
     [SerializeField] private GameObject menuUI;
+    [SerializeField] private GameObject menuContents;
     [SerializeField] private GameObject openMenuButton;
+    [SerializeField] private GameObject rulesUI;
     [SerializeField] private SpawnApprentice spawnController;
     [SerializeField] private CameraController cameraController;
     [SerializeField] private UISelectCanvas selectCanvas;
@@ -256,6 +258,8 @@ public class GameController : MonoBehaviour {
         uiSkillTree.SetVisible(false);
         menuUI.SetActive(true);
         openMenuButton.SetActive(false);
+        rulesUI.SetActive(false);
+        menuContents.SetActive(true);
         Time.timeScale = 0f;
         isMenuOpen = true;
     }
@@ -274,11 +278,11 @@ public class GameController : MonoBehaviour {
     }
 
 
-    // called when options button is clicked
-    public void OnOptionsClick() {
+    // called when rules button is clicked
+    public void OnRulesClick() {
 
-        // make the options panel visible
-        // set the rest of the menu not visible
+        menuContents.SetActive(false);
+        rulesUI.SetActive(true);
     }
 
     // called when main menu button is clicked

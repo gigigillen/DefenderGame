@@ -7,6 +7,8 @@ public class MainMenu : MonoBehaviour {
 
     [SerializeField] private Slider waveSlider;
     [SerializeField] private TextMeshProUGUI waveText;
+    [SerializeField] private GameObject contents;
+    [SerializeField] private GameObject rules;
 
     public static int NumberOfWaves;
 
@@ -52,6 +54,18 @@ public class MainMenu : MonoBehaviour {
 
         Canvas.ForceUpdateCanvases();
         SceneManager.LoadScene(1);
+    }
+
+    public void OnRules() {
+
+        contents.SetActive(false);
+        rules.SetActive(true);
+    }
+
+    public void OnRulesBack() {
+
+        contents.SetActive(true);
+        rules.SetActive(false);
     }
 
     // method called when quit button is clicked
