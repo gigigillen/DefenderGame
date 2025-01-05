@@ -35770,7 +35770,7 @@ PrefabInstance:
     - target: {fileID: 1389406186042934255, guid: ab2f9edc2b215114294ce49668349c82, type: 3}
       propertyPath: wizardPrefab
       value: 
-      objectReference: {fileID: 3272527521014807560, guid: e9b51720b74756748a7d7d5d6f12bd9e, type: 3}
+      objectReference: {fileID: 535697967618275274, guid: 8b3584ffbb0ee294ba04309a0d44951a, type: 3}
     - target: {fileID: 1389406186042934255, guid: ab2f9edc2b215114294ce49668349c82, type: 3}
       propertyPath: enemiesParent
       value: 
@@ -35782,7 +35782,7 @@ PrefabInstance:
     - target: {fileID: 5618343998448710228, guid: ab2f9edc2b215114294ce49668349c82, type: 3}
       propertyPath: stronghold
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3464937897299100125, guid: a8993236d2149b24eb4a5210d47b6d88, type: 3}
     - target: {fileID: 7978532612810442010, guid: ab2f9edc2b215114294ce49668349c82, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
