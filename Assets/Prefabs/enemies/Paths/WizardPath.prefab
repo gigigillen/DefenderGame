@@ -88,7 +88,7 @@ Transform:
   m_GameObject: {fileID: 3777344555747309092}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.5, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -189,10 +189,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e096bbdc5b858eb498edeefc97de97ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wizardPrefab: {fileID: 3464937897299100125, guid: a8993236d2149b24eb4a5210d47b6d88, type: 3}
-  enemiesParent: {fileID: 0}
+  wizardPrefab: {fileID: 535697967618275274, guid: 8b3584ffbb0ee294ba04309a0d44951a, type: 3}
+  enemiesParent: {fileID: 2050669461629602250}
   waypoints: {fileID: 5618343998448710228}
-  moveSpeed: 5
+  moveSpeed: 1
 --- !u!1 &5663904605494887157
 GameObject:
   m_ObjectHideFlags: 0
