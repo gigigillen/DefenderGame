@@ -199,25 +199,8 @@ public class CameraController : MonoBehaviour
     private IEnumerator MoveToApprenticeCoroutine(Vector3 apprenticePosition, float duration)
     {
         Vector3 startPosition = transform.position;
-        Quaternion startRotation = transform.rotation;
 
-        Vector3 finalCameraPos = apprenticePosition + new Vector3(10f, 22.5f - apprenticePosition.y, 0f);
-
-        Vector3 flatDirection = new Vector3(
-            apprenticePosition.x - finalCameraPos.x,
-            0f,
-            apprenticePosition.z - finalCameraPos.z
-        );
-        if (flatDirection.sqrMagnitude < 0.001f)
-        {
-            flatDirection = Vector3.forward;
-        }
-
-        // angle is set to 60 to look down at apprentice
-        Quaternion baseRotation = Quaternion.LookRotation(flatDirection.normalized, Vector3.up);
-        Vector3 euler = baseRotation.eulerAngles;
-        euler.x = 60f;
-        Quaternion targetRot = Quaternion.Euler(euler);
+        Vector3 finalCameraPos = apprenticePosition + new Vector3(15f, 22.5f - apprenticePosition.y, 0f);
 
         float elapsed = 0f;
         while (elapsed < duration)
@@ -227,19 +210,12 @@ public class CameraController : MonoBehaviour
 
             Vector3 lerpedPosition = Vector3.Lerp(startPosition, finalCameraPos, t);
             // clamp each step
-            lerpedPosition = ClampPosition(lerpedPosition);
-
-            Quaternion lerpedRotation = Quaternion.Slerp(startRotation, targetRot, t);
-
-            transform.position = lerpedPosition;
-            transform.rotation = lerpedRotation;
-
+            transform.position = ClampPosition(lerpedPosition);
             yield return null;
         }
 
         // final clamp
         transform.position = ClampPosition(finalCameraPos);
-        transform.rotation = targetRot;
         currentMoveCoroutine = null;
     }
 

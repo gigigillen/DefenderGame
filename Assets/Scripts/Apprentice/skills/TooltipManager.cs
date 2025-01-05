@@ -42,7 +42,7 @@ public class TooltipManager : MonoBehaviour {
     }
 
 
-    private string GetTypeColor(ApprenticeType type) {
+    public static string GetTypeColor(ApprenticeType type) {
         switch (type) {
             case ApprenticeType.Wind:
                 return "#2B7B12";
