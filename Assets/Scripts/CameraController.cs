@@ -25,6 +25,7 @@ public class CameraController : MonoBehaviour
     private float maxPitch = 60f; 
 
     private Camera cam;
+    private Coroutine currentMoveCoroutine;
 
     void Start() {
         cam = Camera.main;
@@ -74,4 +75,68 @@ public class CameraController : MonoBehaviour
             transform.eulerAngles = new Vector3(pitch, yaw, 0f);
         }
     }
+
+    // move camera smoothly toward the apprentice
+    public void MoveToApprentice(Vector3 apprenticePosition, float duration = 1f) {
+
+        if (currentMoveCoroutine != null) {
+            StopCoroutine(currentMoveCoroutine);
+        }
+        currentMoveCoroutine = StartCoroutine(MoveToApprenticeCoroutine(apprenticePosition, duration));
+    }
+
+
+    private IEnumerator MoveToApprenticeCoroutine(Vector3 apprenticePosition, float duration) {
+        Vector3 startPosition = transform.position;
+        Quaternion startRotation = transform.rotation;
+
+        Vector3 finalCameraPos = apprenticePosition + new Vector3(10f, 22.5f - apprenticePosition.y, 0f);
+
+        Vector3 flatDirection = new Vector3(
+            apprenticePosition.x - finalCameraPos.x,
+            0f,
+            apprenticePosition.z - finalCameraPos.z
+        );
+        if (flatDirection.sqrMagnitude < 0.001f) {
+            flatDirection = Vector3.forward;
+        }
+
+        // angle is set to 60 to look down at apprentice
+        Quaternion baseRotation = Quaternion.LookRotation(flatDirection.normalized, Vector3.up);
+        Vector3 euler = baseRotation.eulerAngles;
+        euler.x = 60f;
+        Quaternion targetRot = Quaternion.Euler(euler);
+
+        float elapsed = 0f;
+        while (elapsed < duration) {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+
+            Vector3 lerpedPosition = Vector3.Lerp(startPosition, finalCameraPos, t);
+            // clamp each step
+            lerpedPosition = ClampPosition(lerpedPosition);
+
+            Quaternion lerpedRotation = Quaternion.Slerp(startRotation, targetRot, t);
+
+            transform.position = lerpedPosition;
+            transform.rotation = lerpedRotation;
+
+            yield return null;
+        }
+
+        // final clamp
+        transform.position = ClampPosition(finalCameraPos);
+        transform.rotation = targetRot;
+        currentMoveCoroutine = null;
+    }
+
+
+    private Vector3 ClampPosition(Vector3 pos) {
+
+        pos.x = Mathf.Clamp(pos.x, minX, maxX);
+        pos.z = Mathf.Clamp(pos.z, minZ, maxZ);
+        pos.y = 22.5f;
+        return pos;
+    }
+
 }

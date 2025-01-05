@@ -22,6 +22,7 @@ public class GameController : MonoBehaviour {
     [SerializeField] private GameObject menuUI;
     [SerializeField] private GameObject openMenuButton;
     [SerializeField] private SpawnApprentice spawnController;
+    [SerializeField] private CameraController cameraController;
     //[SerializeField] private UISelectCanvas selectCanvas;
 
     private Camera cam;
@@ -118,24 +119,14 @@ public class GameController : MonoBehaviour {
         List<ApprenticeController> apprentices = spawnController.GetActiveApprentices();
         if (apprentices.Count == 0) return;
 
-        // If no apprentice is selected, start with the first one
         if (selectedApprentice == null) {
             currentApprenticeIndex = 0;
             SelectApprentice(apprentices[currentApprenticeIndex]);
             return;
         }
 
-        // Find next valid apprentice
         currentApprenticeIndex = (currentApprenticeIndex + 1) % apprentices.Count;
-
-        // If we've cycled back to the start, deselect
-        if (currentApprenticeIndex == 0 && selectedApprentice == apprentices[apprentices.Count - 1]) {
-            DeselectApprentice();
-            currentApprenticeIndex = -1;
-        }
-        else {
-            SelectApprentice(apprentices[currentApprenticeIndex]);
-        }
+        SelectApprentice(apprentices[currentApprenticeIndex]);
     }
 
 
@@ -212,6 +203,11 @@ public class GameController : MonoBehaviour {
             ringPosition.y = 0.1f;
             currentSelectorRing = Instantiate(selectorRingPrefab, ringPosition, Quaternion.identity);
             currentSelectorRing.transform.SetParent(apprentice.transform);
+
+            // move the camera to the selected apprentice
+            if (cameraController != null) {
+                cameraController.MoveToApprentice(apprentice.transform.position, 1f);
+            }
 
             //selectCanvas.SetTargetApprentice(apprentice);
             //selectCanvas.gameObject.SetActive(true);
