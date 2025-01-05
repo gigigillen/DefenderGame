@@ -12,14 +12,14 @@ public class EnemyBehavior : MonoBehaviour
 
     private bool isStunned = false;
     private float stunTimeLeft = 0f;
+    private GameController gameController;
 
     // enemy speed
     public float speed;
 
+    private void Start() {
 
-    void Start()
-    {
-
+        gameController = FindFirstObjectByType<GameController>();
     }
 
     public void Stun(float duration) {
@@ -39,19 +39,16 @@ public class EnemyBehavior : MonoBehaviour
             return;
         }
 
-        // where the enemies should be charging towards
-        Vector3 targetPosition = stronghold.transform.position;
-        // ensures the enemies attack on a fixed y position
-        targetPosition.y = enemy.transform.position.y;
-
-        enemy.transform.position = Vector3.MoveTowards(enemy.transform.position, targetPosition, speed);
-
-        if (Vector3.Distance(transform.position, stronghold.transform.position) < 2.5)
+        if (Vector3.Distance(transform.position, stronghold.transform.position) < 5)
         {
-            HealthBarController.instance.TakeDamage(10f);
-            Destroy(gameObject);
+            if (enemy.tag=="Wizard") {
+                gameController.GameOver();
+            }
+            else {
+                HealthBarController.instance.TakeDamage(10f);
+                Destroy(gameObject);
+            }
         }
-
     }
 
 

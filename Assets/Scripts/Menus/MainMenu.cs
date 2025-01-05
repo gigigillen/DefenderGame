@@ -20,7 +20,7 @@ public class MainMenu : MonoBehaviour {
 
     private void UpdateWaveText()
     {
-        waveText.text = waveSlider.value.ToString();
+        waveText.text = $"Waves: {waveSlider.value}";
     }
 
     public int GetCurrentWave()

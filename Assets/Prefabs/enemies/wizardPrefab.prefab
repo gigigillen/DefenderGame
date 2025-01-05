@@ -387,7 +387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasTransform: {fileID: 8636686628243113832}
-  enemy: {fileID: 3272527521014807560, guid: e9b51720b74756748a7d7d5d6f12bd9e, type: 3}
+  enemy: {fileID: 535697967618275274}
   stronghold: {fileID: 3464937897299100125, guid: a8993236d2149b24eb4a5210d47b6d88, type: 3}
   speed: 0.01
 --- !u!114 &-6239154834302830648
