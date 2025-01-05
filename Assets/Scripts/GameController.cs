@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour {
     [SerializeField] private UISkillTree uiSkillTree;
     [SerializeField] private LayerMask attackAreaMask;
     [SerializeField] private GameObject gameOverUI;
-    [SerializeField] private GameObject windGameUI;
+    [SerializeField] private GameObject winGameUI;
     [SerializeField] private InputActionAsset inputActions;
     [SerializeField] private GameObject menuUI;
     [SerializeField] private GameObject openMenuButton;
@@ -178,7 +178,7 @@ public class GameController : MonoBehaviour {
     // pauses game physics for end of the game
     public void WinGame()
     {
-        windGameUI.SetActive(true);
+        winGameUI.SetActive(true);
         Time.timeScale = 0f;
         // makes sure there is no skill tree on screen for gameover screen
         if (selectedApprentice != null)

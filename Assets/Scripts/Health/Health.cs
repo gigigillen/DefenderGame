@@ -64,14 +64,9 @@ public class Health : MonoBehaviour {
     }
 
 
-    // gives the stronghold 10% more health and destroys game object
-    // the IEnumerator return is a future implementation
     private IEnumerator HandleDeath() {
 
         yield return new WaitForSeconds(0f);
-
-        Debug.Log("i am dead:(");
-        HealthBarController.instance.GainHealth(10f);
         // Award XP for the kill
         if (xpSystem != null && CompareTag("Enemy")) // Only grant XP for enemies
         {
