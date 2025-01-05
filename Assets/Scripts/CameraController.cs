@@ -5,57 +5,108 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    private Vector2 moveValue;
-    private Vector2 rotationValue;
+    public InputActionAsset playerControls;
+    private InputAction moveAction;
+    private InputAction lookAction;
+    private InputAction zoomAction;
+
     private float speed = 10f;
     private float zoomSpeed = 0.5f;
     private float minZoom = 20f;
-    private float maxZoom = 80f;
+    private float maxZoom = 100f;
 
-    private float minX = -25f; 
-    private float maxX = 40f;  
-    private float minZ = -15f; 
+    private float minX = -25f;
+    private float maxX = 40f;
+    private float minZ = -15f;
     private float maxZ = 32.5f;
 
-    private float pitch = 30f; 
-    private float yaw = 0f;    
+    private float pitch = 30f;
+    private float yaw = 0f;
     private float pitchSpeed = 100f;
     private float yawSpeed = 100f;
-    private float minPitch = 40f; 
-    private float maxPitch = 60f; 
+    private float minPitch = 40f;
+    private float maxPitch = 60f;
 
     private Camera cam;
     private Coroutine currentMoveCoroutine;
 
-    void Start() {
+    private void Awake()
+    {
         cam = Camera.main;
+        InputActionMap playerActionMap = playerControls.FindActionMap("Camera");
+
+        if (playerActionMap != null)
+        {
+            moveAction = playerActionMap.FindAction("Move");
+            lookAction = playerActionMap.FindAction("Look");
+            zoomAction = playerActionMap.FindAction("Scroll");
+        }
+        else
+        {
+            Debug.LogError("Could not find Action Map 'Camera'. Check your Input Actions Asset.");
+            return;
+        }
     }
 
-    void Update() {
-        Vector3 movement = new Vector3(moveValue.x, 0f, moveValue.y) * speed * Time.deltaTime;
+    private void OnEnable()
+    {
+        if (moveAction != null) moveAction.Enable();
+        if (lookAction != null) lookAction.Enable();
+        if (zoomAction != null) zoomAction.Enable();
+    }
+
+    private void OnDisable()
+    {
+        if (moveAction != null) moveAction.Disable();
+        if (lookAction != null) lookAction.Disable();
+        if (zoomAction != null) zoomAction.Disable();
+    }
+
+    void Update()
+    {
+        HandleMovement();
+        HandleRotation(); 
+    }
+
+    void HandleMovement()
+    {
+        if (moveAction == null) return;
+
+        Vector2 moveValue = moveAction.ReadValue<Vector2>();
+
+        // Get the camera's forward and right directions
+        Vector3 forward = cam.transform.forward;
+        Vector3 right = cam.transform.right;
+
+        // Project forward and right directions onto the XZ plane (ignore Y)
+        forward.y = 0f;
+        right.y = 0f;
+
+        forward.Normalize();
+        right.Normalize();
+
+        // Calculate movement direction relative to camera
+        Vector3 movement = (right * moveValue.x + forward * moveValue.y) * speed * Time.deltaTime;
 
         Vector3 targetPosition = transform.position + movement;
 
         targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX);
-        targetPosition.y = 22.5f; 
-        targetPosition.z = Mathf.Clamp(targetPosition.z, minZ, maxZ); 
+        targetPosition.y = 22.5f; // Keep the y position fixed
+        targetPosition.z = Mathf.Clamp(targetPosition.z, minZ, maxZ);
 
         transform.position = targetPosition;
-
-        HandleZoom();
-        HandleRotation();
     }
 
-    void OnMove(InputValue value)
+    public void OnLook(InputAction.CallbackContext context)
     {
-        moveValue = value.Get<Vector2>();
-        float temp = moveValue.x;
-        moveValue.x = -moveValue.y;
-        moveValue.y = temp;
+        Vector2 lookValue = context.ReadValue<Vector2>();
+        // ... your look logic
     }
 
-    void HandleZoom() {
-        float scrollValue = Mouse.current.scroll.ReadValue().y;
+    public void OnScroll(InputValue value)
+    {
+        float scrollValue = value.Get<Vector2>().y;
+        Debug.Log("Scroll Value: " + scrollValue);
 
         float currentZoom = cam.fieldOfView;
         currentZoom -= scrollValue * zoomSpeed * Time.deltaTime * 100;
@@ -63,8 +114,12 @@ public class CameraController : MonoBehaviour
         cam.fieldOfView = Mathf.Clamp(currentZoom, minZoom, maxZoom);
     }
 
-    void HandleRotation() {
-        if (Mouse.current.rightButton.isPressed) {
+    void HandleRotation()
+    {
+        if (lookAction == null) return;
+
+        if (Mouse.current.rightButton.isPressed)
+        {
             Vector2 mouseDelta = Mouse.current.delta.ReadValue();
 
             yaw += mouseDelta.x * yawSpeed * Time.deltaTime;
@@ -77,16 +132,19 @@ public class CameraController : MonoBehaviour
     }
 
     // move camera smoothly toward the apprentice
-    public void MoveToApprentice(Vector3 apprenticePosition, float duration = 1f) {
+    public void MoveToApprentice(Vector3 apprenticePosition, float duration = 1f)
+    {
 
-        if (currentMoveCoroutine != null) {
+        if (currentMoveCoroutine != null)
+        {
             StopCoroutine(currentMoveCoroutine);
         }
         currentMoveCoroutine = StartCoroutine(MoveToApprenticeCoroutine(apprenticePosition, duration));
     }
 
 
-    private IEnumerator MoveToApprenticeCoroutine(Vector3 apprenticePosition, float duration) {
+    private IEnumerator MoveToApprenticeCoroutine(Vector3 apprenticePosition, float duration)
+    {
         Vector3 startPosition = transform.position;
         Quaternion startRotation = transform.rotation;
 
@@ -97,7 +155,8 @@ public class CameraController : MonoBehaviour
             0f,
             apprenticePosition.z - finalCameraPos.z
         );
-        if (flatDirection.sqrMagnitude < 0.001f) {
+        if (flatDirection.sqrMagnitude < 0.001f)
+        {
             flatDirection = Vector3.forward;
         }
 
@@ -108,7 +167,8 @@ public class CameraController : MonoBehaviour
         Quaternion targetRot = Quaternion.Euler(euler);
 
         float elapsed = 0f;
-        while (elapsed < duration) {
+        while (elapsed < duration)
+        {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / duration);
 
@@ -130,13 +190,12 @@ public class CameraController : MonoBehaviour
         currentMoveCoroutine = null;
     }
 
-
-    private Vector3 ClampPosition(Vector3 pos) {
+    private Vector3 ClampPosition(Vector3 pos)
+    {
 
         pos.x = Mathf.Clamp(pos.x, minX, maxX);
         pos.z = Mathf.Clamp(pos.z, minZ, maxZ);
         pos.y = 22.5f;
         return pos;
     }
-
 }

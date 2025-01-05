@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SpawnController : MonoBehaviour {
 
@@ -8,11 +9,11 @@ public class SpawnController : MonoBehaviour {
     public RandomizedEnemies northSpawner;
     public RandomizedEnemies southSpawner;
     public RandomizedEnemies westSpawner;
-    
     public Wizard wizardSpawner;
-    
-    private int numberOfWaves;
-    private int currentWave = 1;
+
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI waveMessageText;
+    private float messageDisplayDuration = 5f;
     
     [Header("Wave Settings")]
     public float timeBetweenWaves = 45f;
@@ -20,9 +21,12 @@ public class SpawnController : MonoBehaviour {
     public float minSpawnInterval = 5f;
     
     [Header("Wave Duration")]
+    private int numberOfWaves;
+    private int currentWave = 1;
     public float waveDuration = 30f;
     private bool isWaveActive = false;
-    
+    private Coroutine messageCoroutine;
+
     void Start() {
         numberOfWaves = MainMenu.NumberOfWaves;
         StartCoroutine(WaveController());
@@ -30,7 +34,7 @@ public class SpawnController : MonoBehaviour {
 
     IEnumerator WaveController() {
         while (currentWave <= numberOfWaves) {
-            Debug.Log($"Starting Wave {currentWave}");
+            ShowMessage($"Starting Wave {currentWave}!");
 
             float spawnInterval = CalculateSpawnInterval(currentWave);
 
@@ -43,18 +47,41 @@ public class SpawnController : MonoBehaviour {
             isWaveActive = false;
 
             if (currentWave < numberOfWaves) {
-                Debug.Log($"Wave {currentWave} complete. Preparing next wave...");
+                ShowMessage($"Wave {currentWave} Complete! Next wave in {timeBetweenWaves} seconds...");
                 yield return new WaitForSeconds(timeBetweenWaves);
             }
             
             currentWave++;
         }
 
-        Debug.Log("Spawning wizard after final wave...");
+        ShowMessage("Final Wave Complete! Preparing for Boss...");
         StopAllSpawners();
         yield return new WaitForSeconds(timeBetweenWaves);
-        SpawnWizard();  
-        Debug.Log("All waves completed!");
+        SpawnWizard();
+        ShowMessage("The Wizard has appeared!");
+    }
+
+    void ShowMessage(string message)
+    {
+        if (waveMessageText != null)
+        {
+            if (messageCoroutine != null)
+            {
+                StopCoroutine(messageCoroutine);
+            }
+            messageCoroutine = StartCoroutine(DisplayMessageCoroutine(message));
+        }
+        else
+        {
+            Debug.LogWarning("Wave Message Text component not assigned!");
+        }
+    }
+
+    IEnumerator DisplayMessageCoroutine(string message)
+    {
+        waveMessageText.text = message;
+        yield return new WaitForSeconds(messageDisplayDuration);
+        waveMessageText.text = "";
     }
 
     float CalculateSpawnInterval(int wave) {
