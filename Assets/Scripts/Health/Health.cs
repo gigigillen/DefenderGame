@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Health : MonoBehaviour {
+    private GameController gameController;
 
     private int enemyMaxHealth = 10;
     private int wizardMaxHealth = 30;
@@ -15,6 +16,7 @@ public class Health : MonoBehaviour {
 
     // assigns the health of the game characters at the start
     void Start() {
+        gameController = FindObjectOfType<GameController>();
 
         // Locate the XPSystem in the scene
         xpSystem = XPSystem.FindFirstObjectByType<XPSystem>();
@@ -74,6 +76,10 @@ public class Health : MonoBehaviour {
         if (xpSystem != null && CompareTag("Enemy")) // Only grant XP for enemies
         {
             xpSystem.AddXP(xpReward);
+        }
+        else if (CompareTag("Wizard")) {
+            gameController.WinGame();
+            Debug.Log("The Wicked Wizard is ded");
         }
         Destroy(gameObject);
     }

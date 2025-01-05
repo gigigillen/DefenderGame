@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour {
     [SerializeField] private UISkillTree uiSkillTree;
     [SerializeField] private LayerMask attackAreaMask;
     [SerializeField] private GameObject gameOverUI;
+    [SerializeField] private GameObject windGameUI;
     [SerializeField] private InputActionAsset inputActions;
     [SerializeField] private GameObject menuUI;
     [SerializeField] private GameObject openMenuButton;
@@ -174,12 +175,25 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    // pauses game physics for end of the game
+    public void WinGame()
+    {
+        windGameUI.SetActive(true);
+        Time.timeScale = 0f;
+        // makes sure there is no skill tree on screen for gameover screen
+        if (selectedApprentice != null)
+        {
+            DeselectApprentice();
+        }
+    }
+
     // rebuilds the game index again and resets the physics of the game
     public void PlayAgain()
     {
         gameOverUI.SetActive(false);
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Canvas.ForceUpdateCanvases();
+        SceneManager.LoadScene(0);
     }
 
     // selects an apprentice and puts up its skilltree ui
