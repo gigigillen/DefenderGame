@@ -1083,6 +1083,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "MouseRight",
+                    "type": "Button",
+                    "id": "8e5e7bc1-8fbc-4440-ad59-53fac84fdb81",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1171,6 +1180,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "LookToggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1f5e6eb4-0c61-458a-881a-8573b8bd6719",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseRight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
