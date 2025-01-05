@@ -13,8 +13,9 @@ public class SpawnApprentice : MonoBehaviour {
     private InputActionMap selectingActionMap;
     private InputAction spawnAction;
     private InputAction cancelPlacementAction;
+    private InputAction[] quickSpawnActions = new InputAction[5];
 
-
+    [SerializeField] private ApprenticeTypeData[] typeDatas = new ApprenticeTypeData[5];
     [SerializeField] private LayerMask placementBlockingLayers;
     [SerializeField] private Transform apprentices;
     [SerializeField] private UISkillTree uiSkillTree;
@@ -25,10 +26,10 @@ public class SpawnApprentice : MonoBehaviour {
 
     private GameObject currentPlacingApprentice;
     private Camera cam;
-    private int apprenticeCount;
-    private const int maxApprentices = 9;
-    private bool canPlace = false;
     private GameController gameController;
+    private int apprenticeCount;
+    private const int maxApprentices = 10;
+    private bool canPlace = false;
     private GameObject apprenticePrefab;
     private List<ApprenticeController> activeApprentices = new List<ApprenticeController>();
     private int pendingSkillPointCost = 0;
@@ -38,8 +39,15 @@ public class SpawnApprentice : MonoBehaviour {
 
         spawningActionMap = inputActions.FindActionMap("Spawning");
         selectingActionMap = inputActions.FindActionMap("Selecting");
+
         spawnAction = spawningActionMap.FindAction("PlaceApprentice");
         cancelPlacementAction = spawningActionMap.FindAction("CancelPlacement");
+
+        for (int i = 0; i < 5; i++) {
+            int index = i;
+            quickSpawnActions[i] = selectingActionMap.FindAction($"Spawn{GetApprenticeTypeName(i)}{i+1}");
+            quickSpawnActions[i].performed += ctx => OnSpawnKey(index);
+        }
 
         spawnAction.performed += OnSpawnPerformed;
         cancelPlacementAction.performed += OnCancelPlacement;
@@ -49,10 +57,10 @@ public class SpawnApprentice : MonoBehaviour {
     void Start() {
 
         cam = Camera.main;
+        gameController = FindAnyObjectByType<GameController>();
         apprenticeCount = 0;
         apprenticeText.text = "";
         SetApprenticeText();
-        gameController = FindAnyObjectByType<GameController>();
 
         selectingActionMap.Enable();
         spawningActionMap.Disable();
@@ -107,6 +115,24 @@ public class SpawnApprentice : MonoBehaviour {
 
         if (currentPlacingApprentice != null && canPlace) {
             PlaceApprentice(currentPlacingApprentice.transform.position);
+        }
+    }
+
+    private void OnSpawnKey(int index) {
+        Debug.Log("trying to spawn with hotkey");
+        if (isPlacingApprentice || gameController.isMenuOpen) return;
+
+        ApprenticeTypeData selectedType = index switch {
+            0 => typeDatas[0],
+            1 => typeDatas[1],
+            2 => typeDatas[2],
+            3 => typeDatas[3],
+            4 => typeDatas[4],
+            _ => null
+        };
+
+        if (selectedType != null && selectedType.apprenticePrefab != null) {
+            SetApprenticeTypeToPlace(selectedType.apprenticePrefab);
         }
     }
 
@@ -235,6 +261,18 @@ public class SpawnApprentice : MonoBehaviour {
         CleanupPlacement();
 
         Debug.Log($"{type} apprentice placed at {position}.");
+    }
+
+
+    private string GetApprenticeTypeName(int index) {
+        return index switch {
+            0 => "Basic",
+            1 => "Wind",
+            2 => "Water",
+            3 => "Earth",
+            4 => "Fire",
+            _ => string.Empty
+        };
     }
 
 
