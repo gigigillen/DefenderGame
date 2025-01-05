@@ -11,6 +11,7 @@ public class FireProjectile : ProjectileController {
     private void Awake() {
 
         projectileType = ApprenticeType.Fire;
+        damage = 4;
     }
 
 
