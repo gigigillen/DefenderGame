@@ -23,7 +23,7 @@ public class GameController : MonoBehaviour {
     [SerializeField] private GameObject openMenuButton;
     [SerializeField] private SpawnApprentice spawnController;
     [SerializeField] private CameraController cameraController;
-    //[SerializeField] private UISelectCanvas selectCanvas;
+    [SerializeField] private UISelectCanvas selectCanvas;
 
     private Camera cam;
     private InputActionMap selectingActionMap;
@@ -209,8 +209,8 @@ public class GameController : MonoBehaviour {
                 cameraController.MoveToApprentice(apprentice.transform.position, 1f);
             }
 
-            //selectCanvas.SetTargetApprentice(apprentice);
-            //selectCanvas.gameObject.SetActive(true);
+            selectCanvas.SetTargetApprentice(apprentice);
+            selectCanvas.gameObject.SetActive(true);
 
             Debug.Log("Selected Apprentice: " + apprentice.gameObject.name);
         }
@@ -226,7 +226,7 @@ public class GameController : MonoBehaviour {
         if (currentSelectorRing!=null) {
             Destroy(currentSelectorRing);
         }
-        //selectCanvas.gameObject.SetActive(false);
+        selectCanvas.gameObject.SetActive(false);
         selectedApprentice = null;
         currentApprenticeIndex = -1;
     }

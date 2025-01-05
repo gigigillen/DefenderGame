@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 [CreateAssetMenu(fileName = "NewApprenticeTypeData", menuName = "Game/ApprenticeTypeData")]
 public class ApprenticeTypeData : ScriptableObject {

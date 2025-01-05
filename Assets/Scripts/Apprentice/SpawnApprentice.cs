@@ -20,6 +20,7 @@ public class SpawnApprentice : MonoBehaviour {
     [SerializeField] private Transform apprentices;
     [SerializeField] private UISkillTree uiSkillTree;
     [SerializeField] private TextMeshProUGUI apprenticeText;
+    [SerializeField] private TextMeshProUGUI[] spawnCostText = new TextMeshProUGUI[4];
 
     public ApprenticeType type = ApprenticeType.Basic; // default type basic
     public bool isPlacingApprentice = false;
@@ -61,6 +62,7 @@ public class SpawnApprentice : MonoBehaviour {
         apprenticeCount = 0;
         apprenticeText.text = "";
         SetApprenticeText();
+        UpdateAllSpawnCosts();
 
         selectingActionMap.Enable();
         spawningActionMap.Disable();
@@ -181,18 +183,41 @@ public class SpawnApprentice : MonoBehaviour {
     }
 
     private int CalculateSkillPointCost(ApprenticeType type) {
+
+        int cost = (type == ApprenticeType.Basic) ? 1 : 2;
         switch (type) {
-            case ApprenticeType.Water:
-            case ApprenticeType.Earth:
-                return 2;
             case ApprenticeType.Wind:
+                if (SkillManager.IsAbilityUnlocked(ApprenticeType.Wind, "Vortex")) {
+                    cost += 1;
+                }
+                break;
+            case ApprenticeType.Earth:
+                if (SkillManager.IsAbilityUnlocked(ApprenticeType.Earth, "Rocky Pulse")) {
+                    cost += 1;
+                }
+                break;
             case ApprenticeType.Fire:
-                return 3;
-            default:
-                return 1;
+                if (SkillManager.IsAbilityUnlocked(ApprenticeType.Fire, "Burning")) {
+                    cost += 1;
+                }
+                break;
+            case ApprenticeType.Water:
+                if (SkillManager.IsAbilityUnlocked(ApprenticeType.Water, "Wetness")) {
+                    cost += 1;
+                }
+                break;
         }
+        return cost;
     }
 
+    public void UpdateAllSpawnCosts() {
+
+        for (int i = 1; i < 5; i++) {
+            ApprenticeType type = typeDatas[i].type;
+            int cost = CalculateSkillPointCost(type);
+            spawnCostText[i-1].text = cost.ToString();
+        }
+    }
 
 
     private void SetupPreviewApprentice(GameObject apprentice) {
@@ -259,6 +284,7 @@ public class SpawnApprentice : MonoBehaviour {
         finalApprentice.name = $"{type} Apprentice {apprenticeCount}";
 
         CleanupPlacement();
+        gameController.SelectApprentice(apprenticeController);
 
         Debug.Log($"{type} apprentice placed at {position}.");
     }
@@ -300,13 +326,11 @@ public class SpawnApprentice : MonoBehaviour {
     }
   
 
-    // decrease apprentice count and hide skill tree on death
+    // decrease apprentice count and remove from active apprentices list
     public void RemoveApprentice(ApprenticeController apprentice) {
 
         activeApprentices.Remove(apprentice);
         apprenticeCount--;
-        uiSkillTree.SetVisible(false);
-
     }
 
 

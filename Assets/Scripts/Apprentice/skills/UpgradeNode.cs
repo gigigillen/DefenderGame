@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 
@@ -11,11 +12,14 @@ public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private string description;
     [SerializeField] private int skillPointCost = 1;
 
+    private SpawnApprentice spawnController;
+
     private Button button;
 
 
     void Start() {
 
+        spawnController = FindAnyObjectByType<SpawnApprentice>();
         button = GetComponent<Button>();
         UpdateButtonState();
     }
@@ -48,6 +52,7 @@ public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 if (success) {
                     skillManager.UnlockAbility(apprenticeType, upgradeName);
                     button.interactable = false;
+                    spawnController.UpdateAllSpawnCosts();
                 }
             }
         }

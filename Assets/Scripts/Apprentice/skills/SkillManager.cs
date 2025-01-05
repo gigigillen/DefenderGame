@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SkillManager : MonoBehaviour {
 
     private static SkillManager instance;
+    [SerializeField] private TextMeshProUGUI[] spawnCostText = new TextMeshProUGUI[5];
 
     private bool unlockedVortex = false;
     private bool unlockedAoePulse = false;

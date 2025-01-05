@@ -847,6 +847,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "SellApprentice",
+                    "type": "Button",
+                    "id": "620ed2a8-5c17-4b8f-a7de-8431120a19cb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -935,6 +944,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "SpawnFire5",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "be05f7fb-9de5-4c18-8a75-d410fcf6217c",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SellApprentice",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
