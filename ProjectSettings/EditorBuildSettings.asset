@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: f8f5c245c1a6444148df2c271ffd8fd2
   - enabled: 1
-    path: Assets/Scenes/annie.unity
-    guid: ef12ac2df8624457eb1f1c19b52d25a5
+    path: Assets/Scenes/EntryLevel.unity
+    guid: c724da2f87cf81d47a45fbcfd48c712d
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
