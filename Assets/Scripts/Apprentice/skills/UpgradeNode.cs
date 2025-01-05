@@ -9,11 +9,9 @@ public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private SkillManager skillManager;
     [SerializeField] private ApprenticeType apprenticeType;
     [SerializeField] private string upgradeName;
-    [SerializeField] private string description;
     [SerializeField] private int skillPointCost = 1;
 
     private SpawnApprentice spawnController;
-
     private Button button;
 
 
@@ -31,7 +29,7 @@ public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         TooltipManager.instance.SetAndShowTooltip(
             upgradeName,
             apprenticeType,
-            description,
+            GetUpgradeDescription(apprenticeType),
             skillPointCost,
             isUnlocked
         );
@@ -40,6 +38,20 @@ public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     public void OnPointerExit(PointerEventData eventData) {
 
         TooltipManager.instance.HideToolTip();
+    }
+
+    private string GetUpgradeDescription(ApprenticeType type) {
+        return type switch {
+            ApprenticeType.Wind =>
+                "Creates a vortex on hit, dealing 1 damage per second to enemies within.",
+            ApprenticeType.Earth =>
+                "Deals two extra instances of crash aoe damage.",
+            ApprenticeType.Fire =>
+                "Can apply the burning effect to enemies, dealing 1 damage per second.",
+            ApprenticeType.Water =>
+                "Can apply the wet effect to enemies, slowing them down.",
+            _ => "No description available."
+        };
     }
 
     public void TryPurchaseUpgrade() {

@@ -16,7 +16,7 @@ public class Health : MonoBehaviour {
 
     // assigns the health of the game characters at the start
     void Start() {
-        gameController = FindObjectOfType<GameController>();
+        gameController = FindFirstObjectByType<GameController>();
 
         // Locate the XPSystem in the scene
         xpSystem = XPSystem.FindFirstObjectByType<XPSystem>();

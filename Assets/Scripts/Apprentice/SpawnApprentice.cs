@@ -182,7 +182,7 @@ public class SpawnApprentice : MonoBehaviour {
         }
     }
 
-    private int CalculateSkillPointCost(ApprenticeType type) {
+    public static int CalculateSkillPointCost(ApprenticeType type) {
 
         int cost = (type == ApprenticeType.Basic) ? 1 : 2;
         switch (type) {

@@ -11,8 +11,6 @@ public class TooltipManager : MonoBehaviour {
     [SerializeField] private GameObject tooltipPanel;
     [SerializeField] private TextMeshProUGUI textComponent;
 
-    private RectTransform tooltipRect;
-
    
     private void Awake() {
 
@@ -23,7 +21,6 @@ public class TooltipManager : MonoBehaviour {
             Destroy(gameObject);
         }
 
-        tooltipRect = tooltipPanel.GetComponent<RectTransform>();
         tooltipPanel.SetActive(false);
     }
 
@@ -37,7 +34,7 @@ public class TooltipManager : MonoBehaviour {
     private void Update() {
 
         Vector2 mousePos = Mouse.current.position.ReadValue();
-        float offset = 120f;
+        float offset = 130f;
         transform.position = mousePos + new Vector2(-offset, -offset/2);
     }
 
@@ -79,6 +76,7 @@ public class TooltipManager : MonoBehaviour {
 
     public void HideToolTip() {
 
+        Debug.Log("hiding tooltip");
         tooltipPanel.SetActive(false);
         textComponent.text = string.Empty;
     }

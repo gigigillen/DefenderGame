@@ -9,7 +9,9 @@ public class WaterProjectile : ProjectileController {
 
 
     private void Awake() {
+
         projectileType = ApprenticeType.Water;
+        damage = 2;
     }
 
     protected override void OnReachTarget() {
