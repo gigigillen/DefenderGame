@@ -6,61 +6,58 @@ using TMPro;
 public class SkillManager : MonoBehaviour {
 
     private static SkillManager instance;
-    [SerializeField] private TextMeshProUGUI[] spawnCostText = new TextMeshProUGUI[5];
 
-    private bool unlockedVortex = false;
-    private bool unlockedAoePulse = false;
-    private bool unlockedBurning = false;
-    private bool unlockedWetness = false;
+    private static readonly Dictionary<ApprenticeType, List<string>> typeAbilities = new Dictionary<ApprenticeType, List<string>> {
+        { ApprenticeType.Water, new List<string> { "Wetness" } },
+        { ApprenticeType.Earth, new List<string> { "Rocky Pulse" } },
+        { ApprenticeType.Wind, new List<string> { "Vortex" } },
+        { ApprenticeType.Fire, new List<string> { "Burning" } }
+    };
+
+    private Dictionary<ApprenticeType, HashSet<string>> unlockedAbilities = new Dictionary<ApprenticeType, HashSet<string>>();
 
     private void Awake() {
 
         if (instance == null) {
             instance = this;
+            InitialiseAbilities();
         }
         else {
             Destroy(gameObject);
         }
     }
 
+    private void InitialiseAbilities() {
+        foreach (ApprenticeType type in System.Enum.GetValues(typeof(ApprenticeType))) {
+            unlockedAbilities[type] = new HashSet<string>();
+        }
+    }
 
     public void UnlockAbility(ApprenticeType type, string abilityName) {
 
-        if (type == ApprenticeType.Wind && abilityName == "Vortex") {
-            unlockedVortex = true;
-            Debug.Log("Vortex ability unlocked for Wind apprentices!");
-        }
-        else if (type == ApprenticeType.Earth && abilityName == "Rocky Pulse") {
-            unlockedAoePulse = true;
-            Debug.Log("Aoe pulse ability unlocked for Earth apprentices!");
-        }
-        else if (type == ApprenticeType.Fire && abilityName == "Burning") {
-            unlockedBurning = true;
-            Debug.Log("Burning ability unlocked for Fire apprentices!");
-        }
-        else if (type == ApprenticeType.Water && abilityName == "Wetness") {
-            unlockedWetness = true;
-            Debug.Log("Wetness ability unlocked for Water apprentices!");
-        }
+        if (typeAbilities.TryGetValue(type, out List<string> abilities) &&
+           abilities.Contains(abilityName)) {
 
-        
+            unlockedAbilities[type].Add(abilityName);
+            Debug.Log($"{abilityName} ability unlocked for {type} apprentices!");
+        }
+        else {
+            Debug.LogWarning($"Attempted to unlock invalid ability {abilityName} for {type}");
+        }
     }
 
     public static bool IsAbilityUnlocked(ApprenticeType type, string abilityName) {
 
-        if (type == ApprenticeType.Wind && abilityName == "Vortex") {
-            return instance.unlockedVortex;
-        }
-        else if (type == ApprenticeType.Earth && abilityName == "Rocky Pulse") {
-            return instance.unlockedAoePulse;
-        }
-        else if (type == ApprenticeType.Fire && abilityName == "Burning") {
-            return instance.unlockedBurning;
-        }
-        else if (type == ApprenticeType.Water && abilityName == "Wetness") {
-            return instance.unlockedWetness;
-        }
-        return false;
+        return instance.unlockedAbilities[type].Contains(abilityName);
     }
 
+    public static List<string> GetAllAbilities(ApprenticeType type) {
+        return typeAbilities.TryGetValue(type, out List<string> abilities)
+            ? new List<string>(abilities)
+            : new List<string>();
+    }
+
+    public static List<string> GetUnlockedAbilities(ApprenticeType type) {
+        return new List<string>(instance.unlockedAbilities[type]);
+    }
 }

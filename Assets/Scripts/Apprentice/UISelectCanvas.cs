@@ -2,13 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
+using System.Collections.Generic;
 
 public class UISelectCanvas : MonoBehaviour {
 
     private Camera mainCamera;
-    [SerializeField] private Vector2 screenOffset = new Vector2(100,0);
     [SerializeField] private RectTransform baseRectTransform;
     [SerializeField] private TextMeshProUGUI apprenticeTypeText;
+    [SerializeField] private TextMeshProUGUI upgradesText;
     [SerializeField] private TextMeshProUGUI refundText;
     [SerializeField] private InputActionAsset inputActions;
 
@@ -31,7 +32,6 @@ public class UISelectCanvas : MonoBehaviour {
 
         selectingActionMap = inputActions.FindActionMap("Selecting");
         sellAction = selectingActionMap.FindAction("SellApprentice");
-
         sellAction.performed += OnSellActionPerformed;
     }
 
@@ -56,14 +56,21 @@ public class UISelectCanvas : MonoBehaviour {
         UpdateUIContents();
     }
 
-    private void UpdateUIContents() {
+    public void UpdateUIContents() {
 
         if (currentApprentice != null) {
-           
+
             apprenticeTypeText.text = $"Type: <color={TooltipManager.GetTypeColor(currentApprentice.apprenticeType)}>{currentApprentice.apprenticeType}</color></size>\n";
+
+            List<string> unlockedAbilities = SkillManager.GetUnlockedAbilities(currentApprentice.apprenticeType);
+            string upgradeListText = unlockedAbilities.Count > 0
+                ? string.Join(", ", unlockedAbilities)
+                : "None";
+            upgradesText.text = $"Upgrades: {upgradeListText}";
+
+            int returnValue = CalculateReturnValue(currentApprentice.apprenticeType);
+            refundText.text = $"Sell ({returnValue} SP)";
         }
-        int returnValue = CalculateReturnValue(currentApprentice.apprenticeType);
-        refundText.text = $"Sell ({returnValue} SP)";
     }
 
 
