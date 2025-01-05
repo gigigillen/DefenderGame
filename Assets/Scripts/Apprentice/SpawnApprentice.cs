@@ -13,8 +13,9 @@ public class SpawnApprentice : MonoBehaviour {
     private InputActionMap selectingActionMap;
     private InputAction spawnAction;
     private InputAction cancelPlacementAction;
+    private InputAction[] quickSpawnActions = new InputAction[5];
 
-
+    [SerializeField] private ApprenticeTypeData[] typeDatas = new ApprenticeTypeData[5];
     [SerializeField] private LayerMask placementBlockingLayers;
     [SerializeField] private Transform apprentices;
     [SerializeField] private UISkillTree uiSkillTree;
@@ -25,10 +26,10 @@ public class SpawnApprentice : MonoBehaviour {
 
     private GameObject currentPlacingApprentice;
     private Camera cam;
-    private int apprenticeCount;
-    private const int maxApprentices = 9;
-    private bool canPlace = false;
     private GameController gameController;
+    private int apprenticeCount;
+    private const int maxApprentices = 10;
+    private bool canPlace = false;
     private GameObject apprenticePrefab;
     private List<ApprenticeController> activeApprentices = new List<ApprenticeController>();
     private int pendingSkillPointCost = 0;
@@ -38,26 +39,28 @@ public class SpawnApprentice : MonoBehaviour {
 
         spawningActionMap = inputActions.FindActionMap("Spawning");
         selectingActionMap = inputActions.FindActionMap("Selecting");
+
         spawnAction = spawningActionMap.FindAction("PlaceApprentice");
         cancelPlacementAction = spawningActionMap.FindAction("CancelPlacement");
+
+        for (int i = 0; i < 5; i++) {
+            int index = i;
+            quickSpawnActions[i] = selectingActionMap.FindAction($"Spawn{GetApprenticeTypeName(i)}{i+1}");
+            quickSpawnActions[i].performed += ctx => OnSpawnKey(index);
+        }
 
         spawnAction.performed += OnSpawnPerformed;
         cancelPlacementAction.performed += OnCancelPlacement;
     }
 
 
-    private void OnDestroy() {
-        spawnAction.performed -= OnSpawnPerformed;
-    }
-
-
     void Start() {
 
         cam = Camera.main;
+        gameController = FindAnyObjectByType<GameController>();
         apprenticeCount = 0;
         apprenticeText.text = "";
         SetApprenticeText();
-        gameController = FindAnyObjectByType<GameController>();
 
         selectingActionMap.Enable();
         spawningActionMap.Disable();
@@ -115,13 +118,31 @@ public class SpawnApprentice : MonoBehaviour {
         }
     }
 
+    private void OnSpawnKey(int index) {
+        Debug.Log("trying to spawn with hotkey");
+        if (isPlacingApprentice || gameController.isMenuOpen) return;
+
+        ApprenticeTypeData selectedType = index switch {
+            0 => typeDatas[0],
+            1 => typeDatas[1],
+            2 => typeDatas[2],
+            3 => typeDatas[3],
+            4 => typeDatas[4],
+            _ => null
+        };
+
+        if (selectedType != null && selectedType.apprenticePrefab != null) {
+            SetApprenticeTypeToPlace(selectedType.apprenticePrefab);
+        }
+    }
+
     private void OnCancelPlacement(InputAction.CallbackContext context) {
 
         CancelPlacement();
     }
 
 
-   public void SetApprenticeTypeToPlace(GameObject apprenticePrefab)
+    public void SetApprenticeTypeToPlace(GameObject apprenticePrefab)
     {
         // Dynamically assign XPSystem if it's null
         if (xpSystem == null)
@@ -243,6 +264,18 @@ public class SpawnApprentice : MonoBehaviour {
     }
 
 
+    private string GetApprenticeTypeName(int index) {
+        return index switch {
+            0 => "Basic",
+            1 => "Wind",
+            2 => "Water",
+            3 => "Earth",
+            4 => "Fire",
+            _ => string.Empty
+        };
+    }
+
+
     private void CleanupPlacement() {
 
         if (currentPlacingApprentice != null) {
@@ -276,11 +309,9 @@ public class SpawnApprentice : MonoBehaviour {
 
     }
 
-    public ApprenticeController GetApprenticeByIndex(int index) {
-        if (index>= 0 && index < activeApprentices.Count) {
-            return activeApprentices[index];
-        }
-        return null;
+
+    public List<ApprenticeController> GetActiveApprentices() {
+        return new List<ApprenticeController>(activeApprentices);
     }
 
 
@@ -295,5 +326,11 @@ public class SpawnApprentice : MonoBehaviour {
         float checkRadius = 0.5f;
         Collider[] hitColliders = Physics.OverlapSphere(position, checkRadius, placementBlockingLayers);
         return hitColliders.Length > 0;
+    }
+
+
+    private void OnDestroy() {
+        spawnAction.performed -= OnSpawnPerformed;
+        cancelPlacementAction.performed -= OnCancelPlacement;
     }
 }
