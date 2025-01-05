@@ -105,8 +105,8 @@ public class UISelectCanvas : MonoBehaviour {
 
         if (currentApprentice != null) {
             Vector2 screenPoint = mainCamera.WorldToScreenPoint(currentApprentice.transform.position);
-            screenPoint.x -= 100f;
-            screenPoint.y += 50f;
+            screenPoint.x -= 160f;
+            screenPoint.y += 70f;
             baseRectTransform.position = screenPoint;
         }
     }
