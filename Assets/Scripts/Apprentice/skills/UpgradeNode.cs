@@ -11,13 +11,11 @@ public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private string upgradeName;
     [SerializeField] private int skillPointCost = 3;
 
-    private SpawnApprentice spawnController;
     private Button button;
 
 
     void Start() {
 
-        spawnController = FindAnyObjectByType<SpawnApprentice>();
         button = GetComponent<Button>();
         UpdateButtonState();
     }
@@ -45,11 +43,11 @@ public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             ApprenticeType.Wind =>
                 "Creates a vortex on hit, dealing 2 damage per second to enemies within.",
             ApprenticeType.Earth =>
-                "Deals two extra instances of crash aoe damage.",
+                "Deals two extra instances of crash AOE damage.",
             ApprenticeType.Fire =>
-                "Can apply the burning effect to enemies, dealing 2 damage per second.",
+                "Can apply the burning effect to enemies, dealing 2 damage per second. Can vaporise wet enemies to deal an extra 3 dmg.",
             ApprenticeType.Water =>
-                "Can apply the wet effect to enemies, slowing them down by 50%.",
+                "Can apply the wet effect to enemies, slowing them down by 50%. Can vaporise burning enemies to deal an extra 3 dmg.",
             _ => "No description available."
         };
     }

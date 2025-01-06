@@ -2463,7 +2463,7 @@ MonoBehaviour:
   xpBarImage: {fileID: 75338719}
   skillPointsText: {fileID: 2001831691}
   xpText: {fileID: 2065505602}
-  skillPoints: 100
+  skillPoints: 5
 --- !u!1 &80898869
 GameObject:
   m_ObjectHideFlags: 0
@@ -22030,7 +22030,7 @@ MonoBehaviour:
 
 
     Your ultimate goal is to defeat
-    the Evil Wizard who has ben terrorising the lands. He will show himself in the
+    the Evil Wizard who has been terrorising the lands. He will show himself in the
     final wave after his minions have been overcome. Protect your stronghold until
     the final wave and defeat him for good!
 
