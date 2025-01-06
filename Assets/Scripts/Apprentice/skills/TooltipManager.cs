@@ -34,7 +34,7 @@ public class TooltipManager : MonoBehaviour {
     private void Update() {
 
         Vector2 mousePos = Mouse.current.position.ReadValue();
-        float offset = 220f;
+        float offset = 325f;
         transform.position = mousePos + new Vector2(-offset, -offset/2);
     }
 
