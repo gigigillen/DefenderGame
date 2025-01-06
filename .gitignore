@@ -60,6 +60,7 @@ sysinfo.txt
 *.app
 
 BuildTest
+FinalBuild
 
 # Crashlytics generated file
 crashlytics-build.properties
