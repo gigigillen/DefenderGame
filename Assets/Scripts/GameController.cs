@@ -7,7 +7,9 @@ using UnityEngine.SceneManagement;
 
 
 public class GameController : MonoBehaviour {
+
     // makes GameController a singleton by calling itself
+    // GameController manages the global game state
     public static GameController instance;
 
     public ApprenticeController selectedApprentice;
@@ -43,7 +45,9 @@ public class GameController : MonoBehaviour {
     private bool isPointerOverUI;
     private bool isSkillTreeOpen;
 
+
     private void Awake() {
+        //setup input action maps
         selectingActionMap = inputActions.FindActionMap("Selecting");
         clickSelectAction = selectingActionMap.FindAction("SelectApprentice");
         deselectApprenticeAction = selectingActionMap.FindAction("DeselectApprentice");
@@ -55,6 +59,7 @@ public class GameController : MonoBehaviour {
         menuMap = inputActions.FindActionMap("Menu");
         toggleMenuAction = menuMap.FindAction("ToggleMenu");
 
+        // bind actions to methods
         clickSelectAction.performed += OnSelect;
         deselectApprenticeAction.performed += OnDeselect;
         cycleApprenticeAction.performed += OnCycleApprentice;
@@ -91,7 +96,7 @@ public class GameController : MonoBehaviour {
        isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
     }
 
-
+    // handle mouse click selection of apprentices with raycasting
     private void OnSelect(InputAction.CallbackContext context) {
 
         // if over UI as of this frame’s update, skip the raycast
@@ -104,17 +109,18 @@ public class GameController : MonoBehaviour {
 
         //checks if the mouse clicked anywhere on the game screen
         if (Physics.Raycast(ray, out hit, Mathf.Infinity)) {
-            //checks if an apprentice was clicked and uses method SelectedApprentice
             ApprenticeController clickedApprentice = hit.collider.GetComponent<ApprenticeController>();
             if (clickedApprentice != null) {
                 SelectApprentice(clickedApprentice);
             }
             else if (selectedApprentice != null) {
+                // empty space clicked
                 DeselectApprentice();
             }
         }
     }
 
+    // called when presseng 't' button to cycle through spawned (active) apprentices
     private void OnCycleApprentice(InputAction.CallbackContext context) {
 
         if (isMenuOpen) return;
@@ -139,6 +145,7 @@ public class GameController : MonoBehaviour {
         }
     }
 
+    // called when pressing 'tab' key
     private void ToggleSkillTree(InputAction.CallbackContext context) {
 
         if (isMenuOpen) return;
@@ -198,7 +205,7 @@ public class GameController : MonoBehaviour {
         SceneManager.LoadScene(0);
     }
 
-    // selects an apprentice and puts up its skilltree ui
+    // manages seletion of an apprentice, creates visual ring indicator & camera focus
     public void SelectApprentice(ApprenticeController apprentice) {
 
         if (isSelectingApprentice) return;
@@ -235,8 +242,6 @@ public class GameController : MonoBehaviour {
         }
     }
 
- 
-    //deselects apprentice skilltree
     public void DeselectApprentice() {
 
         if (currentSelectorRing!=null) {
@@ -247,7 +252,7 @@ public class GameController : MonoBehaviour {
         currentApprenticeIndex = -1;
     }
 
-    // called when menu is toggled open
+    // called for game pause state with cleanup of apprentice selection
     public void MenuOpen()
     {
         if (selectedApprentice != null)
@@ -264,7 +269,7 @@ public class GameController : MonoBehaviour {
         isMenuOpen = true;
     }
 
-    // called when menu is toggled close
+    // called when menu is toggled close, restore normal GUI state
     public void MenuClose() {
 
         if (selectedApprentice != null)

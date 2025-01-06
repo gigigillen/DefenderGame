@@ -8,7 +8,7 @@ using TMPro;
 public class SpawnApprentice : MonoBehaviour {
 
     [SerializeField] private InputActionAsset inputActions;
-    [SerializeField] private XPSystem xpSystem; // Reference to XPSystem
+    [SerializeField] private XPSystem xpSystem;
     private InputActionMap spawningActionMap;
     private InputActionMap selectingActionMap;
     private InputAction spawnAction;
@@ -22,14 +22,14 @@ public class SpawnApprentice : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI apprenticeText;
     [SerializeField] private TextMeshProUGUI[] spawnCostText = new TextMeshProUGUI[4];
 
-    public ApprenticeType type = ApprenticeType.Basic; // default type basic
+    public ApprenticeType type = ApprenticeType.Basic;
     public bool isPlacingApprentice = false;
 
     private GameObject currentPlacingApprentice;
     private Camera cam;
     private GameController gameController;
     private int apprenticeCount;
-    private const int maxApprentices = 10;
+    private const int maxApprentices = 10; // maximum apprentices that can be placed in the game
     private bool canPlace = false;
     private GameObject apprenticePrefab;
     private List<ApprenticeController> activeApprentices = new List<ApprenticeController>();
@@ -79,7 +79,7 @@ public class SpawnApprentice : MonoBehaviour {
         }
     }
 
-
+    // handle the visual preview when going to place a new apprentice
     void HandlePlacement() {
 
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -144,6 +144,8 @@ public class SpawnApprentice : MonoBehaviour {
     }
 
 
+    // initialise placement of a specific apprentice type IF enough skill points
+    // create preview
     public void SetApprenticeTypeToPlace(GameObject apprenticePrefab)
     {
         // Dynamically assign XPSystem if it's null
@@ -182,6 +184,7 @@ public class SpawnApprentice : MonoBehaviour {
         }
     }
 
+    // calculate the skill point cost based on apprentice type
     public static int CalculateSkillPointCost(ApprenticeType type) {
 
         int cost = type switch {
@@ -204,7 +207,7 @@ public class SpawnApprentice : MonoBehaviour {
         }
     }
 
-
+    // prepare preview for placement - disable physics and scripts
     private void SetupPreviewApprentice(GameObject apprentice) {
 
         apprentice.layer = LayerMask.NameToLayer("ApprenticePreview");
@@ -251,7 +254,7 @@ public class SpawnApprentice : MonoBehaviour {
         uiSkillTree.OnPlacementStart();
     }
 
-
+    // finalise placement and spend skill points, handle preview cleanup
     private void PlaceApprentice(Vector3 position) {
 
         for (int i = 0; i < pendingSkillPointCost; i++) {
@@ -330,7 +333,8 @@ public class SpawnApprentice : MonoBehaviour {
         apprenticeText.text = $"{apprenticeCount}/{maxApprentices}";
     }
 
-
+    // check if overlapping with existing elements in the game apprentice shouldn't spawn upon
+    // stronghold, enemies, other apprentices
     private bool IsOverlappingObjects(Vector3 position) {
         float checkRadius = 0.5f;
         Collider[] hitColliders = Physics.OverlapSphere(position, checkRadius, placementBlockingLayers);

@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectilePool : MonoBehaviour {
+
     [System.Serializable]
     public class ProjectileTypeInfo {
         public ApprenticeType type;
         public GameObject prefab;
-        public int initialPoolSize = 20;
+        public int initialPoolSize = 20; 
     }
 
     [SerializeField] private ProjectileTypeInfo[] projectileTypes;
     private Dictionary<ApprenticeType, Queue<GameObject>> pools = new Dictionary<ApprenticeType, Queue<GameObject>>();
 
+    // initial pool of 20 for each apprentice type
+    // prevent performance issues from repetitive creating/deleting projectile objects
     void Start() {
 
         foreach (var typeInfo in projectileTypes) {
@@ -25,6 +28,7 @@ public class ProjectilePool : MonoBehaviour {
         }
     }
 
+    // create new projectiles of specified type - for initialisation & if pool runs out
     private void CreateNewProjectile(ApprenticeType type) {
 
         var typeInfo = System.Array.Find(projectileTypes, x => x.type == type);

@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class ApprenticeController : MonoBehaviour
 {
+    // configuration data for this apprentice type
     [SerializeField] private ApprenticeTypeData typeData;
+    // controls how this apprentice chooses targets
     [SerializeField] private TargetingStrategy currentStrategy = TargetingStrategy.ClosestToStronghold;
     [SerializeField] private GameObject stronghold;
 
-    public ApprenticeType apprenticeType; // Type of apprentice (Basic, Water, Wind, Fire)
+    public ApprenticeType apprenticeType; // Type of apprentice (Basic, Water, Wind, Earth, Fire)
     private float currentCooldown;
 
     private ProjectilePool projectilePool;
@@ -26,6 +28,7 @@ public class ApprenticeController : MonoBehaviour
         gameObject.tag = "Apprentice";
     }
 
+    // calculate current cooldown and find enemies to attack within range
     void Update()
     {
         
@@ -40,6 +43,7 @@ public class ApprenticeController : MonoBehaviour
         }
     }
 
+    // rotate to face the enemy within range and attack when off cooldown
     private void HandleAttack()
     {
 
@@ -58,6 +62,7 @@ public class ApprenticeController : MonoBehaviour
         }
     }
 
+    // get a new projectile from projectile pool and initialise with target information
     private void RangedAttack()
     {
         GameObject projectile = projectilePool.GetProjectile(apprenticeType);
@@ -65,7 +70,8 @@ public class ApprenticeController : MonoBehaviour
         projectile.GetComponent<ProjectileController>().Initialize(typeData, enemyToTarget.transform, projectilePool, this);
     }
 
-
+    // scan for enemies/wizard within attack range and give score based on targetting strategy
+    // update selected target if a 'better' one is found
     private void FindEnemyToTarget()
     {
         string[] tags = { "Enemy", "Wizard" };
@@ -109,6 +115,7 @@ public class ApprenticeController : MonoBehaviour
         }
     }
 
+    // calculate score for targetting, lower score = higher priority targeting
     private float EvaluateTarget(GameObject enemy, Health enemyHealth)
     {
         float distanceToTower = Vector3.Distance(transform.position, enemy.transform.position);

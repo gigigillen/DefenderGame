@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ProjectileController : MonoBehaviour {
 
+    // base stats for projectiles - basic type behaviour
     public ApprenticeType projectileType;
     protected int damage = 2;
     protected float speed;
@@ -13,6 +14,7 @@ public class ProjectileController : MonoBehaviour {
     protected ApprenticeController owner;
     protected ApprenticeTypeData typeData;
 
+    // called when apprentice fires the projectile to setup
     public virtual void Initialize(ApprenticeTypeData typeData, Transform target, ProjectilePool pool, ApprenticeController owner) {
         this.typeData = typeData;
         this.target = target;
@@ -24,6 +26,8 @@ public class ProjectileController : MonoBehaviour {
         lastTargetPosition = target.position;
     }
 
+    // update projectile positon & rotation each frame
+    // basic, fire, water, and wind apprentices movement toward target
     protected virtual void Update() {
 
         if (target==null) {
@@ -31,6 +35,7 @@ public class ProjectileController : MonoBehaviour {
             return;
         }
 
+        // move to target / last know position
         Vector3 destination = target != null ? target.position : lastTargetPosition;
         transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
 
@@ -48,6 +53,8 @@ public class ProjectileController : MonoBehaviour {
         }
     }
 
+    // called when projectile reaches its target - deal damage & return to pool
+    // overriden by projectile types for their unique effects
     protected virtual void OnReachTarget() {
 
         DealDamage();
@@ -63,6 +70,7 @@ public class ProjectileController : MonoBehaviour {
         }
     }
 
+    // for burning/wetness interaction
     protected void ApplyVaporizeDamage() {
 
         Health targetHealth = target.GetComponent<Health>();
