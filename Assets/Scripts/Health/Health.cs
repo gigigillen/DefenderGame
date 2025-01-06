@@ -10,8 +10,10 @@ public class Health : MonoBehaviour {
 
     private int health;
     private int maxHealth;
-    public int xpReward = 25; // XP reward for destroying this object
-    private XPSystem xpSystem; // Reference to the XP system
+    // XP reward for destroying this object
+    public int xpReward = 25;
+    // Reference to the XP system
+    private XPSystem xpSystem; 
 
 
     // assigns the health of the game characters at the start
@@ -67,14 +69,14 @@ public class Health : MonoBehaviour {
     private IEnumerator HandleDeath() {
 
         yield return new WaitForSeconds(0f);
-        // Award XP for the kill
-        if (xpSystem != null && CompareTag("Enemy")) // Only grant XP for enemies
+        // Award XP for the kill, only grant XP for enemies
+        if (xpSystem != null && CompareTag("Enemy")) 
         {
             xpSystem.AddXP(xpReward);
         }
+        // If wizard defeated carries out win game method
         else if (CompareTag("Wizard")) {
             gameController.WinGame();
-            Debug.Log("The Wicked Wizard is ded");
         }
         Destroy(gameObject);
     }

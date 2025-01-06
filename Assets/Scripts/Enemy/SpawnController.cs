@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 
 public class SpawnController : MonoBehaviour {
-
+    // spawn paths
     public RandomizedEnemies eastSpawner;
     public RandomizedEnemies northSpawner;
     public RandomizedEnemies southSpawner;
@@ -32,6 +32,7 @@ public class SpawnController : MonoBehaviour {
         StartCoroutine(WaveController());
     }
 
+    // sets the spawn rates and controls the wave to go as far as the selected wave in the main menu ui
     IEnumerator WaveController() {
         while (currentWave <= numberOfWaves) {
             ShowMessage($"Starting Wave {currentWave}!");
@@ -61,6 +62,7 @@ public class SpawnController : MonoBehaviour {
         ShowMessage("The Wizard has appeared!");
     }
 
+    // adds a message to the userinterface to announce relevant wave messages
     void ShowMessage(string message)
     {
         if (waveMessageText != null)
@@ -85,23 +87,24 @@ public class SpawnController : MonoBehaviour {
     }
 
     float CalculateSpawnInterval(int wave) {
-        // Early waves (1-5)
+        // early waves (1-5)
         if (wave <= 5) {
             return Mathf.Lerp(45f, 30f, (wave - 1) / 4f);
         }
 
-        // Mid waves (6-15)
+        // mid waves (6-15)
         else if (wave <= 15) {
             return Mathf.Lerp(30f, 20f, (wave - 6) / 9f);
         }
 
-        // Late waves (16-30)
+        // late waves (16-30)
         else {
             float interval = Mathf.Lerp(20f, 10f, (wave - 16) / 14f);
             return Mathf.Max(interval, 2f);
         }
     }
 
+    // stops all the paths from spawning enemies
     void StopAllSpawners() {
         eastSpawner.enabled = false;
         northSpawner.enabled = false;
@@ -109,15 +112,15 @@ public class SpawnController : MonoBehaviour {
         westSpawner.enabled = false;
     }
 
-
+    // slightly varied intervals for each spawner to prevent synchronized spawns
     void SetSpawnRates(float baseInterval) {
-        // Slightly varied intervals for each spawner to prevent synchronized spawns
         SetEastSpawnRate(baseInterval * Random.Range(0.9f, 1.1f));
         SetNorthSpawnRate(baseInterval * Random.Range(0.9f, 1.1f));
         SetSouthSpawnRate(baseInterval * Random.Range(0.9f, 1.1f));
         SetWestSpawnRate(baseInterval * Random.Range(0.9f, 1.1f));
     }
 
+    // sets the wave spawn interval rate
     void SetEastSpawnRate(float newInterval) {
         eastSpawner.SpawnInterval = newInterval;
         Debug.Log($"East Spawner interval set to {newInterval:F2} seconds.");
@@ -137,9 +140,10 @@ public class SpawnController : MonoBehaviour {
         westSpawner.SpawnInterval = newInterval;
         Debug.Log($"West Spawner interval set to {newInterval:F2} seconds.");
     }
-    
+
+
+    // call the SpawnWizard function from the Wizard script
     void SpawnWizard() {
-        // Call the SpawnWizard function from the Wizard script
         if (wizardSpawner != null)
         {
             wizardSpawner.SpawnWizard();

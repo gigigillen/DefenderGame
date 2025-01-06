@@ -20,6 +20,7 @@ public class MainMenu : MonoBehaviour {
         waveSlider.onValueChanged.AddListener(delegate { UpdateWaveText(); });
     }
 
+    //* handles the number of waves in game round
     private void UpdateWaveText()
     {
         waveText.text = $"Waves: {waveSlider.value}";
@@ -35,6 +36,7 @@ public class MainMenu : MonoBehaviour {
         waveSlider.value = value;
         UpdateWaveText();
     }
+    //*
 
     public void ReloadScene()
     {

@@ -5,12 +5,14 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
+    // userinput actions linked to new input system
     public InputActionAsset playerControls;
     private InputAction moveAction;
     private InputAction lookAction;
     private InputAction zoomAction;
     private InputAction mouseRightAction;
 
+    //bounds for the camera zoom
     private float speed = 10f;
     private float zoomSpeed = 0.5f;
     private float minZoom = 20f;
@@ -34,8 +36,8 @@ public class CameraController : MonoBehaviour
     private Coroutine currentMoveCoroutine;
     private bool isRotating;
 
-    private void Awake()
-    {
+    private void Awake() {
+        // connects the new input system to the camera script
         cam = Camera.main;
         InputActionMap playerActionMap = playerControls.FindActionMap("Camera");
 
@@ -86,6 +88,7 @@ public class CameraController : MonoBehaviour
         if (mouseRightAction != null) mouseRightAction.Disable();
     }
 
+    // stops the userinput if the player stops the interaction that started it i.e. moving with wasd
     private void OnDestroy() {
 
         if (moveAction != null) {
@@ -128,6 +131,7 @@ public class CameraController : MonoBehaviour
 
         float scrollValue = context.ReadValue<Vector2>().y;
         float currentZoom = cam.fieldOfView;
+        // calculates how far the zoom goes
         float newZoom = currentZoom - (scrollValue * zoomSpeed * Time.deltaTime * 100);
         if (ExceedsGameBoundary(newZoom)) {
             newZoom = Mathf.Min(newZoom, maxZoom);
@@ -135,6 +139,7 @@ public class CameraController : MonoBehaviour
         cam.fieldOfView = Mathf.Clamp(newZoom, minZoom, maxZoom); ;
     }
 
+    // makes sure that the zoom functions stays in range
     private bool ExceedsGameBoundary(float fieldOfView) {
 
         float cameraHeight = transform.position.y;
@@ -148,8 +153,7 @@ public class CameraController : MonoBehaviour
         return (fieldOfView * 0.5f) > angleToWallTop;
     }
 
-    void HandleMovement()
-    {
+    void HandleMovement() {
         // Get the camera's forward and right directions
         Vector3 forward = cam.transform.forward;
         Vector3 right = cam.transform.right;
@@ -173,8 +177,7 @@ public class CameraController : MonoBehaviour
     }
 
 
-    void HandleRotation()
-    {
+    void HandleRotation() {
         yaw += lookInput.x * yawSpeed * Time.deltaTime;
         pitch -= lookInput.y * pitchSpeed * Time.deltaTime;
 

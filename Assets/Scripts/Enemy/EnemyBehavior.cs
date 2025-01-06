@@ -51,7 +51,7 @@ public class EnemyBehavior : MonoBehaviour
         }
     }
 
-
+    // ensure the health bar of enemy is always facing the camera
     private void LateUpdate() {
 
         canvasTransform.LookAt(transform.position + Camera.main.transform.forward);
