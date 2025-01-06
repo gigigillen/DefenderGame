@@ -54,12 +54,12 @@ public class Wizard : MonoBehaviour
             yield return null;
         }
 
-        // Optionally, handle what happens when the wizard reaches the final waypoint
-        // For example, damage the stronghold or destroy the wizard
-        if (Vector3.Distance(wizard.transform.position, waypoints.stronghold.transform.position) < 2.5f)
-        {
-            HealthBarController.instance.TakeDamage(10f);  // Example damage
-            Destroy(wizard);  // Destroy the wizard
-        }
+        //// Optionally, handle what happens when the wizard reaches the final waypoint
+        //// For example, damage the stronghold or destroy the wizard
+        //if (Vector3.Distance(wizard.transform.position, waypoints.stronghold.transform.position) < 2.5f)
+        //{
+        //    HealthBarController.instance.TakeDamage(10f);  // Example damage
+        //    Destroy(wizard);  // Destroy the wizard
+        //}
     }
 }

@@ -9,7 +9,7 @@ public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField] private SkillManager skillManager;
     [SerializeField] private ApprenticeType apprenticeType;
     [SerializeField] private string upgradeName;
-    [SerializeField] private int skillPointCost = 1;
+    [SerializeField] private int skillPointCost = 3;
 
     private SpawnApprentice spawnController;
     private Button button;
@@ -43,13 +43,13 @@ public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private string GetUpgradeDescription(ApprenticeType type) {
         return type switch {
             ApprenticeType.Wind =>
-                "Creates a vortex on hit, dealing 1 damage per second to enemies within.",
+                "Creates a vortex on hit, dealing 2 damage per second to enemies within.",
             ApprenticeType.Earth =>
                 "Deals two extra instances of crash aoe damage.",
             ApprenticeType.Fire =>
-                "Can apply the burning effect to enemies, dealing 1 damage per second.",
+                "Can apply the burning effect to enemies, dealing 2 damage per second.",
             ApprenticeType.Water =>
-                "Can apply the wet effect to enemies, slowing them down.",
+                "Can apply the wet effect to enemies, slowing them down by 50%.",
             _ => "No description available."
         };
     }
@@ -64,7 +64,6 @@ public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 if (success) {
                     skillManager.UnlockAbility(apprenticeType, upgradeName);
                     button.interactable = false;
-                    spawnController.UpdateAllSpawnCosts();
                 }
             }
         }

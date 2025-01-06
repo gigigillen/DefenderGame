@@ -21,6 +21,7 @@ public class WaterProjectile : ProjectileController {
         if (burningEffect != null && canApplyWetness) {
             if (VaporiseController.CanVaporise(target.gameObject)) {
                 DealDamage();
+                ApplyVaporizeDamage();
                 base.OnReachTarget();
                 Debug.Log("vaporise triggered from water!");
                 burningEffect.RemoveEffect();

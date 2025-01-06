@@ -5,9 +5,9 @@ using UnityEngine;
 public class VortexEffect : MonoBehaviour {
 
     [SerializeField] private float duration = 5f;
-    [SerializeField] private int damagePerTick = 1;
+    [SerializeField] private int damagePerTick = 2;
     [SerializeField] private float tickRate = 1f;
-    [SerializeField] private float radius = 3f;
+    [SerializeField] private float radius = 6f;
 
     [SerializeField] private ParticleSystem vortexParticles;
 

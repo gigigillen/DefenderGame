@@ -7,14 +7,14 @@ public class SpawnNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public void OnPointerEnter(PointerEventData eventData) {
 
-        int currentCost = SpawnApprentice.CalculateSkillPointCost(apprenticeType);
+        int cost = SpawnApprentice.CalculateSkillPointCost(apprenticeType);
         string description = GetApprenticeDescription();
 
         TooltipManager.instance.SetAndShowTooltip(
             $"Spawn {apprenticeType} Apprentice",
             apprenticeType,
             description,
-            currentCost,
+            cost,
             false
         );
     }

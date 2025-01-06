@@ -28,7 +28,7 @@ public class WetEffect : StatusEffect {
         }
 
         if (enemyBehavior != null) {
-            enemyBehavior.speed = originalSpeed * (1 - speedReduction);
+            enemyBehavior.speed = originalSpeed * speedReduction;
         }
 
         RefreshDuration(duration);

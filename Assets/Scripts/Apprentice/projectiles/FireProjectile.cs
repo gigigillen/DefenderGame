@@ -21,6 +21,7 @@ public class FireProjectile : ProjectileController {
         if (wetEffect != null && canApplyBurning) {
             if (VaporiseController.CanVaporise(target.gameObject)) {
                 DealDamage();
+                ApplyVaporizeDamage();
                 base.OnReachTarget();
                 Debug.Log("vaporise triggered in fire!");
                 wetEffect.RemoveEffect();

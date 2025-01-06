@@ -62,5 +62,15 @@ public class ProjectileController : MonoBehaviour {
             }
         }
     }
+
+    protected void ApplyVaporizeDamage() {
+
+        Health targetHealth = target.GetComponent<Health>();
+        if (targetHealth != null) {
+            int vaporizeBonus = 3;
+            targetHealth.Damage(vaporizeBonus);
+            Debug.Log($"Vaporize dealt {vaporizeBonus} bonus damage!");
+        }
+    }
 }
 

@@ -23,7 +23,7 @@ public class SpawnController : MonoBehaviour {
     [Header("Wave Duration")]
     private int numberOfWaves;
     private int currentWave = 1;
-    public float waveDuration = 30f;
+    public float waveDuration = 45f;
     private bool isWaveActive = false;
     private Coroutine messageCoroutine;
 

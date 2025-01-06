@@ -5,7 +5,7 @@ using UnityEngine;
 public class BurningEffect : StatusEffect {
 
     private Health targetHealth;
-    private int dmgPerTick = 1;
+    private int dmgPerTick = 2;
     private GameObject vfxPrefab;
 
     private void Awake() {

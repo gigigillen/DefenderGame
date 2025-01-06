@@ -184,29 +184,14 @@ public class SpawnApprentice : MonoBehaviour {
 
     public static int CalculateSkillPointCost(ApprenticeType type) {
 
-        int cost = (type == ApprenticeType.Basic) ? 1 : 2;
-        switch (type) {
-            case ApprenticeType.Wind:
-                if (SkillManager.IsAbilityUnlocked(ApprenticeType.Wind, "Vortex")) {
-                    cost += 1;
-                }
-                break;
-            case ApprenticeType.Earth:
-                if (SkillManager.IsAbilityUnlocked(ApprenticeType.Earth, "Rocky Pulse")) {
-                    cost += 1;
-                }
-                break;
-            case ApprenticeType.Fire:
-                if (SkillManager.IsAbilityUnlocked(ApprenticeType.Fire, "Burning")) {
-                    cost += 1;
-                }
-                break;
-            case ApprenticeType.Water:
-                if (SkillManager.IsAbilityUnlocked(ApprenticeType.Water, "Wetness")) {
-                    cost += 1;
-                }
-                break;
-        }
+        int cost = type switch {
+            ApprenticeType.Basic => 1,
+            ApprenticeType.Water => 3,
+            ApprenticeType.Earth => 3,
+            ApprenticeType.Wind => 4, 
+            ApprenticeType.Fire => 4,
+            _ => 1
+        };
         return cost;
     }
 

@@ -12,7 +12,7 @@ public class EarthProjectile : ProjectileController {
     [SerializeField] private int damagePerPulse = 3;
     [SerializeField] private float pulseInterval = 1f;
     [SerializeField] private float stunDuration = 3f;
-    [SerializeField] private float aoeRadius = 3f;
+    [SerializeField] private float aoeRadius = 6f;
 
     // trajectory settings
     private Vector3 startPos;
@@ -21,8 +21,7 @@ public class EarthProjectile : ProjectileController {
     private float arcDuration = 1f;
     private float elapsed = 0f;
 
-    private bool canAoePulse => SkillManager.IsAbilityUnlocked(ApprenticeType.Earth, "aoePulse");
-    private int pulseDamageUpgradeLevel = 0;
+    private bool canAoePulse => SkillManager.IsAbilityUnlocked(ApprenticeType.Earth, "Rocky Pulse");
     private bool hasCrashed;
 
 
@@ -95,10 +94,6 @@ public class EarthProjectile : ProjectileController {
     private IEnumerator EarthCrash() {
         speed = 0f;
 
-        int totalPulseDamage = canAoePulse ?
-            (damagePerPulse + (pulseDamageUpgradeLevel * 2)) :
-            damage;
-
         int pulseCount = canAoePulse ? 3 : 1;
 
         Vector3 effectPosition = transform.position;
@@ -118,7 +113,7 @@ public class EarthProjectile : ProjectileController {
                 yield return new WaitForSeconds(pulseInterval);
                 pulseEffect.Stop();
             }
-            ApplyAoEDamage(totalPulseDamage);
+            ApplyAoEDamage(damagePerPulse);
             float waitTime = Mathf.Max(0, pulseInterval - pulseEffect.main.duration);
             yield return new WaitForSeconds(waitTime);
         }

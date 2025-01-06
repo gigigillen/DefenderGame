@@ -5,8 +5,8 @@ using UnityEngine;
 public class Health : MonoBehaviour {
     private GameController gameController;
 
-    private int enemyMaxHealth = 10;
-    private int wizardMaxHealth = 30;
+    private int enemyMaxHealth = 30;
+    private int wizardMaxHealth = 80;
 
     private int health;
     private int maxHealth;
