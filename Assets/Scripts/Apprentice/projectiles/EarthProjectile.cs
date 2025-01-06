@@ -9,10 +9,10 @@ public class EarthProjectile : ProjectileController {
     [SerializeField] private float effectsHeightOffset = 0.5f;
 
     [Header("Impact Effects")]
-    [SerializeField] private int damagePerPulse = 3;
+    [SerializeField] private int damagePerPulse = 5;
     [SerializeField] private float pulseInterval = 1f;
     [SerializeField] private float stunDuration = 3f;
-    [SerializeField] private float aoeRadius = 6f;
+    [SerializeField] private float aoeRadius = 7f;
 
     // trajectory settings
     private Vector3 startPos;

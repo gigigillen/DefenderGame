@@ -10,7 +10,7 @@ public class WindProjectile : ProjectileController {
     private void Awake() {
 
         projectileType = ApprenticeType.Wind;
-        damage = 1;
+        damage = 2;
     }
 
 

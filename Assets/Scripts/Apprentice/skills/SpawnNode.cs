@@ -33,11 +33,11 @@ public class SpawnNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     private string GetApprenticeDescription() {
 
         return apprenticeType switch {
-            ApprenticeType.Water => "A medium range apprentice that can slow enemies down.",
-            ApprenticeType.Earth => "A high range earth apprentice that launches a rock to deal aoe damage.",
-            ApprenticeType.Wind => "A short range apprentice with high attack speed.",
-            ApprenticeType.Fire => "A medium range apprentice that deals high damage to single targets.",
-            _ => "A simple apprentice that fires bullets at enemies."
+            ApprenticeType.Water => "A medium range apprentice that can slow enemies down. 3 dmg per hit",
+            ApprenticeType.Earth => "A high range earth apprentice that launches a rock to deal 5 aoe damage.",
+            ApprenticeType.Wind => "A short range apprentice with high attack speed. 2 dmg per hit",
+            ApprenticeType.Fire => "A medium range apprentice that deals high damage to single targets. 4 dmg per hit",
+            _ => "A simple apprentice that fires bullets at enemies. 2 dmg per hit."
         };
     }
 }

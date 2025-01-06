@@ -41,7 +41,7 @@ public class UpgradeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private string GetUpgradeDescription(ApprenticeType type) {
         return type switch {
             ApprenticeType.Wind =>
-                "Creates a vortex on hit, dealing 2 damage per second to enemies within.",
+                "Creates a vortex on hit, dealing 4 damage per second to enemies within.",
             ApprenticeType.Earth =>
                 "Deals two extra instances of crash AOE damage.",
             ApprenticeType.Fire =>

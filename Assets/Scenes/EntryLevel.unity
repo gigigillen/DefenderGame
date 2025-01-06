@@ -2463,7 +2463,7 @@ MonoBehaviour:
   xpBarImage: {fileID: 75338719}
   skillPointsText: {fileID: 2001831691}
   xpText: {fileID: 2065505602}
-  skillPoints: 5
+  skillPoints: 50
 --- !u!1 &80898869
 GameObject:
   m_ObjectHideFlags: 0
