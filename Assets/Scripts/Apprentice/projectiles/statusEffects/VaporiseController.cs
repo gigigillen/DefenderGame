@@ -6,7 +6,7 @@ public class VaporiseController : MonoBehaviour {
 
     private static VaporiseController instance;
     private Dictionary<int, float> lastVaporiseTimes = new Dictionary<int, float>();
-    private float vaporiseCooldown = 10f;
+    private float vaporiseCooldown = 8f;
 
     private void Awake() {
 

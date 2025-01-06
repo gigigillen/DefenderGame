@@ -40,6 +40,8 @@ public class Wizard : MonoBehaviour
 
         while (currentWaypoint != null)
         {
+            if (wizard == null) yield break;
+
             // Move the wizard towards the current waypoint
             wizard.transform.position = Vector3.MoveTowards(wizard.transform.position, currentWaypoint.position, moveSpeed * Time.deltaTime);
 
@@ -54,12 +56,11 @@ public class Wizard : MonoBehaviour
             yield return null;
         }
 
-        //// Optionally, handle what happens when the wizard reaches the final waypoint
-        //// For example, damage the stronghold or destroy the wizard
-        //if (Vector3.Distance(wizard.transform.position, waypoints.stronghold.transform.position) < 2.5f)
-        //{
-        //    HealthBarController.instance.TakeDamage(10f);  // Example damage
-        //    Destroy(wizard);  // Destroy the wizard
-        //}
+        // Optionally, handle what happens when the wizard reaches the final waypoint
+        // For example, damage the stronghold or destroy the wizard
+        if (Vector3.Distance(wizard.transform.position, waypoints.stronghold.transform.position) < 2.5f) {
+            HealthBarController.instance.TakeDamage(10f);  // Example damage
+            Destroy(wizard);  // Destroy the wizard
+        }
     }
 }
